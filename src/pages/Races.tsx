@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, get } from 'firebase/database';
+import React from 'react';
+import useRaces from '../hooks/useRaces';
+import { Link } from 'react-router-dom';
 
 export default function Races() {
-  const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchEvents() {
-      setIsLoading(true);
-      const db = getDatabase();
-      const snapshot = await get(ref(db, 'races'));
-
-      if (snapshot.exists()) {
-        setEvents(Object.values(snapshot.val()));
-      } else {
-        setEvents([]);
-      }
-      setIsLoading(false);
-    }
-
-    fetchEvents();
-  }, []);
-
-  if (isLoading) return <p>로딩중...</p>;
+  const { racesQuery } = useRaces();
+  const { data: races, isLoading, isError } = racesQuery;
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -43,22 +25,22 @@ export default function Races() {
         </div>
       </header>
 
-      {/* Event Cards */}
       <main className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {events.map((event) => (
+        {races?.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
       </main>
 
-      {/* Load More Button */}
       <div className="text-center py-6">
         <button className="px-6 py-2 bg-gray-300 rounded">더보기</button>
       </div>
+      <Link to='/races/regist'>추가하기</Link>
     </div>
   );
 }
 
 function EventCard({ event }) {
+  
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <img

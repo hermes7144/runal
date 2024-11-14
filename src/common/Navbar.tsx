@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
  export default function Navbar() {
   const user = useAuthStore((state) => state.user);
-  const isAuthLoading = useAuthStore((state) => state.isAuthLoading);
+  const authStatus = useAuthStore((state) => state.authStatus);
   const navigate = useNavigate();
 
   return (
@@ -14,7 +14,20 @@ import { useNavigate } from 'react-router-dom';
         <h1 className='tracking-tighter text-3xl font-semibold cursor-pointer'>알림메이트</h1>
       </div>
       <div onClick={() => navigate('/races')}>레이스</div>
-      <nav className='flex items-center gap-4'>{isAuthLoading ? '로딩중' : user ? <button onClick={logout}>로그아웃</button> : <button onClick={login}>로그인</button>}</nav>
+      <nav className="flex items-center gap-4">
+        {authStatus === 'loading' ? (
+          '로딩중...'
+        ) : authStatus === 'authenticated' ? (
+          <>
+            <span>{user?.displayName}</span>
+            <button onClick={logout}>로그아웃</button>
+          </>
+        ) : authStatus === 'unauthenticated' ? (
+          <button onClick={login}>로그인</button>
+        ) : (
+          <span>에러 발생</span>
+        )}
+      </nav>
     </header>
   );
 }

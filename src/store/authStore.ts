@@ -4,23 +4,23 @@ import { create } from 'zustand';
 
 interface AuthState {
   user: User | null;
-  isAuthLoading: boolean;
-  setUser: (user: User | null) => void;
-  setIsAuthLoading: (isLoading: boolean) => void;
+  authStatus: 'loading' | 'authenticated' | 'unauthenticated' | 'error'; // 세부 상태 추가
+  setAuthState: (user: User | null, authStatus: 'loading' | 'authenticated' | 'unauthenticated' | 'error') => void;
 }
 
-// zustand 스토어
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  isAuthLoading: true,
-  setUser: (user) => set({ user }),
-  setIsAuthLoading: (isLoading) => set({ isAuthLoading: isLoading }),
+  authStatus: 'loading',
+  setAuthState: (user, authStatus) => set({ user, authStatus }),
 }));
 
 // Firebase 상태 변경 리스너 연결
 export function initializeAuthListener() {
   onUserStateChange((user: User | null) => {
-    useAuthStore.getState().setUser(user);
-    useAuthStore.getState().setIsAuthLoading(false);
+    if (user) {
+      useAuthStore.getState().setAuthState(user, 'authenticated');
+    } else {
+      useAuthStore.getState().setAuthState(null, 'unauthenticated');
+    }
   });
 }

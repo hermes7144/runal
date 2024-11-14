@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Index from './pages/Index';
 import Races from './pages/Races';
+import RaceRegistrationForm from './pages/RaceRegistrationForm';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Index /> },
       { path: '/races', element: <Races /> },
+      { path: '/races/regist', element: <RaceRegistrationForm /> },
     ],
   },
 ]);
