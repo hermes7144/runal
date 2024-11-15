@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging } from 'firebase/messaging';
 import 'firebase/messaging';
 
 const firebaseConfig = {
@@ -20,5 +20,5 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const messaging = getMessaging(app);
 
-export { messaging, getToken, db };
+export { messaging, db };
 export default app;
