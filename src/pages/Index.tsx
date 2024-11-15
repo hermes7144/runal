@@ -18,5 +18,17 @@ import React from 'react';
     console.log('An error occurred while retrieving token. ', err);
     // ...
   });
+
+
+  function requestPermission() {
+    console.log('Requesting permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+
+      }})
+    }
+
+    requestPermission();
   return <>Index</>;
 }
