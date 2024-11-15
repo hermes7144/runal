@@ -1,23 +1,14 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, onMessage } from "firebase/messaging";
+/* global importScripts */
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
-// Initialize the Firebase app in the service worker by passing in
-// your app's Firebase config object.
-// https://firebase.google.com/docs/web/setup#config-object
-const firebaseApp = initializeApp({
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DB_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  messagingSenderId: import.meta.env.VITE_MESSAGE_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
-  vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
-});
+const config = {
+  apiKey: 'AIzaSyDRGQg2nWHBQjo6PTV9u51wp-J1hfD7y04',
+  authDomain: 'alrammate.firebaseapp.com',
+  projectId:'alrammate',
+  messagingSenderId:'alrammate.firebasestorage.app',
+  vapidKey: 'BCEqZPDQqPmm91G-bFFrsrCnnhH4rC-B4AxBkYVoJYb4Z90HYqZzzHJz82lQRMnaMBy84-LiAOGpuZkro3b-rQw',
+  appId: '1:393905672119:web:c96a80dd317149fb0fe232'
+};
 
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
-const messaging = getMessaging(firebaseApp);
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // ...
-});
+firebase.initializeApp(config);
