@@ -30,19 +30,7 @@ export default function Index() {
     });
   }
 
-  // FCM 메시지 수신 처리
-  onMessage(messaging, (payload) => {
-    console.log('Message received. ', payload);
 
-    // 알림 메시지가 있는지 확인하고, 없는 경우에는 데이터 메시지를 처리
-    if (payload.notification) {
-      console.log('Notification title:', payload.notification.title);
-      console.log('Notification body:', payload.notification.body);
-    } else if (payload.data) {
-      console.log('Data message received:', payload.data);
-      // 데이터 메시지 처리 (예: payload.data.someField)
-    }
-  });
 
   return <>Index</>;
 }
