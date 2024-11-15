@@ -1,5 +1,5 @@
 import { getMessaging, getToken } from 'firebase/messaging';
-import React from 'react';
+import React, { useEffect } from 'react';
 
  export default function Index() {
   const messaging = getMessaging();
@@ -18,6 +18,10 @@ import React from 'react';
     console.log('An error occurred while retrieving token. ', err);
     // ...
   });
+  useEffect(()=> {
+
+    requestPermission();
+  },[])
 
 
   function requestPermission() {
@@ -29,6 +33,5 @@ import React from 'react';
       }})
     }
 
-    requestPermission();
   return <>Index</>;
 }
