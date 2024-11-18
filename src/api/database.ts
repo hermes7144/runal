@@ -24,7 +24,6 @@ export async function saveRace(raceData :RaceProps) {
 }
 
 export async function saveTokenToFirestore(token) {
-  console.log(token);
   
   try {
       const tokenRef = doc(db, "tokens", token);

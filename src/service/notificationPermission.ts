@@ -11,11 +11,7 @@ export async function handleAllowNotification() {
             const token = await getToken(messaging, {
                 vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
             });
-            console.log('token',token);
-
             if (token) {
-              console.log(token);
-              
                 saveTokenToFirestore(token);// (토큰을 서버로 전송하는 로직)
             } else {
                 alert(
