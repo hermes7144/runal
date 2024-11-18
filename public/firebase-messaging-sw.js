@@ -23,11 +23,11 @@ self.addEventListener("activate", function (e) {
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  
-  const notificationTitle = payload.title;
+messaging.onBackgroundMessage((payload) => {  
+  // const notificationTitle = payload.notification.title
+  const notificationTitle = 'dddd'
   const notificationOptions = {
-      body: payload.body
+    body: payload.notification.body
       // icon: payload.icon
   };
   self.registration.showNotification(notificationTitle, notificationOptions);
