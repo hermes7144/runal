@@ -6,6 +6,7 @@ import App from './App';
 import Index from './pages/Index';
 import Races from './pages/Races';
 import RaceRegistrationForm from './pages/RaceRegistrationForm';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Import service worker registration
 
 const router = createBrowserRouter([
   {
@@ -24,3 +25,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
+
+// Register the service worker
+serviceWorkerRegistration.register();
