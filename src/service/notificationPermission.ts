@@ -1,9 +1,9 @@
-import { getToken } from "firebase/messaging";
-import { sendTokenToServer } from "./api";
-import { registerServiceWorker } from "./registerServiceWorker";
+import { getMessaging, getToken } from "firebase/messaging";
+import { saveTokenToFirestore } from '../api/database';
 
 export async function handleAllowNotification() {
-    registerServiceWorker(); // 나중에 설명
+  const messaging = getMessaging();
+
     try {
         const permission = await Notification.requestPermission();
 
@@ -11,8 +11,12 @@ export async function handleAllowNotification() {
             const token = await getToken(messaging, {
                 vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
             });
+            console.log('token',token);
+
             if (token) {
-                sendTokenToServer(token);// (토큰을 서버로 전송하는 로직)
+              console.log(token);
+              
+                saveTokenToFirestore(token);// (토큰을 서버로 전송하는 로직)
             } else {
                 alert(
                     "토큰 등록이 불가능 합니다. 생성하려면 권한을 허용해주세요"
@@ -27,3 +31,4 @@ export async function handleAllowNotification() {
         console.error("푸시 토큰 가져오는 중에 에러 발생", error);
     }
 }
+
