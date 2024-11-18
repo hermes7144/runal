@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { handleAllowNotification } from '../service/notificationPermission';
+import { getMessaging, onMessage } from 'firebase/messaging';
+import app from '../api/firebaseConfig';
 
 export default function Index() {
 
@@ -26,22 +28,23 @@ export default function Index() {
 }
 registerServiceWorker();
 
-Notification.requestPermission().then(permission => {
-  if (permission === "granted") {
-    // 알림을 보낼 수 있는 권한이 허용됨
-    const notification = new Notification("새로운 알림", {
-      body: "새로운 메시지가 도착했습니다.",
-      icon: '/images/icon.png'
-    });
-    
-    // 클릭 시 동작 설정
-    notification.onclick = () => {
-      window.location.href = '/some-page'; // 알림 클릭 시 리디렉션
+const messaging = getMessaging();
+
+onMessage(messaging, (payload) => {
+    console.log("알림 도착 ", payload);
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body
     };
-  } else {
-    console.log("알림 권한이 거부되었습니다.");
-  }
+    
+
+    if (Notification.permission === "granted") {
+        new Notification(notificationTitle, notificationOptions);
+    }
 });
+
+
+
 
 
   return <>Index</>;
