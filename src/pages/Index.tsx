@@ -26,21 +26,23 @@ export default function Index() {
 }
 registerServiceWorker();
 
-if (Notification.permission === 'granted') {
-  const notificationTitle = "새로운 알림";
-  const notificationOptions = {
-    body: "새로운 메시지가 도착했습니다.",
-    icon: '/images/icon.png',  // 알림에 표시할 아이콘
-    vibrate: [200, 100, 200],  // 진동 패턴
-  };
+Notification.requestPermission().then(permission => {
+  if (permission === "granted") {
+    // 알림을 보낼 수 있는 권한이 허용됨
+    const notification = new Notification("새로운 알림", {
+      body: "새로운 메시지가 도착했습니다.",
+      icon: '/images/icon.png'
+    });
+    
+    // 클릭 시 동작 설정
+    notification.onclick = () => {
+      window.location.href = '/some-page'; // 알림 클릭 시 리디렉션
+    };
+  } else {
+    console.log("알림 권한이 거부되었습니다.");
+  }
+});
 
-  const notification = new Notification(notificationTitle, notificationOptions);
-
-  // 알림 클릭 시 동작 정의
-  notification.onclick = function () {
-    window.location.href = '/some-page';  // 클릭 시 리디렉션
-  };
-}
 
   return <>Index</>;
 }
