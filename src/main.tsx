@@ -26,5 +26,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
-// Register the service worker
-serviceWorkerRegistration.register();
+// // Register the service worker
+// serviceWorkerRegistration.register();
