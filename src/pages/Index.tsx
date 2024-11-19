@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 import { handleAllowNotification } from '../service/notificationPermission';
-import { getMessaging, onMessage } from 'firebase/messaging';
-import app from '../api/firebaseConfig';
 
 export default function Index() {
 
@@ -28,22 +26,6 @@ export default function Index() {
 }
 registerServiceWorker();
 
-const messaging = getMessaging();
-
-// onMessage(messaging, (payload) => {
-//     console.log("알림 도착 ", payload);
-//     const notificationTitle = payload.notification.title;
-//     const notificationOptions = {
-//         body: payload.notification.body
-//     };
-    
-
-//     if (Notification.permission === "granted") {
-//         new Notification(notificationTitle, notificationOptions);
-//     }
-// });
-
-
 const handelClick = async () => {
     await fetch('http://localhost:3000/send-notification', {
         method: 'POST',
@@ -55,8 +37,6 @@ const handelClick = async () => {
         }),
     });
 }
-
-
 
   return <>Index
   {/* <button onClick={handelClick}>버튼</button> */}
