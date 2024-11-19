@@ -30,18 +30,18 @@ registerServiceWorker();
 
 const messaging = getMessaging();
 
-onMessage(messaging, (payload) => {
-    console.log("알림 도착 ", payload);
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body
-    };
+// onMessage(messaging, (payload) => {
+//     console.log("알림 도착 ", payload);
+//     const notificationTitle = payload.notification.title;
+//     const notificationOptions = {
+//         body: payload.notification.body
+//     };
     
 
-    if (Notification.permission === "granted") {
-        new Notification(notificationTitle, notificationOptions);
-    }
-});
+//     if (Notification.permission === "granted") {
+//         new Notification(notificationTitle, notificationOptions);
+//     }
+// });
 
 
 const handelClick = async () => {
@@ -59,6 +59,6 @@ const handelClick = async () => {
 
 
   return <>Index
-  <button onClick={handelClick}>버튼</button>
+  {/* <button onClick={handelClick}>버튼</button> */}
   </>;
 }
