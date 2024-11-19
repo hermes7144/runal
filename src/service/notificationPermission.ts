@@ -16,18 +16,27 @@ export async function handleAllowNotification() {
                 saveTokenToFirestore(token);// (토큰을 서버로 전송하는 로직)
 
                 // 서버에 토큰을 전송하여 푸시 알림을 받을 수 있도록 함
+                await fetch('http://localhost:3000/send-notification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                    token: token,
+                    title: '푸시 알림 제목',
+                    body: '푸시 알림 본문 내용',
+                    }),
+                });
+
+                // // 서버에 토큰을 전송하여 푸시 알림을 받을 수 있도록 함
+
                 // await fetch('http://localhost:3000/send-notification', {
                 //     method: 'POST',
-                //     // headers: { 'Content-Type': 'application/json' },
+                //     headers: { 'Content-Type': 'application/json' },
                 //     body: JSON.stringify({
-                //     token: token,
+                //     token: "dofRmJbOcmMHmeKjHLLrho:APA91bHwljA0shCtYWjxXQ1xgoyyii5CFoyLr2Q2y0R-R_9P8Ih-NcO-PRJe-KFBY7u2TyvFy7s0zECm6U9e7VU0xFlhgjDmT-dVyd2ZVYSrZjV3ozpx7Kw",
                 //     title: '푸시 알림 제목',
                 //     body: '푸시 알림 본문 내용',
                 //     }),
-                // });
-
-                // // 서버에 토큰을 전송하여 푸시 알림을 받을 수 있도록 함
-            
+                // });            
             } else {
                 alert(
                     "토큰 등록이 불가능 합니다. 생성하려면 권한을 허용해주세요"
