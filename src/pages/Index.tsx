@@ -44,8 +44,21 @@ onMessage(messaging, (payload) => {
 });
 
 
+const handelClick = async () => {
+    await fetch('http://localhost:3000/send-notification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+        token: "dofRmJbOcmMHmeKjHLLrho:APA91bHwljA0shCtYWjxXQ1xgoyyii5CFoyLr2Q2y0R-R_9P8Ih-NcO-PRJe-KFBY7u2TyvFy7s0zECm6U9e7VU0xFlhgjDmT-dVyd2ZVYSrZjV3ozpx7Kw",
+        title: '푸시 알림 제목',
+        body: '푸시 알림 본문 내용',
+        }),
+    });
+}
 
 
 
-  return <>Index</>;
+  return <>Index
+  <button onClick={handelClick}>버튼</button>
+  </>;
 }
