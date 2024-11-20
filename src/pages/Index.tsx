@@ -37,7 +37,8 @@ const handelClick = async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         tokens: ["dofRmJbOcmMHmeKjHLLrho:APA91bHwljA0shCtYWjxXQ1xgoyyii5CFoyLr2Q2y0R-R_9P8Ih-NcO-PRJe-KFBY7u2TyvFy7s0zECm6U9e7VU0xFlhgjDmT-dVyd2ZVYSrZjV3ozpx7Kw",
-                "eeyLuBmeQoMbXEcbbBcEqC:APA91bF6Xo57W_RvP6xVBLiQcVUP_B-Xqb-kEFr01rZusCJVuqjcNgHOvubj8Vy8Wjiu3QBCNVXOQ3adpBePxHctsC_DFCvN1M7UvyHMYGj-e5uK4uzPzHY"
+                "eeyLuBmeQoMbXEcbbBcEqC:APA91bF6Xo57W_RvP6xVBLiQcVUP_B-Xqb-kEFr01rZusCJVuqjcNgHOvubj8Vy8Wjiu3QBCNVXOQ3adpBePxHctsC_DFCvN1M7UvyHMYGj-e5uK4uzPzHY",
+                "cbx8GkbfRxSRgAMVILej9-:APA91bEajGelZHEUj0kWFOoZqOZGqxPP1455JfPKq6qy8q0JhzKp3bbs2lsXk81a0ncYogYxxfqHZr6Ea12s12XGSrHPUjzzSZLnCj4hgqS7WG7v0wJNznE"
         ],
         title: '푸시 알림 제목',
         body: '푸시 알림 본문 내용',
