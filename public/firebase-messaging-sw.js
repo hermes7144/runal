@@ -26,7 +26,7 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {  
   const notificationTitle = payload.notification.title
   const notificationOptions = {
-    body: payload.notification.body
+    body: '바디다'
       // icon: payload.icon
   };
   self.registration.showNotification(notificationTitle, notificationOptions);
