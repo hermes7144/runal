@@ -24,7 +24,7 @@ export default function Index() {
 
   useEffect(() => {
     handleAllowNotification();
-    registerServiceWorker();
+    // registerServiceWorker();
   }, []);
 
 
@@ -42,7 +42,7 @@ const handelClick = async () => {
                 "eeyLuBmeQoMbXEcbbBcEqC:APA91bF6Xo57W_RvP6xVBLiQcVUP_B-Xqb-kEFr01rZusCJVuqjcNgHOvubj8Vy8Wjiu3QBCNVXOQ3adpBePxHctsC_DFCvN1M7UvyHMYGj-e5uK4uzPzHY",
         ],
         title: '푸시 알림 제목',
-        body: '푸시 알림 본문 내용',
+        body: '바디입니다',
         }),
     });
 }
