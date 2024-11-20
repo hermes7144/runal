@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { handleAllowNotification, registerServiceWorker } from '../service/notificationPermission';
-import { onMessage } from 'firebase/messaging';
-// import { getMessaging, onMessage } from "firebase/messaging";
-
-
+import { getMessaging, onMessage } from 'firebase/messaging';
 
 export default function Index() {
 
@@ -33,6 +30,20 @@ const handelClick = async () => {
         }),
     });
 }
+
+const messaging = getMessaging();
+
+onMessage(messaging, (payload) => {
+    console.log("포어그라운드 메시지 수신: ", payload);
+  
+    const notificationTitle = payload.notification?.title || "알림 제목 없음";
+    const notificationBody = payload.notification?.body || "알림 내용 없음";
+  
+    new Notification(notificationTitle, {
+      body: notificationBody,
+    });
+  });
+
 
   return <>Index
   <button onClick={handelClick}>버튼</button>
