@@ -1,14 +1,8 @@
 import { useEffect } from 'react';
 import { handleAllowNotification } from '../service/notificationPermission';
 
-export default function Index() {
 
-  useEffect(() => {
-    handleAllowNotification();
-    registerServiceWorker();
-  }, []);
-
-  function registerServiceWorker() {
+function registerServiceWorker() {
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
             navigator.serviceWorker
@@ -25,6 +19,14 @@ export default function Index() {
         });
     }
 }
+
+export default function Index() {
+
+  useEffect(() => {
+    handleAllowNotification();
+    registerServiceWorker();
+  }, []);
+
 
 
 const handelClick = async () => {
