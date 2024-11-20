@@ -5,6 +5,7 @@ export default function Index() {
 
   useEffect(() => {
     handleAllowNotification();
+    registerServiceWorker();
   }, []);
 
   function registerServiceWorker() {
@@ -24,7 +25,6 @@ export default function Index() {
         });
     }
 }
-registerServiceWorker();
 
 
 const handelClick = async () => {
@@ -32,7 +32,7 @@ const handelClick = async () => {
     // const addr = 'http://localhost:8888/.netlify/functions/sendNotification';
     const addr = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
 
-     fetch(addr, {
+    await fetch(addr, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
