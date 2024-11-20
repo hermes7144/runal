@@ -22,8 +22,8 @@ const handelClick = async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         tokens: ["dofRmJbOcmMHmeKjHLLrho:APA91bHwljA0shCtYWjxXQ1xgoyyii5CFoyLr2Q2y0R-R_9P8Ih-NcO-PRJe-KFBY7u2TyvFy7s0zECm6U9e7VU0xFlhgjDmT-dVyd2ZVYSrZjV3ozpx7Kw",
-            "cbx8GkbfRxSRgAMVILej9-:APA91bHTMzEOuDQxPBOF15D543o6uv9bQkwJkJB3b_DX1LwdmWoVrmyTAfpbekwPC0bc5zJbcpxteqb6SqhuSA_2UrA1YW25x_TCX7fdC55yKnieqD1Bh3s",
-            "eeyLuBmeQoMbXEcbbBcEqC:APA91bGpa9tOqNnteTQv1rKDwmjcmnWd370YGKgSUUaeOOq4LitGPFNDoEWAkJQdtv3bok4U29KvbZPwsrduuFoboS0iCKeEDFDTdVAzHn3ntMV6qX7b8dY"
+            "cbx8GkbfRxSRgAMVILej9-:APA91bGQyME5JkwGLAB8YJbkAZ94KP1s3gAeB5ABeELGLrcWQy7AZVayI-P0sm6Ot4QQqrcNwapPEqVhtFEJPD-sLTnje8h05_WQc3dY1_JdZn_VCR-HRVA",
+            "eeyLuBmeQoMbXEcbbBcEqC:APA91bGpa9tOqNnteTQv1rKDwmjcmnWd370YGKgSUUaeOOq4LitGPFNDoEWAkJQdtv3bok4U29KvbZPwsrduuFoboS0iCKeEDFDTdVAzHn3ntMV6qX7b8dY",
 
         ],
         title: '푸시 알림 제목',
