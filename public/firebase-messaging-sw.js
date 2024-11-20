@@ -23,7 +23,7 @@ self.addEventListener("activate", function (e) {
 
 const messaging = firebase.messaging();
 
-// 왜인지 모르겠는데 이거 있으면 두번 호출된다
+// 데이터 받을때만??
 // messaging.onBackgroundMessage((payload) => {  
 //   const notificationTitle = payload.notification.title
 //   const notificationOptions = {
