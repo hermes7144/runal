@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { handleAllowNotification, registerServiceWorker } from '../service/notificationPermission';
+import { onMessage } from 'firebase/messaging';
 // import { getMessaging, onMessage } from "firebase/messaging";
 
 
@@ -37,3 +38,4 @@ const handelClick = async () => {
   <button onClick={handelClick}>버튼</button>
   </>;
 }
+
