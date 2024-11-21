@@ -3,11 +3,13 @@ import Navbar from './common/Navbar';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { listenToAuthChanges } from './api/auth';
+import { registerServiceWorker } from './service/notificationPermission';
 
 const MINUTE = 1000 * 60;
 
 function App() {
   useEffect(() => {
+    registerServiceWorker();
     listenToAuthChanges();
   }, []);
 

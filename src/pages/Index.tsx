@@ -1,51 +1,29 @@
-import { useEffect } from 'react';
-import { registerServiceWorker } from '../service/notificationPermission';
-import { getMessaging, onMessage } from 'firebase/messaging';
+import { fetchAllTokens } from '../api/database';
+import Races from './Races';
 
 export default function Index() {
 
-  useEffect(() => {
-    registerServiceWorker();
-  }, []);
-
-
-
 const handelClick = async () => {
-    // const addr = 'http://localhost:3000/send-notification';
-    // const addr = 'http://localhost:8888/.netlify/functions/sendNotification';
-  const addr = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
+  const tokens = await fetchAllTokens();
+  
+    const addr = 'http://localhost:8888/.netlify/functions/sendNotification';
+  // const addr = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
 
     await fetch(addr, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-        tokens: ["dofRmJbOcmMHmeKjHLLrho:APA91bHwljA0shCtYWjxXQ1xgoyyii5CFoyLr2Q2y0R-R_9P8Ih-NcO-PRJe-KFBY7u2TyvFy7s0zECm6U9e7VU0xFlhgjDmT-dVyd2ZVYSrZjV3ozpx7Kw",
-            "cbx8GkbfRxSRgAMVILej9-:APA91bFnhx9OWKzvgvffwC1EFbDSZ_z64Rby5H8HGECFjNKQanEhG0hHsbl5nunj3pfNwripN_9pHzl1r8uhLqWrytMDSU6-Cl6ZT3uSkbFm3iGxhPVyGOE",
-            "eeyLuBmeQoMbXEcbbBcEqC:APA91bGpa9tOqNnteTQv1rKDwmjcmnWd370YGKgSUUaeOOq4LitGPFNDoEWAkJQdtv3bok4U29KvbZPwsrduuFoboS0iCKeEDFDTdVAzHn3ntMV6qX7b8dY",
-
-        ],
+        tokens: tokens,
         title: '푸시 알림 제목',
         body: '푸시 알림 본문 내용',
         }),
     });
 }
 
-const messaging = getMessaging();
 
-onMessage(messaging, (payload) => {
-    console.log("포어그라운드 메시지 수신: ", payload);
-  
-    const notificationTitle = payload.notification?.title || "알림 제목 없음";
-    const notificationBody = payload.notification?.body || "알림 내용 없음";
-  
-    new Notification(notificationTitle, {
-      body: notificationBody,
-    });
-  });
-
-
-  return <>Index
+  return <>
   <button onClick={handelClick}>버튼</button>
+  <Races/>
   </>;
 }
 

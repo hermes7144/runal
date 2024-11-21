@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import app, { messaging } from './firebaseConfig';
 import useAuthStore from '../store/authStore';
-import { getToken } from 'firebase/messaging';
+import { getToken, onMessage } from 'firebase/messaging';
 import { saveUserToken } from './database';
 
 const auth = getAuth(app);
@@ -25,7 +25,6 @@ export const listenToAuthChanges = () => {
 
     if (user) {
       setUser(user);
-      console.log('standalone',window.matchMedia('(display-mode: standalone)').matches);
       
       if (window.matchMedia('(display-mode: standalone)').matches) {
 
@@ -45,3 +44,15 @@ export const listenToAuthChanges = () => {
     setLoading(false);
   });
 };
+ 
+
+// onMessage(messaging, (payload) => {
+//     console.log("포어그라운드 메시지 수신: ", payload);
+  
+//     const notificationTitle = payload.notification?.title || "알림 제목 없음";
+//     const notificationBody = payload.notification?.body || "알림 내용 없음";
+  
+//     new Notification(notificationTitle, {
+//       body: notificationBody,
+//     });
+//   });

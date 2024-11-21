@@ -43,15 +43,15 @@ export const saveUserToken  = async (token) => {
   }
 };
 
+
 export const fetchAllTokens = async () => {
   try {
     const tokensRef = collection(db, "users");
     const snapshot = await getDocs(tokensRef);
 
-    const tokens = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const tokens = snapshot.docs.map((doc) => (
+      doc.data().token
+    ));
 
     return tokens;
   } catch (error) {
@@ -59,3 +59,4 @@ export const fetchAllTokens = async () => {
     throw error;
   }
 };
+
