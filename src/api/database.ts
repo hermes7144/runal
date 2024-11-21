@@ -26,16 +26,36 @@ export async function saveRace(raceData :RaceProps) {
 
 
 // FCM 토큰을 Firestore에 저장하는 함수
-export const saveFCMTokenToDatabase = async (token) => {
+export const saveUserToken  = async (token) => {
   const userId = useAuthStore.getState().user?.uid;  // Zustand에서 사용자 ID 가져오기
   if (userId && token) {
     try {
       await setDoc(doc(db, 'users', userId), {
-        fcmToken: token,
+        id:userId,
+        token,
+        notificationEnabled: true,
+        createdAt: new Date().toISOString(),
       }, { merge: true });
       console.log('FCM 토큰이 Firestore에 저장되었습니다.');
     } catch (error) {
       console.error('FCM 토큰 저장 실패:', error);
     }
+  }
+};
+
+export const fetchAllTokens = async () => {
+  try {
+    const tokensRef = collection(db, "users");
+    const snapshot = await getDocs(tokensRef);
+
+    const tokens = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return tokens;
+  } catch (error) {
+    console.error("Error fetching all tokens:", error);
+    throw error;
   }
 };
