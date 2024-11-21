@@ -16,6 +16,9 @@ export async function getRaces() {
 }
 
 export async function saveRace(raceData :RaceProps) {
+  console.log(raceData);
+  
+
   try {
     const docRef = await addDoc(collection(db, "races"), raceData);
     console.log("대회 정보가 저장되었습니다. 문서 ID: ", docRef.id);

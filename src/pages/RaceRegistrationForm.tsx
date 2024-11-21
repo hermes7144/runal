@@ -1,44 +1,54 @@
 import React, { useState } from 'react';
+import useRaces from '../hooks/useRaces';
 import { RaceProps } from '../types/RaceProps';
 import { useNavigate } from 'react-router-dom';
-import useRaces from '../hooks/useRaces';
+import { uploadImage } from '../api/uploader';
+
 
 const RaceRegistrationForm = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
+  const [distance, setDistance] = useState('');
+  const [URL, setURL] = useState('');
+  const [file, setFile] = useState();
   const [status, setStatus] = useState<'upcoming' | 'ongoing' | 'completed' | 'full'>('upcoming');
+
+  const handleChange = (e) => {
+    const { name, files } = e.target;
+    if (name === 'file') {
+      setFile(files && files[0]);
+      return;
+    }
+  };
 
   const {mutateRace} = useRaces();
   
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const raceData : RaceProps = {
       name,
       date,
       location,
-      category,
-      description,
+      distance,
+      URL,
       status,
     };
-
-    mutateRace.mutate(raceData)
-
+   await uploadImage(file).then((image: string) =>
+    mutateRace.mutate({...raceData, image})
+  )
     navigate(-1);
 
   };
 
   return (
     <div className="p-4">
-      <h2>대회 등록</h2>
+      <h2 className='text-center text-xl font-bold mb-10'>대회 등록</h2>  
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name">대회 이름</label>
+          <label htmlFor="name">이름</label>
           <input
             type="text"
             id="name"
@@ -50,7 +60,7 @@ const RaceRegistrationForm = () => {
         </div>
 
         <div>
-          <label htmlFor="date">대회 일정</label>
+          <label htmlFor="date">일정</label>
           <input
             type="date"
             id="date"
@@ -62,7 +72,7 @@ const RaceRegistrationForm = () => {
         </div>
 
         <div>
-          <label htmlFor="location">대회 장소</label>
+          <label htmlFor="location">장소</label>
           <input
             type="text"
             id="location"
@@ -74,27 +84,30 @@ const RaceRegistrationForm = () => {
         </div>
 
         <div>
-          <label htmlFor="category">대회 유형</label>
+          <label htmlFor="category">거리</label>
           <input
             type="text"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            id="distance"
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
             required
             className="border p-2 w-full"
           />
         </div>
 
         <div>
-          <label htmlFor="description">대회 설명</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+          <label htmlFor="description">URL</label>
+          <input
+            type="text"
+            id="URL"
+            value={URL}
+            onChange={(e) => setURL(e.target.value)}
             required
             className="border p-2 w-full"
           />
         </div>
+        이미지
+        <input type='file' accept='image/*' name='file' required onChange={handleChange} />
 
         <div>
           <label htmlFor="status">대회 상태</label>
@@ -104,10 +117,10 @@ const RaceRegistrationForm = () => {
             onChange={(e) => setStatus(e.target.value as 'upcoming' | 'ongoing' | 'completed' | 'full')}
             className="border p-2 w-full"
           >
-            <option value="upcoming">예정</option>
-            <option value="ongoing">진행중</option>
-            <option value="completed">완료</option>
+            <option value="upcoming">모집 예정</option>
+            <option value="ongoing">모집 중</option>
             <option value="full">모집 완료</option>
+            <option value="completed">대회 완료</option>
           </select>
         </div>
 
