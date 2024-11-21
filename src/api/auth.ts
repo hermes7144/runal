@@ -1,7 +1,8 @@
-// src/firebase/auth.js
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import app from './firebaseConfig';
-import { User } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import app, { messaging } from './firebaseConfig';
+import useAuthStore from '../store/authStore';
+import { getToken } from 'firebase/messaging';
+import { saveFCMTokenToDatabase } from './database';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -14,8 +15,30 @@ export function logout() {
   return signOut(auth);
 }
 
-export function onUserStateChange(callback: (user: User | null) => void) {
-  onAuthStateChanged(auth, (user) => {
-    callback(user);
+// 인증 상태 변화 리스너
+export const listenToAuthChanges = () => {
+  onAuthStateChanged(auth, async (user) => {
+    const setUser = useAuthStore.getState().setUser;
+    const setLoading = useAuthStore.getState().setLoading;
+    
+    setLoading(true);
+
+    if (user) {
+      setUser(user);
+
+      // 사용자 인증 후 FCM 토큰 가져오기
+      try {
+        const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});  // FCM 토큰 가져오기
+        if (token) {
+          await saveFCMTokenToDatabase(token);  // 토큰을 Firestore에 저장
+        }
+      } catch (error) {
+        console.error('FCM 토큰 가져오기 실패:', error);
+      }
+     } else {
+      setUser(null);
+    }
+
+    setLoading(false);
   });
-}
+};

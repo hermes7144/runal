@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './common/Navbar';
 import { useEffect } from 'react';
-import { initializeAuthListener } from './store/authStore';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { listenToAuthChanges } from './api/auth';
 
 const MINUTE = 1000 * 60;
 
 function App() {
   useEffect(() => {
-    initializeAuthListener();
+    listenToAuthChanges();
   }, []);
 
   const queryClient = new QueryClient({

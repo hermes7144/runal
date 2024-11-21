@@ -1,11 +1,10 @@
-import React from 'react';
-import { useAuthStore } from '../store/authStore';
 import { login, logout } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore';
 
- export default function Navbar() {
+export default function Navbar() {
   const user = useAuthStore((state) => state.user);
-  const authStatus = useAuthStore((state) => state.authStatus);
+  const isLoading = useAuthStore((state) => state.isLoading);
   const navigate = useNavigate();
 
   return (
@@ -14,18 +13,16 @@ import { useNavigate } from 'react-router-dom';
         <h1 className='tracking-tighter text-3xl font-semibold cursor-pointer'>알림메이트</h1>
       </div>
       <div onClick={() => navigate('/races')}>레이스</div>
-      <nav className="flex items-center gap-4">
-        {authStatus === 'loading' ? (
-          '로딩중...'
-        ) : authStatus === 'authenticated' ? (
+      <nav className='flex items-center gap-4'>
+        {isLoading ? (
+          <div>로딩중...</div> // 로딩 중일 때는 '로딩중...' 메시지를 출력
+        ) : user ? (
           <>
-            <span>{user?.displayName}</span>
+            <span>{user.displayName}</span>
             <button onClick={logout}>로그아웃</button>
           </>
-        ) : authStatus === 'unauthenticated' ? (
-          <button onClick={login}>로그인</button>
         ) : (
-          <span>에러 발생</span>
+          <button onClick={login}>로그인</button> // 인증되지 않은 상태일 경우 로그인 버튼을 출력
         )}
       </nav>
     </header>

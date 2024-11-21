@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { handleAllowNotification, registerServiceWorker } from '../service/notificationPermission';
+import { registerServiceWorker } from '../service/notificationPermission';
 import { getMessaging, onMessage } from 'firebase/messaging';
 
 export default function Index() {
 
   useEffect(() => {
-    handleAllowNotification();
     registerServiceWorker();
   }, []);
 
