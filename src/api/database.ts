@@ -15,9 +15,7 @@ export async function getRaces() {
   return races;
 }
 
-export async function saveRace(raceData :RaceProps) {
-  console.log(raceData);
-  
+export async function saveRace(raceData :RaceProps) {  
 
   try {
     const docRef = await addDoc(collection(db, "races"), raceData);

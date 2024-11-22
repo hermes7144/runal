@@ -12,10 +12,6 @@ export default function Races() {
   const { racesQuery } = useRaces();
   const { data: races, isLoading, isError } = racesQuery;
 
-  // 필터링된 대회 목록
-  console.log(races);
-  
-
   const filteredRaces = races?.filter((race: RaceProps) => {
     return (
       (distance === '' || race.distance === distance) &&  
@@ -29,7 +25,7 @@ export default function Races() {
     <div className="bg-gray-100 min-h-screen flex flex-col">
       {/* Header with Filters */}
       <header className="p-6 bg-white shadow-md">
-        <div className="container mx-auto flex flex-col sm:flex-row gap-20 items-center">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">마라톤 목록</h1>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             {/* 카테고리 선택 */}
@@ -123,20 +119,23 @@ export default function Races() {
   );
 }
 
-function EventCard({ event }:RaceProps) {
+function EventCard({ event}: {event:RaceProps}) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
       <img
-        src={event.image || 'default-event.jpg'}
+        src={event.image || 'default-event.svg'}
         alt={`${event.name} 이미지`}
         className="w-full h-48 object-cover rounded-md mb-4"
       />
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">{event.name}</h2>
-      <p className="text-gray-600 mb-1">📅 일정: {event.date}</p>
-      <p className="text-gray-600 mb-4">📍 장소: {event.location}</p>
-      <div className="flex justify-between items-center">
+      <div className='flex justify-between'>
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">{event.name}</h2>
+        <div className="flex justify-between items-center">
         <button className="px-4 py-2 bg-blue-500 text-white rounded-md">알림 신청</button>
       </div>
+      </div>
+      <p className="text-gray-600 mb-1">{event.date}</p>
+      <p className="text-gray-600 mb-4"> 장소: {event.location}</p>
+
     </div>
   );
 }

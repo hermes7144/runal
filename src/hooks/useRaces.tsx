@@ -6,13 +6,13 @@ export default function useRaces() {
   const queryClient = useQueryClient();
 
   const racesQuery = useQuery({
-    queryKey: ['races'],
+    queryKey: ['marathons'],
     queryFn: () => getRaces()
   });
 
   const mutateRace = useMutation({
     mutationFn: (race: RaceProps) => saveRace(race),
-    onSuccess: () => {queryClient.invalidateQueries({queryKey:['races']})} 
+    onSuccess: () => {queryClient.invalidateQueries({queryKey:['marathons']})} 
   })
 
   return { racesQuery, mutateRace};
