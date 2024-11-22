@@ -121,7 +121,7 @@ export default function Races() {
 
 function EventCard({ event}: {event:RaceProps}) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+    <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer" onClick={() => window.open(event.url)}>
       <img
         src={event.image || 'default-event.svg'}
         alt={`${event.name} 이미지`}

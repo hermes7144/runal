@@ -22,7 +22,7 @@ const handelClick = async () => {
 
 
   return <>
-  <button onClick={handelClick}>버튼</button>
+  {/* <button onClick={handelClick}>버튼</button> */}
   <Races/>
   </>;
 }
