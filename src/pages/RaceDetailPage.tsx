@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import useRaces from '../hooks/useRaces';
+import useRaces from '../hooks/useMarathons';
 
 const RaceDetailPage = () => {
   const { raceId } = useParams(); // URL에서 raceId 파라미터 가져오기

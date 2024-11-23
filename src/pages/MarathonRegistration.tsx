@@ -1,23 +1,38 @@
 import React, { useState } from 'react';
-import useRaces from '../hooks/useRaces';
-import { RaceProps, RaceStatus } from '../types/RaceProps';
+import useMarathons from '../hooks/useMarathons';
+import { MarathonProps, RaceStatus } from '../types/RaceProps';
 import { useNavigate } from 'react-router-dom';
 import { uploadImage } from '../api/uploader';
-import { fetchAllTokens } from '../api/database';
+import { sendNotification } from '../service/notificationService';
+import { predefinedEvents, predefinedRegions } from '../constants/constants';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/ko'; 
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale('ko');
 
 
-const RaceRegistrationForm = () => {
+const MarathonRegistration = () => {
+  const today = dayjs();
+  const nextWeek = today.add(7, 'day');
+  const nextMonth = today.add(1, 'month');
+
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(nextMonth.format('YYYY-MM-DD'));
+  const [region, setRegion] = useState('');
   const [location, setLocation] = useState('');
-  const [distance, setDistance] = useState('');
+  const [event, setEvent] = useState('');
+  const [eventList, setEventList] = useState<string[]>([]);
   const [url, setUrl] = useState('');
   const [file, setFile] = useState();
   const [status, setStatus] = useState<RaceStatus>('upcoming');
   const [registrationPeriod, setRegistrationPeriod] = useState({
-    startDate: "",
-    endDate: "",
+    startDate: today.format('YYYY-MM-DD'),
+    endDate: nextWeek.format('YYYY-MM-DD'),
   });
   const handleChange = (e) => {
     const { name, files } = e.target;
@@ -35,25 +50,50 @@ const RaceRegistrationForm = () => {
     }));
   }
 
-  const {mutateRace} = useRaces();
-  
+  const toggleSelection = (
+    item: string,
+    setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    setSelectedItems((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    );
+  };
+
+  const handleAddEvent = () => {
+    if (!event.trim()) return; // 빈 입력은 무시
+    setEventList((prevList) => [...prevList, event]); // 거리 추가
+    setEvent(''); // 입력 초기화
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddEvent();
+    }
+  };
+
+  const handleRemoveDistance = (index: number) => {
+    setEventList((prevList) => prevList.filter((_, i) => i !== index));
+  };
+
+  const { saveMarathon } = useMarathons();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const raceData : RaceProps = {
-      category:'marathon',
+    const raceData : MarathonProps = {
       name,
       date,
+      region,
       location,
-      distance,
+      event: eventList,
       registrationPeriod,
       url,
       status,
+      tokens:[]
     };
 
   await uploadImage(file).then((image: string) => {
-      mutateRace.mutate({...raceData, image});
-      sendNotification(name, date + location)
+    saveMarathon.mutate({...raceData, image});
+      sendNotification(name, region, eventList)
     }
   )
   
@@ -88,7 +128,21 @@ const RaceRegistrationForm = () => {
             className="border p-2 w-full"
           />
         </div>
-
+        <div>
+          <label htmlFor="location">지역</label>
+          {/* TODO: Region 작업 */}
+          <div className='flex flex-wrap gap-2'>
+          {predefinedRegions.map((predefinedRegion) => (
+            <button
+              type='button'
+              key={predefinedRegion}
+              className={`btn ${predefinedRegion === region ? 'btn-primary btn-sm' : 'btn-outline btn-sm'}`}
+              onClick={() => setRegion(predefinedRegion)}>
+              {predefinedRegion}
+            </button>
+          ))}
+        </div>
+        </div>
         <div>
           <label htmlFor="location">장소</label>
           <input
@@ -101,17 +155,41 @@ const RaceRegistrationForm = () => {
           />
         </div>
 
-        <div>
-          <label htmlFor="category">거리</label>
-          <input
-            type="text"
-            id="distance"
-            value={distance}
-            onChange={(e) => setDistance(e.target.value)}
-            required
-            className="border p-2 w-full"
-          />
-        </div>
+        <div className="flex items-center gap-2">
+        <input
+          type="text"
+          value={event}
+          onChange={(e) => setEvent(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="거리를 입력하세요 (예: 5km)"
+          className="input input-bordered w-full"
+        />
+        <button type='button' onClick={handleAddEvent} className="btn btn-primary">
+          추가
+        </button>
+      </div>
+      <div className='flex flex-wrap gap-2'>
+        {predefinedEvents.map((event) => (
+          <button type='button' key={event} className={`btn ${eventList.includes(event) ? 'btn-primary btn-sm' : 'btn-sm btn-outline'}`} onClick={() => toggleSelection(event, setEventList)}>
+            {event}
+          </button>
+        ))}
+      </div>
+      <ul className="mt-4 list-disc pl-6">
+        {eventList.map((distance, index) => (
+      <div
+        key={index}
+        className="flex items-center bg-gray-100 text-gray-800 rounded-full px-4 py-1 shadow-sm">
+        <span className="mr-2">{distance}</span>
+        <button
+          type="button"
+          onClick={() => handleRemoveDistance(index)}
+          className="text-red-500 hover:text-red-700 focus:outline-none">
+          ✕
+        </button>
+      </div>
+    ))}
+      </ul>
 
         <div>
           <label htmlFor="date">모집기간</label>
@@ -167,21 +245,5 @@ const RaceRegistrationForm = () => {
   );
 };
 
-export default RaceRegistrationForm;
+export default MarathonRegistration;
 
-async function sendNotification(title, body) {
-  const tokens = await fetchAllTokens();
-  
-  // const addr = 'http://localhost:8888/.netlify/functions/sendNotification';
-  const addr = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
-
-  await fetch(addr, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-      tokens: tokens,
-      title,
-      body
-      }),
-  });
-}

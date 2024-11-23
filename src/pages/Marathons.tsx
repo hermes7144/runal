@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import useRaces from '../hooks/useRaces';
+import useMarathons from '../hooks/useMarathons';
 import { Link } from 'react-router-dom';
-import { RaceProps } from '../types/RaceProps';
+import { MarathonProps } from '../types/RaceProps';
+import MarathonCard from '../components/MarathonCard';
 
-export default function Races() {
-  const [distance, setDistance] = useState('');
-  const [location, setLocation] = useState(''); 
+export default function Marathons() {
+  const [category, setCategory] = useState('');
+  const [region, setRegion] = useState(''); 
   const [year, setYear] = useState(new Date().getFullYear()); 
   const [month, setMonth] = useState('');
 
-  const { racesQuery } = useRaces();
-  const { data: races, isLoading, isError } = racesQuery;
-
-  const filteredRaces = races?.filter((race: RaceProps) => {
+  const { marathonsQuery } = useMarathons();
+  const { data: marathons, isLoading, isError } = marathonsQuery;
+  
+  const filteredmarathons = marathons?.filter((marathon: MarathonProps) => {
     return (
-      (distance === '' || race.distance === distance) &&  
-      new Date(race.date).getFullYear() === year &&
-      (month === '' || new Date(race.date).getMonth() + 1 === Number(month)) && 
-      (location === '' || race.location.includes(location))
+      (category === '' || marathon.category === category) &&  
+      new Date(marathon.date).getFullYear() === year &&
+      (month === '' || new Date(marathon.date).getMonth() + 1 === Number(month)) && 
+      (region === '' || marathon.region.includes(region))
     );
   });
 
@@ -33,8 +34,8 @@ export default function Races() {
               <label className="text-gray-700 mb-2">거리</label>
               <select
                 className="px-4 py-2 bg-gray-200 rounded-md"
-                value={distance}
-                onChange={(e) => setDistance(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
               >
                 <option value=''>전체</option>
                 <option value="Full">Full</option>
@@ -80,13 +81,13 @@ export default function Races() {
               </select>
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-700 mb-2">장소</label>
+              <label className="text-gray-700 mb-2">지역</label>
               <input
                 type="text"
-                placeholder="장소"
+                placeholder="지역"
                 className="px-4 py-2 bg-gray-200 rounded-md"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
               />
             </div>
           </div>
@@ -94,22 +95,14 @@ export default function Races() {
       </header>
 
       {/* Race Events */}
-      <main className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredRaces?.map((event) => (
-          <EventCard key={event.id} event={event} />
+      <main className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {filteredmarathons?.map((marathon) => (
+          <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
       </main>
-
-      {/* Load More Button */}
-      <div className="text-center py-6">
-        <button className="px-6 py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300">
-          더보기
-        </button>
-      </div>
-
       {/* Add Event Link */}
-      <div className="fixed bottom-4 right-4">
-        <Link to='/races/regist'>
+      <div className="fixed bottom-20 right-4">
+        <Link to='/marathons/regist'>
           <button className="px-6 py-3 bg-green-500 text-white rounded-full shadow-md hover:bg-green-600 transition duration-300">
             추가하기
           </button>
@@ -119,23 +112,3 @@ export default function Races() {
   );
 }
 
-function EventCard({ event}: {event:RaceProps}) {
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer" onClick={() => window.open(event.url)}>
-      <img
-        src={event.image || 'default-event.svg'}
-        alt={`${event.name} 이미지`}
-        className="w-full h-48 object-cover rounded-md mb-4"
-      />
-      <div className='flex justify-between'>
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">{event.name}</h2>
-        <div className="flex justify-between items-center">
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-md">알림 신청</button>
-      </div>
-      </div>
-      <p className="text-gray-600 mb-1">{event.date}</p>
-      <p className="text-gray-600 mb-4"> 장소: {event.location}</p>
-
-    </div>
-  );
-}

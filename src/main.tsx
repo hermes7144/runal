@@ -4,8 +4,9 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Index from './pages/Index';
-import Races from './pages/Races';
-import RaceRegistrationForm from './pages/RaceRegistrationForm';
+import Marathons from './pages/Marathons';
+import MarathonRegistration from './pages/MarathonRegistration';
+import Notification from './pages/Notification';
 
 const router = createBrowserRouter([
   {
@@ -13,8 +14,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, path: '/', element: <Index /> },
-      { path: '/races', element: <Races /> },
-      { path: '/races/regist', element: <RaceRegistrationForm /> },
+      { path: '/marathons', element: <Marathons /> },
+      { path: '/marathons/regist', element: <MarathonRegistration /> },
+      { path: '/notification', element: <Notification /> },
     ],
   },
 ]);

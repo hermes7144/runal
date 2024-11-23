@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import app, { messaging } from './firebaseConfig';
 import useAuthStore from '../store/authStore';
-import { getToken, onMessage } from 'firebase/messaging';
+import { getToken } from 'firebase/messaging';
 import { saveUserToken } from './database';
 
 const auth = getAuth(app);

@@ -1,40 +1,20 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from './firebaseConfig';
-import { RaceProps } from '../types/RaceProps';
+import { MarathonProps } from '../types/RaceProps';
 import useAuthStore from '../store/authStore';
 
-// 대회 목록 가져오기 함수
-export async function getRaces() {
-  const querySnapshot = await getDocs(collection(db, "races"));  
+const userId = useAuthStore.getState().user?.uid;  // Zustand에서 사용자 ID 가져오기
 
-  const races = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }));  
-  return races;
-}
-
-export async function saveRace(raceData :RaceProps) {  
-
-  try {
-    const docRef = await addDoc(collection(db, "races"), raceData);
-    console.log("대회 정보가 저장되었습니다. 문서 ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-}
-
+// 토큰
 
 // FCM 토큰을 Firestore에 저장하는 함수
-export const saveUserToken  = async (token) => {
-  const userId = useAuthStore.getState().user?.uid;  // Zustand에서 사용자 ID 가져오기
+export const saveUserToken  = async (token: string) => {
   if (userId && token) {
     try {
       await setDoc(doc(db, 'users', userId), {
         id:userId,
         token,
-        notificationEnabled: true,
         createdAt: new Date().toISOString(),
       }, { merge: true });
       console.log('FCM 토큰이 Firestore에 저장되었습니다.');
@@ -43,7 +23,6 @@ export const saveUserToken  = async (token) => {
     }
   }
 };
-
 
 export const fetchAllTokens = async () => {
   try {
@@ -61,3 +40,102 @@ export const fetchAllTokens = async () => {
   }
 };
 
+export const getUserFCMToken = async (uid) => {
+  const userRef = doc(db, 'users', uid);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    return userData.token;  // FCM 토큰 반환
+  } else {
+    throw new Error('User not found');
+  }
+};
+
+export const fetchUsers = async () => {
+  try {
+    const tokensRef = collection(db, "users");
+    const snapshot = await getDocs(tokensRef);
+    const users = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));  
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching all tokens:", error);
+    throw error;
+  }
+};
+
+// 대회 목록 가져오기 함수
+export async function getMarathons() {
+  const querySnapshot = await getDocs(collection(db, "marathons"));  
+
+  const marathons = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));  
+  return marathons;
+}
+
+// 마라톤 정보 키값을 저장하기?
+export async function setMarathon(marathonsData :MarathonProps) {  
+
+  try {
+    const docRef = await addDoc(collection(db, "marathons"), marathonsData);
+    console.log("마라톤 정보가 저장되었습니다. 문서 ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+export const getNotification = async (userId) => {
+  try {
+    const userDocRef = doc(db, "users", userId); // userId에 해당하는 문서 참조
+    const docSnapshot = await getDoc(userDocRef); // 문서 가져오기
+
+    if (docSnapshot.exists()) {
+      const userData = docSnapshot.data();
+      const notification = userData?.notification; // notification 필드 가져오기
+
+      return notification;
+    } else {
+      console.log("문서가 존재하지 않습니다.");
+    }
+  } catch (error) {
+    console.error("알림 가져오기 실패:", error);
+  }
+};
+
+
+export const setNotification = async (userId, notification) => {
+  if (userId) {
+    try {
+      await setDoc(doc(db, 'users', userId), 
+      { notification }, {merge: true})
+    } catch (error) {
+      console.error('notification save error', error)
+    }
+  }
+}
+
+export const subscribeNotification = async (marathonId, userToken) => {
+  console.log(marathonId, userToken);
+  
+  const marathonRef = doc(db, 'marathons', marathonId);
+
+  await updateDoc(marathonRef, {
+    tokens: arrayUnion(userToken)
+  });
+}
+
+export const unsubscribeNotification = async (marathonId, userToken) => {
+  console.log(marathonId, userToken);
+
+  const marathonRef = doc(db, 'marathons', marathonId);
+
+  await updateDoc(marathonRef, {
+    tokens: arrayRemove(userToken)
+  });
+}

@@ -1,6 +1,7 @@
-import { login, logout } from '../api/auth';
+import { login } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import useAuthStore from '../../store/authStore';
+import Dropdown from './Dropdown';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -12,15 +13,13 @@ export default function Navbar() {
       <div onClick={() => navigate('/')} className='flex items-center gap-1 text-brand'>
         <h1 className='tracking-tighter text-3xl font-semibold cursor-pointer'>알림메이트</h1>
       </div>
-      <div onClick={() => navigate('/races')}>레이스</div>
+      <div onClick={() => navigate('/marathons')}>레이스</div>
       <nav className='flex items-center gap-4'>
         {isLoading ? (
           <div>로딩중...</div> // 로딩 중일 때는 '로딩중...' 메시지를 출력
         ) : user ? (
-          <>
-            <span>{user.displayName}</span>
-            <button onClick={logout}>로그아웃</button>
-          </>
+          <Dropdown />        
+          
         ) : (
           <button onClick={login}>로그인</button> // 인증되지 않은 상태일 경우 로그인 버튼을 출력
         )}
