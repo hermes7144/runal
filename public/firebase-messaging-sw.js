@@ -7,8 +7,8 @@ const config ={
   authDomain: 'alrammate.firebaseapp.com',
   projectId:'alrammate',
   messagingSenderId:'alrammate.firebasestorage.app',
-  vapidKey: 'BCEqZPDQqPmm91G-bFFrsrCnnhH4rC-B4AxBkYVoJYb4Z90HYqZzzHJz82lQRMnaMBy84-LiAOGpuZkro3b-rQw',
-  appId: '1:393905672119:web:c96a80dd317149fb0fe232'
+  // vapidKey: 'BCEqZPDQqPmm91G-bFFrsrCnnhH4rC-B4AxBkYVoJYb4Z90HYqZzzHJz82lQRMnaMBy84-LiAOGpuZkro3b-rQw',
+  // appId: '1:393905672119:web:c96a80dd317149fb0fe232'
 };
 
 firebase.initializeApp(config);

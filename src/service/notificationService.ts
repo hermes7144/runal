@@ -28,11 +28,7 @@ export async function sendNotification(title, region, events) {
         const hasRegion = user.notification.regions.includes(region);
         const hasEvents = events.some(event => user.notification.events.includes(event));
         return hasRegion && hasEvents;
-    }).map(user => user.token);
-
-    
-    console.log(filteredUsersTokens);
-    
+    }).map(user => user.token);    
 
     // const url = 'http://localhost:8888/.netlify/functions/sendNotification';
     const url = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
