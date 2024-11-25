@@ -19,27 +19,31 @@ export function registerServiceWorker() {
 }
 
 export async function sendNotification(title, region, events) {
-    console.log(title, region, events);
-    
-
     const users = await fetchUsers();
 
     const filteredUsersTokens = users.filter(user => {
         const hasRegion = user.notification.regions.includes(region);
         const hasEvents = events.some(event => user.notification.events.includes(event));
         return hasRegion && hasEvents;
-    }).map(user => user.token);    
+    }).map(user => user.token);
 
-    // const url = 'http://localhost:8888/.netlify/functions/sendNotification';
-    const url = 'https://fcm-server.netlify.app/.netlify/functions/sendNotification';
+    if (filteredUsersTokens.length === 0) return;
 
-    await fetch(url, {
+    // const url = 'http://127.0.0.1:5001/alrammate/us-central1/sendPushNotifications';
+    const url = 'https://sendpushnotifications-qcioolgc3q-uc.a.run.app';
+
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         tokens: filteredUsersTokens,
         title,
-        body: region + '' + events
+        body: region + ' ' + events
         }),
-    });
+    }).then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error('Error:', error));
+
+
+    
   }

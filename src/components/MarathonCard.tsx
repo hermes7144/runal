@@ -6,11 +6,9 @@ import UseToken from '../hooks/useToken';
 
 export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
   const user = useAuthStore.getState().user ?? null;
-  const {tokenQuery : {data: token } } = UseToken();
+  const { tokenQuery : {data: token } } = UseToken();
   const [isNotified , setIsNotified] = useState(false);
 
-  console.log(token);
-  
 
   useEffect(() => {
     if (token) {

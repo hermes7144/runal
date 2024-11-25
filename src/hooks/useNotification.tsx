@@ -3,32 +3,26 @@ import { getNotification, setNotification } from '../api/database';
 import useAuthStore from '../store/authStore';
 
 export default function UseNotification() {
-  const userId = useAuthStore.getState().user?.uid ?? '';
-  if (!userId) {
+  const authUser = useAuthStore.getState() ?? {};
+    
+  if (!authUser) {
     throw new Error('User is not authenticated');
   }
+  const uid = authUser.user?.uid;
 
   const queryClient = useQueryClient();
 
   const notificationQuery = useQuery({
     queryKey: ['notification'],
-    queryFn: () => getNotification(userId),
+    queryFn: () => getNotification(uid),
   });
 
   const saveNotification = useMutation({
-    mutationFn: (notification) => setNotification(userId, notification),
+    mutationFn: (notification) => setNotification(uid, notification),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification'] });
     },
   });
-
-  const cancelNotification = () => {
-
-  }
-
-  const subscribeNotification = () => {
-    
-  }
   
   return { notificationQuery, saveNotification };
 }

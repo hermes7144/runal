@@ -4,10 +4,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUserFCMToken } from '../api/database';
 
  export default function UseToken() {
-  const uid = useAuthStore.getState().user?.uid ?? '';
-  if (!uid) {
+  const authUser = useAuthStore.getState() ?? {};
+    
+  if (!authUser) {
     throw new Error('User is not authenticated');
   }
+  const uid = authUser.user?.uid;
+
   const queryClient = useQueryClient();
 
   const tokenQuery = useQuery({
