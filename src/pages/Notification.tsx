@@ -45,12 +45,10 @@ function Notification() {
       {/* 장소 설정 */}
 
       <div className='my-6'>
-
             <label className='cursor-pointer flex justify-between'>
               <h3 className='font-semibold mb-2'>알림 기능 사용</h3>
               <input type='checkbox' className='toggle toggle-primary' defaultChecked />
-            </label>
-            
+            </label>            
         <h3 className='font-semibold mb-2'>지역</h3>
         <div className='flex flex-wrap gap-2'>
           {predefinedRegions.map((region) => (
