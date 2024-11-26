@@ -14,35 +14,39 @@ self.addEventListener("activate", function (e) {
   console.log("fcm service worker가 실행되었습니다.");
 });
 
-self.addEventListener('notificationclick', function(event) {
-  const notification = event.notification;
-  const url = 'https://runnings.netlify.app/';  // 기본 URL 지정
 
-  event.notification.close();  // 알림을 닫습니다.
+self.addEventListener('push', function(event) {
+  const message = event.data.json();  // FCM 메시지
+  const title = message.notification.title;
+  const body = message.notification.body;
+  const clickAction = message.data.click_action || 'https://runnings.netlify.app/';  // 기본 URL 설정
+
+  const options = {
+    body: body,
+    icon: '/icons/favicon-32x32.png',  // 기본 아이콘
+    data: {
+      click_action: clickAction,  // 클릭 시 이동할 링크
+    }
+  };
 
   event.waitUntil(
-    clients.openWindow(url)  // 클릭 시 해당 URL로 이동
+    self.registration.showNotification(title, options)
   );
 });
 
-const messaging = firebase.messaging();
+self.addEventListener('notificationclick', function(event) {
+  const clickAction = 'https://runnings.netlify.app';
+  event.notification.close();  // 알림을 닫습니다.
 
-self.addEventListener('push', function (e) {
-  const bc = new BroadcastChannel('fcm_channel');
-  console.log('push: ', e.data.json());
-  if (!e.data.json()) return;
-
-  const resultData = e.data.json();
-  const notificationTitle = resultData.notification.title;
-  const notificationOptions = {
-    body: resultData.notification.body,
-    icon: '/icons/favicon-32x32.png', // 사용자 정의 아이콘
-    data: resultData.data,
-    ...resultData,
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  event.waitUntil(
+    clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
+  );
 });
+
+
+
+// const messaging = firebase.messaging();
+
 
 // 데이터 받을때만??
 // messaging.onBackgroundMessage((payload) => {  

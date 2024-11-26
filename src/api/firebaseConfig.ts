@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
-import { getMessaging } from 'firebase/messaging';
+import { getMessaging, onMessage } from 'firebase/messaging';
 import 'firebase/messaging';
 
 const firebaseConfig = {
@@ -22,3 +22,11 @@ const messaging = getMessaging(app);
 
 export { messaging, db };
 export default app;
+
+
+
+
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload);
+  // ...
+});
