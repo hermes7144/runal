@@ -12,15 +12,3 @@ export default function Index() {
   </>;
 }
 
-const messaging = getMessaging();
-
-onMessage(messaging, (payload) => {
-  console.log("포어그라운드 메시지 수신: ", payload);
-
-  const notificationTitle = payload.notification?.title || "알림 제목 없음";
-  const notificationBody = payload.notification?.body || "알림 내용 없음";
-
-  new Notification(notificationTitle, {
-    body: notificationBody,
-  });
-});

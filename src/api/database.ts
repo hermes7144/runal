@@ -84,7 +84,6 @@ export async function setMarathon(marathonsData :MarathonProps) {
 
   try {
     const docRef = await addDoc(collection(db, "marathons"), marathonsData);
-    console.log("마라톤 정보가 저장되었습니다. 문서 ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -121,7 +120,6 @@ export const setNotification = async (userId, notification) => {
 }
 
 export const subscribeNotification = async (marathonId, userToken) => {
-  console.log(marathonId, userToken);
   
   const marathonRef = doc(db, 'marathons', marathonId);
 
@@ -131,7 +129,6 @@ export const subscribeNotification = async (marathonId, userToken) => {
 }
 
 export const unsubscribeNotification = async (marathonId, userToken) => {
-  console.log(marathonId, userToken);
 
   const marathonRef = doc(db, 'marathons', marathonId);
 
