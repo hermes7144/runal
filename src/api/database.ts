@@ -4,21 +4,33 @@ import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
 
 // FCM 토큰을 Firestore에 저장하는 함수
-export const saveUserToken  = async (uid: string, token: string) => {
-
+export const saveUserToken = async (uid: string, token: string) => {
   if (uid && token) {
     try {
-      await setDoc(doc(db, 'users', uid), {
-        id:uid,
-        notify:true,
-        notification: {
-          regions:[],
-          events:[]
-        },
-        token,
-        createdAt: new Date().toISOString(),
-      }, { merge: true });
-      console.log('FCM 토큰이 Firestore에 저장되었습니다.');
+      // Firestore에서 해당 유저 문서 가져오기
+      const userDocRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userDocRef);
+
+      // 문서가 없으면 새로 생성하고, notify 필드는 처음에만 설정
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          id: uid,
+          notify: true, // notify 필드만 처음에만 설정
+          notification: {
+            regions: [],
+            events: [],
+          },
+          token,
+          createdAt: new Date().toISOString(),
+        });
+        console.log('FCM 토큰과 notify가 Firestore에 저장되었습니다.');
+      } else {
+        // 이미 문서가 있으면 notify 필드는 업데이트하지 않음
+        await setDoc(userDocRef, {
+          token, // 새로운 토큰만 업데이트
+        }, { merge: true });
+        console.log('FCM 토큰이 Firestore에 저장되었습니다.');
+      }
     } catch (error) {
       console.error('FCM 토큰 저장 실패:', error);
     }
