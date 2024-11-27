@@ -2,11 +2,6 @@
 import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
-import useAuthStore from '../store/authStore';
-
-const userId = useAuthStore.getState().user?.uid;  // Zustand에서 사용자 ID 가져오기
-
-// 토큰
 
 // FCM 토큰을 Firestore에 저장하는 함수
 export const saveUserToken  = async (uid: string, token: string) => {
@@ -16,7 +11,7 @@ export const saveUserToken  = async (uid: string, token: string) => {
   if (uid && token) {
     try {
       await setDoc(doc(db, 'users', uid), {
-        id:userId,
+        id:uid,
         token,
         createdAt: new Date().toISOString(),
       }, { merge: true });
@@ -92,9 +87,9 @@ export async function setMarathon(marathonsData :MarathonProps) {
   }
 }
 
-export const getNotification = async (userId) => {
+export const getNotification = async (uid) => {
   try {
-    const userDocRef = doc(db, "users", userId); // userId에 해당하는 문서 참조
+    const userDocRef = doc(db, "users", uid); // uid에 해당하는 문서 참조
     const docSnapshot = await getDoc(userDocRef); // 문서 가져오기
 
     if (docSnapshot.exists()) {
@@ -111,10 +106,10 @@ export const getNotification = async (userId) => {
 };
 
 
-export const setNotification = async (userId, notification) => {
-  if (userId) {
+export const setNotification = async (uid, notification) => {
+  if (uid) {
     try {
-      await setDoc(doc(db, 'users', userId), 
+      await setDoc(doc(db, 'users', uid), 
       { notification }, {merge: true})
     } catch (error) {
       console.error('notification save error', error)
