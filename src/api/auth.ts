@@ -31,7 +31,7 @@ export const listenToAuthChanges = () => {
         try {
           const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});
           if (token) {
-            await saveUserToken(token);
+            await saveUserToken(user.uid, token);
           }
         } catch (error) {
           console.error('FCM 토큰 가져오기 실패:', error);
