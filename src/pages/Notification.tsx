@@ -49,7 +49,7 @@ function Notification() {
       <div className='my-6'>
             <label className='cursor-pointer flex justify-between'>
               <h3 className='font-semibold mb-2'>알림 기능 사용</h3>
-              <input type='checkbox' className='toggle toggle-primary' onClick={() => setNotify(prev => !prev)} checked={notify} />
+              <input type='checkbox' className='toggle toggle-primary' onChange={() => setNotify(prev => !prev)} checked={notify} />
             </label>            
         <h3 className='font-semibold mb-2'>지역</h3>
         <div className='flex flex-wrap gap-2'>
