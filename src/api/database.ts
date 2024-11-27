@@ -10,6 +10,11 @@ export const saveUserToken  = async (uid: string, token: string) => {
     try {
       await setDoc(doc(db, 'users', uid), {
         id:uid,
+        notify:true,
+        notification: {
+          regions:[],
+          events:[]
+        },
         token,
         createdAt: new Date().toISOString(),
       }, { merge: true });
