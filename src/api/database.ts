@@ -122,6 +122,9 @@ export const getNotification = async (uid) => {
 
 
 export const setNotification = async (uid, notification) => {
+  console.log('notification',notification);
+  
+
   if (uid) {
     try {
       await setDoc(doc(db, 'users', uid), 

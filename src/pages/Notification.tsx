@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { predefinedRegions, predefinedEvents } from '../constants/constants';
-import UseNotification from '../hooks/useNotification';
+import useNotification from '../hooks/useNotification';
 import { useNavigate } from 'react-router-dom';
 import { useToastStore } from '../store/toastStore';
 
@@ -8,7 +8,8 @@ function Notification() {
   const {
     notificationQuery: { data: notification, isLoading },
     saveNotification,
-  } = UseNotification();
+  } = useNotification();
+  const [notify, setNotify] = useState(notification?.notify ||false);
   const [regions, setRegions] = useState<string[]>(notification?.regions || []);
   const [events, setEvents] = useState<string[]>(notification?.events || []);
   const { setToast } = useToastStore(); // useToastStore에서 setToast 가져오기
@@ -18,6 +19,7 @@ function Notification() {
   // notification 데이터가 변경되면 상태 업데이트
   useEffect(() => {
     if (notification) {
+      setNotify(notification.notify);
       setRegions(notification.regions || []);
       setEvents(notification.events || []);
     }
@@ -28,7 +30,7 @@ function Notification() {
   };
 
   const handleSubmit = () => {
-    saveNotification.mutate({ regions, events });
+    saveNotification.mutate({ notify, regions, events });
 
     setToast('알림 설정이 저장되었습니다!');
     navigate(-1);
@@ -47,7 +49,7 @@ function Notification() {
       <div className='my-6'>
             <label className='cursor-pointer flex justify-between'>
               <h3 className='font-semibold mb-2'>알림 기능 사용</h3>
-              <input type='checkbox' className='toggle toggle-primary' defaultChecked />
+              <input type='checkbox' className='toggle toggle-primary' onClick={() => setNotify(prev => !prev)} checked={notify} />
             </label>            
         <h3 className='font-semibold mb-2'>지역</h3>
         <div className='flex flex-wrap gap-2'>

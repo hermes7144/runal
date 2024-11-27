@@ -2,7 +2,7 @@ import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { getNotification, setNotification } from '../api/database';
 import useAuthStore from '../store/authStore';
 
-export default function UseNotification() {
+export default function useNotification() {
   const authUser = useAuthStore.getState() ?? {};
     
   if (!authUser) {
