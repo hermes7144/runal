@@ -5,9 +5,7 @@ import { MarathonProps } from '../types/RaceProps';
 
 // FCM 토큰을 Firestore에 저장하는 함수
 export const saveUserToken  = async (uid: string, token: string) => {
-  alert('uid' + uid);
-  alert('token' + token);
-  
+
   if (uid && token) {
     try {
       await setDoc(doc(db, 'users', uid), {
