@@ -11,7 +11,7 @@ const MINUTE = 1000 * 60;
 
 function App() {
   useEffect(() => {
-    // registerServiceWorker();
+    registerServiceWorker();
     listenToAuthChanges();
   }, []);
 
