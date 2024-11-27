@@ -93,6 +93,11 @@ const MarathonRegistration = () => {
 
   await uploadImage(file).then((image: string) => {
     saveMarathon.mutate({...raceData, image});
+
+      console.log('region',region);
+      console.log('eventList',eventList);
+      
+
       sendNotification(name, region, eventList)
     }
   )
