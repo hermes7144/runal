@@ -30,7 +30,6 @@ export const listenToAuthChanges = () => {
   
         try {
           const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});
-          alert(token);
           
           if (token) {
             await saveUserToken(user.uid, token);
