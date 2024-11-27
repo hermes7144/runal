@@ -93,17 +93,9 @@ const MarathonRegistration = () => {
 
   await uploadImage(file).then((image: string) => {
     saveMarathon.mutate({...raceData, image});
-
-      console.log('region',region);
-      console.log('eventList',eventList);
-      
-
       sendNotification(name, region, eventList)
-    }
-  )
-  
+    })
   navigate(-1);
-
   };
 
   return (
@@ -135,7 +127,6 @@ const MarathonRegistration = () => {
         </div>
         <div>
           <label htmlFor="location">지역</label>
-          {/* TODO: Region 작업 */}
           <div className='flex flex-wrap gap-2'>
           {predefinedRegions.map((predefinedRegion) => (
             <button
