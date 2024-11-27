@@ -22,8 +22,8 @@ export async function sendNotification(title, region, events) {
     const users = await fetchUsers();
 
     const filteredUsersTokens = users.filter(user => {
-        const hasRegion = user.notification.regions.includes(region);
-        const hasEvents = events.some(event => user.notification.events.includes(event));
+        const hasRegion = user.notification?.regions ? user.notification.regions.includes(region) :true;
+        const hasEvents = events.some(event => user.notification?.events.includes(event));
         return hasRegion && hasEvents;
     }).map(user => user.token);
 
