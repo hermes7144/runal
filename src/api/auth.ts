@@ -25,13 +25,8 @@ export const listenToAuthChanges = () => {
 
     if (user) {
       setUser(user);
-      
-      console.log("window.matchMedia('(display-mode: standalone)').matches", window.matchMedia('(display-mode: standalone)').matches);
-      
-
-      if (window.matchMedia('(display-mode: standalone)').matches) {
-      // if (window.matchMedia(true)) {
-  
+    
+      if (window.matchMedia('(display-mode: standalone)').matches) {  
         try {
           const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});
           
