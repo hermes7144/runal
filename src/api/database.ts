@@ -10,6 +10,8 @@ const userId = useAuthStore.getState().user?.uid;  // Zustand에서 사용자 ID
 
 // FCM 토큰을 Firestore에 저장하는 함수
 export const saveUserToken  = async (uid: string, token: string) => {
+  console.log('saveUserToken'+ uid + token);
+  
   if (uid && token) {
     try {
       await setDoc(doc(db, 'users', uid), {
