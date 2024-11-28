@@ -2,7 +2,7 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import app, { messaging } from './firebaseConfig';
 import useAuthStore from '../store/authStore';
 import { getToken } from 'firebase/messaging';
-import { saveUserToken } from './database';
+import { setUserToken, setInitUser } from './database';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -25,13 +25,14 @@ export const listenToAuthChanges = () => {
 
     if (user) {
       setUser(user);
-    
+      setInitUser(user.uid);
+
       if (window.matchMedia('(display-mode: standalone)').matches) {  
         try {
           const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});
           
           if (token) {
-            await saveUserToken(user.uid, token);
+            await setUserToken(user.uid, token);
           }
         } catch (error) {
           console.error('FCM 토큰 가져오기 실패:', error);
