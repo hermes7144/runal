@@ -52,6 +52,8 @@ const handleFCMToken = async (uid: string) => {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
 
+    alert(token)
+
     if (token) {
       await setUserToken(uid, token);
       console.log('FCM 토큰 저장 완료:', token);

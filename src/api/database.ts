@@ -38,6 +38,10 @@ export const setUserToken = async (uid: string, token: string) => {
       const userDoc = await getDoc(userDocRef);
 
       const existingToken = userDoc.data()?.token;
+      
+      alert('token'+ token);
+      
+
 
       if (existingToken !== token) {
         await setDoc(userDocRef, { token }, { merge: true });
