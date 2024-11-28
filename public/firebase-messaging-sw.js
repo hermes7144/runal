@@ -34,9 +34,7 @@ self.addEventListener('push', function(event) {
     clickAction: clickAction,
     badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
-    requireInteraction: true, // 사용자가 알림을 명시적으로 닫을 때까지 유지
-
-    tag: 'new-notification',  // 알림을 고유한 태그로 식별
+    tag: `tag-${Date.now()}`, // 각 알림에 고유한 태그 생성
   };
 
 
