@@ -24,11 +24,10 @@ const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
 
-  event.preventDefault();
   const message = event.data.json();  // FCM 메시지
-  const title = message.notification.title;
-  const body = message.notification.body;
-  const clickAction = 'https://runnings.netlify.app/';  // 기본 URL 설정
+  const title = message.data.title;
+  const body = message.data.body;
+  const clickAction = message.data.click_action;
 
   const options = {
     body: body,
