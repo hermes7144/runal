@@ -2,7 +2,10 @@
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
-const config ={ messagingSenderId:'alrammate.firebasestorage.app' };
+const config ={
+  messagingSenderId: '393905672119',
+  appId: '1:393905672119:web:c96a80dd317149fb0fe232',
+};
 
 firebase.initializeApp(config);
 
