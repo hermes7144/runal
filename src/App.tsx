@@ -6,6 +6,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { listenToAuthChanges } from './api/auth';
 import { registerServiceWorker, requestNotificationPermission } from './service/notificationService';
 import Toast from './components/common/Toast';
+import { onMessage } from 'firebase/messaging';
+import { messaging } from './api/firebaseConfig';
 
 const MINUTE = 1000 * 60;
 
@@ -24,6 +26,22 @@ function App() {
       },
     }
   })
+
+  onMessage(messaging, (payload) => {
+
+    const { title, body, icon } = payload.notification;
+  
+    alert('Message received. ' +  title +  body + icon);
+  
+    // 브라우저 알림 API를 사용하여 알림을 표시
+    if (Notification.permission === 'granted') {
+      new Notification(title, {
+        body: body,
+        icon: icon,
+      });
+    }
+  });
+  
 
   return (
     <QueryClientProvider client={queryClient}>
