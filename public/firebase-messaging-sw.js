@@ -31,9 +31,7 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body,
-    data: {
-      click_action: clickAction,
-    },
+
     badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
     tag: 'new-notification',  // 알림을 고유한 태그로 식별
