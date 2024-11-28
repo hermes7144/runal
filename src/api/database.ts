@@ -1,9 +1,11 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, FieldValue, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
 
 export const setInitUser = async (uid: string) => {
+  
+
   const userDocRef = doc(db, 'users', uid);
 
   try {
@@ -17,7 +19,7 @@ export const setInitUser = async (uid: string) => {
           regions: [],
           events: [],
         },
-        createdAt: FieldValue.serverTimestamp(),
+        createdAt: serverTimestamp(),
       });
     }
   } catch (error) {

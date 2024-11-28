@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
-import { getMessaging, onMessage } from 'firebase/messaging';
+import { getMessaging } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -8,8 +8,6 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGE_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-
 };
 
 // Initialize Firebase
