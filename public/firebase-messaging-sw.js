@@ -24,13 +24,13 @@ const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
 
-  const message = event.data.json();  // FCM 메시지
-  const title = message.data.title;
-  const body = message.data.body;
-  const clickAction = message.data.click_action;
+  // const message = event.data.json();  // FCM 메시지
+  // const title = message.data.title;
+  // const body = message.data.body;
+  const clickAction = 'https://runnings.netlify.app';
 
   const options = {
-    body: body,
+    body: 'body',
     data: {
       click_action: clickAction,
     },
@@ -41,7 +41,7 @@ self.addEventListener('push', function(event) {
 
 
   event.waitUntil(
-    self.registration.showNotification(title, options)
+    self.registration.showNotification('title', options)
   );
 });
 
