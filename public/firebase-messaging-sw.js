@@ -22,7 +22,28 @@ self.addEventListener("activate", function (e) {
 // 알림수신??
 const messaging = firebase.messaging();
 
+// self.addEventListener('push', function(event) {
 
+//   // const message = event.data.json();  // FCM 메시지
+//   // const title = message.data.title;
+//   // const body = message.data.body;
+//   const clickAction = 'https://runnings.netlify.app';
+
+//   const options = {
+//     body: 'body',
+//     data: {
+//       click_action: clickAction,
+//     },
+//     badge: '/icons/favicon-32x32.png', 
+//     vibrate: [200, 100, 200],  // 진동 패턴
+//     tag: 'new-notification',  // 알림을 고유한 태그로 식별
+//   };
+
+
+//   event.waitUntil(
+//     self.registration.showNotification('title', options)
+//   );
+// });
 
 self.addEventListener('notificationclick', function(event) {
   const clickAction = 'https://runnings.netlify.app';
@@ -32,13 +53,3 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
   );
 });
-
-// 데이터 받을때만??
-messaging.onBackgroundMessage((payload) => {  
-  const notificationTitle = payload.notification.title
-  const notificationOptions = {
-    body: '바디다'
-  };
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
