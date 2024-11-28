@@ -53,12 +53,12 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-// // 데이터 받을때만??
-// messaging.onBackgroundMessage((payload) => {  
-//   const notificationTitle = payload.notification.title
-//   const notificationOptions = {
-//     body: '바디다'
-//   };
-//   self.registration.showNotification(notificationTitle, notificationOptions);
-// });
+// 데이터 받을때만??
+messaging.onBackgroundMessage((payload) => {  
+  const notificationTitle = payload.notification.title
+  const notificationOptions = {
+    body: '바디다'
+  };
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
