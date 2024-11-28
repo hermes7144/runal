@@ -5,6 +5,8 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-com
 const config ={
   messagingSenderId: '393905672119',
   appId: '1:393905672119:web:c96a80dd317149fb0fe232',
+  projectId: "alrammate",
+
 };
 
 firebase.initializeApp(config);
