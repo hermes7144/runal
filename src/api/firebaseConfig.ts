@@ -22,9 +22,10 @@ export { messaging, db };
 export default app;
 
 onMessage(messaging, (payload) => {
-  alert('Message received. ' +  payload);
 
   const { title, body, icon } = payload.notification;
+
+  alert('Message received. ' +  title +  body + icon);
 
   // 브라우저 알림 API를 사용하여 알림을 표시
   if (Notification.permission === 'granted') {
