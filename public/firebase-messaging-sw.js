@@ -19,7 +19,7 @@ self.addEventListener("activate", function (e) {
   console.log("fcm service worker가 실행되었습니다.");
 });
 
-// const messaging = firebase.messaging();
+
 
 self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
@@ -60,3 +60,6 @@ self.addEventListener('notificationclick', function(event) {
 //   };
 //   self.registration.showNotification(notificationTitle, notificationOptions);
 // });
+
+// 알림수신??
+const messaging = firebase.messaging();
