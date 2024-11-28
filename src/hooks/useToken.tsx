@@ -18,5 +18,6 @@ import { getUserFCMToken } from '../api/database';
     queryFn: () => getUserFCMToken(uid),
   });
 
+
   return { tokenQuery };
 }

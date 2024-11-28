@@ -130,7 +130,6 @@ export const getNotification = async (uid: string) => {
 };
 
 export const setNotification = async (uid, notification) => {
-  console.log('notification', notification);
 
   if (uid) {
     try {
@@ -141,18 +140,38 @@ export const setNotification = async (uid, notification) => {
   }
 };
 
-export const subscribeNotification = async (marathonId, userToken) => {
-  const marathonRef = doc(db, 'marathons', marathonId);
 
-  await updateDoc(marathonRef, {
-    tokens: arrayUnion(userToken),
+export const getSubcribeMarathons = async (user) => {
+  const userDocRef = doc(db, 'users', user.uid);
+  const docSnapshot = await getDoc(userDocRef); // 문서 가져오기
+
+  try {
+    if (docSnapshot.exists()) {
+      const userData = docSnapshot.data();
+      const marathons = userData.marathons || []; 
+
+      return { ...user, marathons};
+    } else {
+      console.log('문서가 존재하지 않습니다.');
+    }
+  } catch (error) {
+    console.error('유저정보 가져오기 실패:', error);
+  }
+
+}
+
+export const subscribeNotification = async (uid, marthonId) => {
+  const userDocRef = doc(db, 'users', uid);
+
+  await updateDoc(userDocRef, {
+    marathons: arrayUnion(marthonId),
   });
 };
 
-export const unsubscribeNotification = async (marathonId, userToken) => {
-  const marathonRef = doc(db, 'marathons', marathonId);
+export const unsubscribeNotification = async (uid, marthonId) => {
+  const userDocRef = doc(db, 'users', uid);
 
-  await updateDoc(marathonRef, {
-    tokens: arrayRemove(userToken),
+  await updateDoc(userDocRef, {
+    marathons: arrayRemove(marthonId),
   });
 };

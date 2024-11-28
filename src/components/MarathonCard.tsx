@@ -2,31 +2,30 @@ import { MarathonProps } from '../types/RaceProps';
 import useAuthStore from '../store/authStore';
 import { useEffect, useState } from 'react';
 import { subscribeNotification, unsubscribeNotification } from '../api/database';
-import UseToken from '../hooks/useToken';
+import { LuBellPlus, LuBellRing } from "react-icons/lu";
 
 export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
-  const user = useAuthStore.getState().user ?? null;
-  const { tokenQuery : {data: token } } = UseToken();
+  const { user } = useAuthStore.getState();
   const [isNotified , setIsNotified] = useState(false);
 
 
   useEffect(() => {
-    if (token) {
-      setIsNotified(marathon.tokens.includes(token));
+    if (user) {
+      setIsNotified(user.marathons.includes(marathon.id));
     }
-  }, [marathon, token])
+  }, [marathon, user])
 
   const handleNotificationToggle = async (e) => {
     e.stopPropagation();
+    if (!user) return;
     
-
     if (isNotified) {
-      await unsubscribeNotification(marathon.id, token);
+      await unsubscribeNotification(user.uid, marathon.id);
     } else {
-      await subscribeNotification(marathon.id, token);
+      await subscribeNotification(user.uid, marathon.id);
     }
-
-    setIsNotified(!isNotified);  // 구독 상태 토글
+    
+    setIsNotified(!isNotified);
   };
 
   return (
@@ -40,13 +39,14 @@ export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
         <h2 className="text-xl font-semibold text-gray-800 mb-2">{marathon.name}</h2>
         <div className="flex justify-between items-center">
         <button type='button' onClick={handleNotificationToggle}>
-          {user && isNotified ? '구독':'구독아님'}
+          {user && isNotified ?  <LuBellRing size={20} /> :<LuBellPlus size={20} />}
         </button>
       </div>
       </div>
-      <p className="text-gray-600 mb-1">{marathon.date}</p>
-      <p className="text-gray-600 mb-4"> 장소: {marathon.location}</p>
+      <p className="text-gray-600 mb-1">📆 {marathon.date}</p>
+      <p className="text-gray-600 mb-4">📍 {marathon.location}</p>
 
     </div>
   );
 }
+

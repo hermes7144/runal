@@ -88,7 +88,6 @@ const MarathonRegistration = () => {
       registrationPeriod,
       url,
       status,
-      tokens:[]
     };
 
   await uploadImage(file).then((image: string) => {

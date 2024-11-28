@@ -2,7 +2,7 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import app, { messaging } from './firebaseConfig';
 import useAuthStore from '../store/authStore';
 import { getToken } from 'firebase/messaging';
-import { setUserToken, setInitUser } from './database';
+import { setUserToken, setInitUser, getSubcribeMarathons } from './database';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -17,13 +17,14 @@ export function logout() {
 
 // 인증 상태 변화 리스너
 export const listenToAuthChanges = () => {
-  onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth, async (rawUser) => {
     const { setUser, setLoading } = useAuthStore.getState();
     setLoading(true);
 
     try {
-      if (user) {
-        // 유저 정보 설정
+      if (rawUser) {
+        const user = await getSubcribeMarathons(rawUser);
+                
         setUser(user);
         await setInitUser(user.uid);
 
