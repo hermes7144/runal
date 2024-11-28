@@ -4,8 +4,6 @@ import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
 
 export const setInitUser = async (uid: string) => {
-  
-
   const userDocRef = doc(db, 'users', uid);
 
   try {
