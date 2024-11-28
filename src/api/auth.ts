@@ -28,6 +28,7 @@ export const listenToAuthChanges = () => {
         setUser(user);
         await setInitUser(user.uid);
 
+        await handleFCMToken('pwa 검증');
         // PWA 모드일 경우 FCM 토큰 요청 및 저장
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
           await handleFCMToken(user.uid);
@@ -52,7 +53,7 @@ const handleFCMToken = async (uid: string) => {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
 
-    alert(token)
+    alert(token);
 
     if (token) {
       await setUserToken(uid, token);
