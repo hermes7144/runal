@@ -27,18 +27,6 @@ function App() {
     }
   });
 
-  useEffect(() => {
-    onMessage(messaging, (payload) => {
-      console.log('Foreground message received:', payload);
-  
-      // 포그라운드에서만 알림을 직접 표시
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: payload.notification.icon,
-      });
-    });
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <Navbar />
