@@ -31,10 +31,12 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body,
-    clickAction: clickAction,
+    data: {
+      click_action: clickAction,
+    },
     badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
-    tag: `tag-${Date.now()}`, // 각 알림에 고유한 태그 생성
+    timestamp: Date.now(),
   };
 
 
