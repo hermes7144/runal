@@ -27,21 +27,16 @@ function App() {
     }
   })
 
-  onMessage(messaging, (payload) => {
-
-    const { title, body, icon } = payload.notification;
-  
-    alert('Message received. ' +  title +  body + icon);
-  
-    // 브라우저 알림 API를 사용하여 알림을 표시
-    if (Notification.permission === 'granted') {
-      new Notification(title, {
-        body: body,
-        icon: icon,
+  useEffect(() => {
+    onMessage(messaging, (payload) => {
+      console.log('Foreground Message received:', payload);
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.icon,
       });
-    }
-  });
+    });
   
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
