@@ -102,7 +102,7 @@ export default function Marathons() {
       </main>
       {/* Add Event Link */}
       <div className="fixed bottom-20 right-4">
-        <Link to='/marathons/regist'>
+        <Link to='/marathons/new'>
           <button className="px-6 py-3 bg-green-500 text-white rounded-full shadow-md hover:bg-green-600 transition duration-300">
             추가하기
           </button>

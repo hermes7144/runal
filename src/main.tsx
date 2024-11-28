@@ -7,16 +7,19 @@ import Index from './pages/Index';
 import Marathons from './pages/Marathons';
 import MarathonRegistration from './pages/MarathonRegistration';
 import Notification from './pages/Notification';
+import NotFound from './pages/NotFound';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Index /> },
       { path: '/marathons', element: <Marathons /> },
-      { path: '/marathons/regist', element: <MarathonRegistration /> },
-      { path: '/notification', element: <Notification /> },
+      { path: '/marathons/new', element: <ProtectedRoute><MarathonRegistration /></ProtectedRoute> },
+      { path: '/notification', element: <ProtectedRoute><Notification /></ProtectedRoute> },
     ],
   },
 ]);
