@@ -6,8 +6,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { listenToAuthChanges } from './api/auth';
 import { registerServiceWorker, requestNotificationPermission } from './service/notificationService';
 import Toast from './components/common/Toast';
-import { onMessage } from 'firebase/messaging';
-import { messaging } from './api/firebaseConfig';
 
 const MINUTE = 1000 * 60;
 
@@ -26,17 +24,6 @@ function App() {
       },
     }
   })
-
-  useEffect(() => {
-    onMessage(messaging, (payload) => {
-      console.log('Foreground Message received:', payload);
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: payload.notification.icon,
-      });
-    });
-  
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

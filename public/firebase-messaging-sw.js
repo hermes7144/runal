@@ -7,7 +7,6 @@ const config ={
   messagingSenderId: '393905672119',
   appId: '1:393905672119:web:c96a80dd317149fb0fe232',
   projectId: "alrammate",
-
 };
 
 firebase.initializeApp(config);
@@ -20,6 +19,7 @@ self.addEventListener("activate", function (e) {
   console.log("fcm service worker가 실행되었습니다.");
 });
 
+const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
@@ -29,11 +29,15 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body: body,
-    icon: '/icons/favicon-32x32.png',  // 기본 아이콘
+    icon: '/icons/favicon-32x32.png',
     data: {
-      click_action: clickAction,  // 클릭 시 이동할 링크
-    }
+      click_action: clickAction,
+    },
+    badge: '/icons/favicon-32x32.png', 
+    vibrate: [200, 100, 200],  // 진동 패턴
+    tag: 'new-notification',  // 알림을 고유한 태그로 식별
   };
+
 
   event.waitUntil(
     self.registration.showNotification(title, options)
@@ -49,7 +53,6 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-const messaging = firebase.messaging();
 
 
 // 데이터 받을때만??
