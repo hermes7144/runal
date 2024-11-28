@@ -38,9 +38,9 @@ self.addEventListener('push', function(event) {
   };
 
 
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
+  // event.waitUntil(
+  //   self.registration.showNotification(title, options)
+  // );
 });
 
 self.addEventListener('notificationclick', function(event) {
@@ -51,8 +51,6 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
   );
 });
-
-
 
 // 데이터 받을때만??
 // messaging.onBackgroundMessage((payload) => {  
