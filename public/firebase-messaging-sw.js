@@ -31,14 +31,24 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body,
+    // notificationclick 있으면?
     data: {
       click_action: clickAction,
     },
+    // 배지, 아이콘?
     badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
     timestamp: Date.now(),
   };
 
+  self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'dynamic-island',
+        title: message.data.title,
+        body: message.data.body,
+      });
+    });
 
   event.waitUntil(
     self.registration.showNotification(title, options)
