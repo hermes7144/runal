@@ -41,15 +41,6 @@ self.addEventListener('push', function(event) {
     timestamp: Date.now(),
   };
 
-  self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'dynamic-island',
-        title: message.data.title,
-        body: message.data.body,
-      });
-    });
-
   event.waitUntil(
     self.registration.showNotification(title, options)
   );
@@ -64,12 +55,28 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-// // 데이터 받을때만??
-// messaging.onBackgroundMessage((payload) => {  
-//   const notificationTitle = payload.notification.title
-//   const notificationOptions = {
-//     body: '바디다'
-//   };
-//   self.registration.showNotification(notificationTitle, notificationOptions);
-// });
 
+// 서비스 워커 메시지 수신
+navigator.serviceWorker.addEventListener('message', function(event) {
+  const data = event.data;
+  if (data.type === 'dynamic-island') {
+    showDynamicIsland(data.title, data.body);
+  }
+});
+
+// 다이나믹 아일랜드 스타일 UI 표시 함수
+function showDynamicIsland(title, body) {
+  const island = document.createElement('div');
+  island.className = 'dynamic-island';
+  island.innerHTML = `
+    <strong>${title}</strong>
+    <p>${body}</p>
+  `;
+  document.body.appendChild(island);
+
+  // 일정 시간 후 제거
+  setTimeout(() => {
+    island.classList.add('fade-out');
+    island.addEventListener('animationend', () => island.remove());
+  }, 5000);
+}
