@@ -3,6 +3,7 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
 const config ={
+  apiKey: "AIzaSyDRGQg2nWHBQjo6PTV9u51wp-J1hfD7y04",
   messagingSenderId: '393905672119',
   appId: '1:393905672119:web:c96a80dd317149fb0fe232',
   projectId: "alrammate",
@@ -20,33 +21,33 @@ self.addEventListener("activate", function (e) {
 });
 
 
-// self.addEventListener('push', function(event) {
-//   const message = event.data.json();  // FCM 메시지
-//   const title = message.notification.title;
-//   const body = message.notification.body;
-//   const clickAction = 'https://runnings.netlify.app/';  // 기본 URL 설정
+self.addEventListener('push', function(event) {
+  const message = event.data.json();  // FCM 메시지
+  const title = message.notification.title;
+  const body = message.notification.body;
+  const clickAction = 'https://runnings.netlify.app/';  // 기본 URL 설정
 
-//   const options = {
-//     body: body,
-//     icon: '/icons/favicon-32x32.png',  // 기본 아이콘
-//     data: {
-//       click_action: clickAction,  // 클릭 시 이동할 링크
-//     }
-//   };
+  const options = {
+    body: body,
+    icon: '/icons/favicon-32x32.png',  // 기본 아이콘
+    data: {
+      click_action: clickAction,  // 클릭 시 이동할 링크
+    }
+  };
 
-//   event.waitUntil(
-//     self.registration.showNotification(title, options)
-//   );
-// });
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
+});
 
-// self.addEventListener('notificationclick', function(event) {
-//   const clickAction = 'https://runnings.netlify.app';
-//   event.notification.close();  // 알림을 닫습니다.
+self.addEventListener('notificationclick', function(event) {
+  const clickAction = 'https://runnings.netlify.app';
+  event.notification.close();  // 알림을 닫습니다.
 
-//   event.waitUntil(
-//     clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
-//   );
-// });
+  event.waitUntil(
+    clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
+  );
+});
 
 const messaging = firebase.messaging();
 
