@@ -46,9 +46,7 @@ self.addEventListener("activate", function (e) {
 //   );
 // });
 
-
-
-// const messaging = firebase.messaging();
+const messaging = firebase.messaging();
 
 
 // 데이터 받을때만??
