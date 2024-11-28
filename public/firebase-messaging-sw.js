@@ -20,6 +20,7 @@ self.addEventListener("activate", function (e) {
 });
 
 
+const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
@@ -53,13 +54,12 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 // 데이터 받을때만??
-// messaging.onBackgroundMessage((payload) => {  
-//   const notificationTitle = payload.notification.title
-//   const notificationOptions = {
-//     body: '바디다'
-//   };
-//   self.registration.showNotification(notificationTitle, notificationOptions);
-// });
+messaging.onBackgroundMessage((payload) => {  
+  const notificationTitle = payload.notification.title
+  const notificationOptions = {
+    body: '바디다'
+  };
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
 // 알림수신??
-const messaging = firebase.messaging();
