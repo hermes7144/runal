@@ -28,7 +28,6 @@ export const listenToAuthChanges = () => {
         setUser(user);
         await setInitUser(user.uid);
 
-        alert('pwa 검증');
         // PWA 모드일 경우 FCM 토큰 요청 및 저장
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
           await handleFCMToken(user.uid);
@@ -48,14 +47,11 @@ export const listenToAuthChanges = () => {
 
 // FCM 토큰을 가져오고 Firestore에 저장하는 별도 함수
 const handleFCMToken = async (uid: string) => {
-  alert('handleFCMToken'+ uid);
 
   try {
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
-
-    alert(token);
 
     if (token) {
       await setUserToken(uid, token);

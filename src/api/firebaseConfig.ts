@@ -22,8 +22,8 @@ export { messaging, db };
 export default app;
 
 onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // 푸시 알림을 클라이언트에 표시하는 코드 작성
+  alert('Message received. ' +  payload);
+
   const { title, body, icon } = payload.notification;
 
   // 브라우저 알림 API를 사용하여 알림을 표시
