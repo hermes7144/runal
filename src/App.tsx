@@ -12,7 +12,7 @@ const MINUTE = 1000 * 60;
 function App() {
   useEffect(() => {
     // requestNotificationPermission();
-    // registerServiceWorker();
+    registerServiceWorker();
     listenToAuthChanges();
   }, []);
 
