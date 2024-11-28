@@ -29,7 +29,6 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body: body,
-    icon: '/icons/favicon-32x32.png',
     data: {
       click_action: clickAction,
     },
