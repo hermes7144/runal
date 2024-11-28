@@ -18,30 +18,46 @@ export function logout() {
 // 인증 상태 변화 리스너
 export const listenToAuthChanges = () => {
   onAuthStateChanged(auth, async (user) => {
-    const setUser = useAuthStore.getState().setUser;
-    const setLoading = useAuthStore.getState().setLoading;
-    
+    const { setUser, setLoading } = useAuthStore.getState();
     setLoading(true);
 
-    if (user) {
-      setUser(user);
-      setInitUser(user.uid);
+    try {
+      if (user) {
+        // 유저 정보 설정
+        setUser(user);
+        await setInitUser(user.uid);
 
-      if (window.matchMedia('(display-mode: standalone)').matches) {  
-        try {
-          const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY});
-          
-          if (token) {
-            await setUserToken(user.uid, token);
-          }
-        } catch (error) {
-          console.error('FCM 토큰 가져오기 실패:', error);
-        } 
+        // PWA 모드일 경우 FCM 토큰 요청 및 저장
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          await handleFCMToken(user.uid);
+        }
+      } else {
+        // 유저가 로그아웃되었거나 인증되지 않음
+        setUser(null);
       }
-     } else {
-      setUser(null);
+    } catch (error) {
+      console.error('인증 상태 처리 중 오류:', error);
+    } finally {
+      // 로딩 상태 해제
+      setLoading(false);
     }
-
-    setLoading(false);
   });
+};
+
+// FCM 토큰을 가져오고 Firestore에 저장하는 별도 함수
+const handleFCMToken = async (uid: string) => {
+  try {
+    const token = await getToken(messaging, {
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+    });
+
+    if (token) {
+      await setUserToken(uid, token);
+      console.log('FCM 토큰 저장 완료:', token);
+    } else {
+      console.warn('FCM 토큰을 가져오지 못했습니다.');
+    }
+  } catch (error) {
+    console.error('FCM 토큰 처리 중 오류:', error);
+  }
 };

@@ -1,43 +1,52 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, FieldValue, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
 
 export const setInitUser = async (uid: string) => {
   const userDocRef = doc(db, 'users', uid);
-  const userDoc = await getDoc(userDocRef);
 
-  if (!userDoc.exists()) {
-    await setDoc(userDocRef, {
-      id: uid,
-      notify: true,
-      notification: {
-        regions: [],
-        events: [],
-      },
-      createdAt: new Date().toISOString(),
-    });
+  try {
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, {
+        id: uid,
+        notify: true,
+        notification: {
+          regions: [],
+          events: [],
+        },
+        createdAt: FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (error) {
+    console.error('초기 유저 설정 실패:', error);
   }
 };
 
 // FCM 토큰을 Firestore에 저장하는 함수
 export const setUserToken = async (uid: string, token: string) => {
-  if (uid && token) {
+
+  if (!uid || !token) {
+    console.warn('유효하지 않은 UID 또는 토큰입니다.');
+    return;
+  }
+
     try {
       const userDocRef = doc(db, 'users', uid);
+      const userDoc = await getDoc(userDocRef);
 
-      await setDoc(
-        userDocRef,
-        {
-          token, // 새로운 토큰만 업데이트
-        },
-        { merge: true }
-      );
+      const existingToken = userDoc.data()?.token;
+
+      if (existingToken !== token) {
+        await setDoc(userDocRef, { token }, { merge: true });
+      }
+      
       console.log('FCM 토큰이 Firestore에 저장되었습니다.');
     } catch (error) {
       console.error('FCM 토큰 저장 실패:', error);
     }
-  }
 };
 
 export const fetchAllTokens = async () => {
