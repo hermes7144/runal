@@ -20,7 +20,7 @@ self.addEventListener("activate", function (e) {
 });
 
 
-// const messaging = firebase.messaging();
+const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
