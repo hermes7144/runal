@@ -175,15 +175,3 @@ export const unsubscribeNotification = async (uid, marthonId) => {
     marathons: arrayRemove(marthonId),
   });
 };
-
-
-
-export const getSubscribers = async (marathonId) => {
-  const usersRef = collection(db, 'users');
-  const q = query(usersRef, where('marathons', 'array-contains', marathonId));
-
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs
-    .map((doc) => doc.data().token) // `token` 필드 추출
-    .filter(Boolean); // 유효한 토큰만 반환
-};

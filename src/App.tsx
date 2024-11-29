@@ -6,7 +6,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { listenToAuthChanges } from './api/auth';
 import { registerServiceWorker, requestNotificationPermission } from './service/notificationService';
 import Toast from './components/common/Toast';
-import { getSubscribers } from './api/database';
 
 const MINUTE = 1000 * 60;
 
