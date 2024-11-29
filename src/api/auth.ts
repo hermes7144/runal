@@ -17,6 +17,19 @@ export function logout() {
 
 // 인증 상태 변화 리스너
 export const listenToAuthChanges = () => {
+  getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      // 로그인 성공
+      const user = result.user;
+      console.log("로그인 성공한 사용자:", user);
+    }
+  })
+  .catch((error) => {
+    console.error("로그인 오류:", error);
+  });
+
+
   onAuthStateChanged(auth, async (rawUser) => {
     const { setUser, setLoading } = useAuthStore.getState();
     setLoading(true);
@@ -64,14 +77,3 @@ const handleFCMToken = async (uid: string) => {
   }
 };
 
-getRedirectResult(auth)
-  .then((result) => {
-    if (result) {
-      // 로그인 성공
-      const user = result.user;
-      console.log("로그인 성공한 사용자:", user);
-    }
-  })
-  .catch((error) => {
-    console.error("로그인 오류:", error);
-  });
