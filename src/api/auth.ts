@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth';
+import { getAuth, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth';
 import app, { messaging } from './firebaseConfig';
 import useAuthStore from '../store/authStore';
 import { getToken } from 'firebase/messaging';
@@ -63,3 +63,15 @@ const handleFCMToken = async (uid: string) => {
     console.error('FCM 토큰 처리 중 오류:', error);
   }
 };
+
+getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      // 로그인 성공
+      const user = result.user;
+      console.log("로그인 성공한 사용자:", user);
+    }
+  })
+  .catch((error) => {
+    console.error("로그인 오류:", error);
+  });
