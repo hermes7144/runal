@@ -1,5 +1,5 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import { MarathonProps } from '../types/RaceProps';
 
@@ -174,4 +174,16 @@ export const unsubscribeNotification = async (uid, marthonId) => {
   await updateDoc(userDocRef, {
     marathons: arrayRemove(marthonId),
   });
+};
+
+
+
+export const getSubscribers = async (marathonId) => {
+  const usersRef = collection(db, 'users');
+  const q = query(usersRef, where('marathons', 'array-contains', marathonId));
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs
+    .map((doc) => doc.data().token) // `token` 필드 추출
+    .filter(Boolean); // 유효한 토큰만 반환
 };
