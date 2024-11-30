@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import { getAuth } from "firebase/auth"; 
+import { getAuth } from "firebase/auth";
 import { getApp } from "firebase/app";
 import * as firebaseui from "firebaseui";
-import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate(); // React Router의 history 객체
+
   useEffect(() => {
-    // Firebase 앱과 인증 객체 초기화
-    const app = getApp();
-    const auth = getAuth(app);
+    const auth = getAuth(getApp()); // Firebase 인증 객체 초기화
 
     // FirebaseUI 초기화
     const ui =
@@ -18,20 +19,20 @@ const Login = () => {
     // FirebaseUI 설정
     ui.start("#firebaseui-auth-container", {
       signInOptions: [
-        GoogleAuthProvider.PROVIDER_ID,
-        GithubAuthProvider.PROVIDER_ID
+        GoogleAuthProvider.PROVIDER_ID, // Google 로그인
       ],
       signInFlow: "popup", // 팝업 방식 로그인
-      signInSuccessUrl: "/", // 로그인 성공 후 리디렉션할 URL
       callbacks: {
         signInSuccessWithAuthResult: (authResult) => {
           console.log("User signed in:", authResult.user);
-          return false; // 자동 리디렉션 방지
+        
+          navigate("/"); 
+
+          return false;
         },
       },
     });
-
-  }, []);
+  }, [navigate]);
 
   return <div id="firebaseui-auth-container"></div>;
 };
