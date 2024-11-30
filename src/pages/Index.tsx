@@ -7,6 +7,6 @@ export default function Index() {
   if (isLoading) return 'isLoading';
 
   return <>
-  <Races/>
+  {/* <Races/> */}
   </>;
 }

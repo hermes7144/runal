@@ -4,15 +4,15 @@ import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { listenToAuthChanges } from './api/auth';
-import { registerServiceWorker, requestNotificationPermission } from './service/notificationService';
+// import { registerServiceWorker, requestNotificationPermission } from './service/notificationService';
 import Toast from './components/common/Toast';
 
 const MINUTE = 1000 * 60;
 
 function App() {
   useEffect(() => {
-    requestNotificationPermission();
-    registerServiceWorker();
+    // requestNotificationPermission();
+    // registerServiceWorker();
     listenToAuthChanges();
   }, []);
 

@@ -21,7 +21,9 @@ export default function Navbar() {
           <Dropdown />        
           
         ) : (
-          <button onClick={login}>로그인</button> // 인증되지 않은 상태일 경우 로그인 버튼을 출력
+          <div onClick={() => navigate('/login')}>로그인</div>
+
+          
         )}
       </nav>
     </header>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import useMarathons from '../hooks/useMarathons';
+// import useMarathons from '../hooks/useMarathons';
 import { MarathonProps, RaceStatus } from '../types/RaceProps';
 import { useNavigate } from 'react-router-dom';
 import { uploadImage } from '../api/uploader';
-import { sendNotification } from '../service/notificationService';
+// import { sendNotification } from '../service/notificationService';
 import { predefinedEvents, predefinedRegions } from '../constants/constants';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
