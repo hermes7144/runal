@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-// import useMarathons from '../hooks/useMarathons';
+import useMarathons from '../hooks/useMarathons';
 import { Link } from 'react-router-dom';
 import { MarathonProps } from '../types/RaceProps';
-// import MarathonCard from '../components/MarathonCard';
+import MarathonCard from '../components/MarathonCard';
 
 export default function Marathons() {
   const [category, setCategory] = useState('');
@@ -96,9 +96,9 @@ export default function Marathons() {
 
       {/* Race Events */}
       <main className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* {filteredmarathons?.map((marathon) => (
+        {filteredmarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
-        ))} */}
+        ))}
       </main>
       {/* Add Event Link */}
       <div className="fixed bottom-20 right-4">
