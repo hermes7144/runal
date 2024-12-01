@@ -3,8 +3,13 @@ import { fetchUsers } from '../api/database';
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
+      const serviceWorkerFile =
+        import.meta.env.MODE === 'development'
+          ? '/firebase-messaging-sw-dev.js'  // 개발용
+          : '/firebase-messaging-sw.js';     // 배포용
+
       navigator.serviceWorker
-        .register('/firebase-messaging-sw.js')
+        .register(serviceWorkerFile)
         .then(function (registration) {
           console.log('Service Worker가 scope에 등록되었습니다.:', registration.scope);
         })
@@ -30,8 +35,7 @@ export async function sendNotification(title, region, events) {
 
   if (filteredUsersTokens.length === 0) return;
 
-  // const url = 'http://127.0.0.1:5001/alrammate/us-central1/sendPushNotifications';
-  const url = 'https://us-central1-dev-runnoti.cloudfunctions.net/sendPushNotifications';
+  const url = import.meta.env.VITE_NOTIFICATION_API_URL; // 개발 환경
 
   fetch(url, {
     method: 'POST',
