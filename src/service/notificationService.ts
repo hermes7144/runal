@@ -31,7 +31,7 @@ export async function sendNotification(title, region, events) {
   if (filteredUsersTokens.length === 0) return;
 
   // const url = 'http://127.0.0.1:5001/alrammate/us-central1/sendPushNotifications';
-  const url = 'https://sendpushnotifications-qcioolgc3q-uc.a.run.app';
+  const url = 'https://us-central1-dev-runnoti.cloudfunctions.net/sendPushNotifications';
 
   fetch(url, {
     method: 'POST',

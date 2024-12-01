@@ -5,7 +5,6 @@ import { MarathonProps } from '../types/RaceProps';
 
 export const setInitUser = async (uid: string) => {
   const userDocRef = doc(db, 'users', uid);
-  console.log('userDoc',userDocRef);
 
   try {
     const userDoc = await getDoc(userDocRef);
@@ -19,6 +18,7 @@ export const setInitUser = async (uid: string) => {
           regions: [],
           events: [],
         },
+        marathons:[],
         createdAt: serverTimestamp(),
       });
     }

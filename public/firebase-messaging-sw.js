@@ -3,10 +3,10 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
 const config ={
-  apiKey: "AIzaSyDRGQg2nWHBQjo6PTV9u51wp-J1hfD7y04",
-  messagingSenderId: '393905672119',
-  appId: '1:393905672119:web:c96a80dd317149fb0fe232',
-  projectId: "alrammate",
+  apiKey: "AIzaSyCOG6suLuAhuOD5nCkzyypQcnHrj6l-_VA",
+  projectId: "dev-runnoti",
+  messagingSenderId: "434371989792",
+  appId: "1:434371989792:web:4b974c1e522e5108308745"
 };
 
 firebase.initializeApp(config);
