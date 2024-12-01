@@ -14,7 +14,7 @@ const handelClick = async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         tokens: tokens,
-        title: '푸시 알림 제목',
+        title: '푸시 알림 제목  ',
         body: '푸시 알림 본문 내용',
         }),
     });
