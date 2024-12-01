@@ -6,11 +6,13 @@ import { LuBellPlus, LuBellRing } from "react-icons/lu";
 
 export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
   const { user } = useAuthStore.getState();
-  const [isNotified , setIsNotified] = useState(false);
-
+  const [isNotified , setIsNotified] = useState(false);  
 
   useEffect(() => {
     if (user) {
+      console.log('user', user);
+      
+
       setIsNotified(user.marathons.includes(marathon.id));
     }
   }, [marathon, user])

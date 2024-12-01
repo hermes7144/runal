@@ -19,14 +19,15 @@ export function logout() {
 export const listenToAuthChanges = () => {
   onAuthStateChanged(auth, async (rawUser) => {
     const { setUser, setLoading } = useAuthStore.getState();
+
     setLoading(true);
 
     try {
       if (rawUser) {
+        await setInitUser(rawUser.uid);
         const user = await getSubcribeMarathons(rawUser);
                 
         setUser(user);
-        await setInitUser(user.uid);
 
         // PWA 모드일 경우 FCM 토큰 요청 및 저장
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
