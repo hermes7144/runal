@@ -35,7 +35,7 @@ export async function sendNotification(title, region, events) {
 
   if (filteredUsersTokens.length === 0) return;
 
-  const url = import.meta.env.VITE_NOTIFICATION_API_URL; // 개발 환경
+  const url = import.meta.env.VITE_FIREBASE_NOTIFICATION_API_URL; // 개발 환경
 
   fetch(url, {
     method: 'POST',
