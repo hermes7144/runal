@@ -27,7 +27,8 @@ self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
   const title = message.data.title;
   const body = message.data.body;
-  const clickAction = 'https://runnoti.netlify.app';
+  // const clickAction = 'https://runnoti.netlify.app';
+  const clickAction = 'https://naver.com';
 
   const options = {
     body,
@@ -49,7 +50,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const clickAction = 'https://runnoti.netlify.app';
+  const clickAction = 'https://naver.com';
   event.notification.close();  // 알림을 닫습니다.
 
   event.waitUntil(
