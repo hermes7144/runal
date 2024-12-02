@@ -3,10 +3,10 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
 const config ={
-  apiKey: "AIzaSyCOG6suLuAhuOD5nCkzyypQcnHrj6l-_VA",
-  projectId: "dev-runnoti",
-  messagingSenderId: "434371989792",
-  appId: "1:434371989792:web:4b974c1e522e5108308745"
+  apiKey: "temp",
+  projectId: "temp",
+  messagingSenderId: "temp",
+  appId: "temp"
 };
 
 firebase.initializeApp(config);
@@ -27,7 +27,8 @@ self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
   const title = message.data.title;
   const body = message.data.body;
-  const clickAction = 'https://runnings.netlify.app';
+  const icon = message.data.icon;
+  const clickAction = 'https://https://dev-runnoti.netlify.app/';
 
   const options = {
     body,
@@ -36,8 +37,8 @@ self.addEventListener('push', function(event) {
       click_action: clickAction,
     },
     // 배지, 아이콘?
-    // badge: '/icons/favicon-32x32.png', 
-    icon: '/icons/favicon-32x32.png', 
+    icon: icon, 
+    badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
     timestamp: Date.now(),
   };
@@ -49,7 +50,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const clickAction = 'https://runnings.netlify.app';
+  const clickAction = 'https://https://dev-runnoti.netlify.app/';
   event.notification.close();  // 알림을 닫습니다.
 
   event.waitUntil(
@@ -65,8 +66,6 @@ self.addEventListener('notificationclick', function(event) {
 //   };
 //   self.registration.showNotification(notificationTitle, notificationOptions);
 // });
-
-
 
 
 // pwa 서비스워커 캐시가 존재한다!!!
