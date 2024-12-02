@@ -9,6 +9,7 @@ export function registerServiceWorker() {
           : '/firebase-messaging-sw.js';     // 배포용
 
       console.log(import.meta.env.VITE_MODE);
+      console.log(serviceWorkerFile);
       
 
       navigator.serviceWorker
