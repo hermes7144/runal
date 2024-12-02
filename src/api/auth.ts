@@ -30,7 +30,8 @@ export const listenToAuthChanges = () => {
         setUser(user);
 
         // PWA 모드일 경우 FCM 토큰 요청 및 저장
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        // if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+          if (window.navigator.userAgent.includes('SamsungBrowser') && window.navigator.userAgent.includes('Mobile')) {
           await handleFCMToken(user.uid);
         }
       } else {
