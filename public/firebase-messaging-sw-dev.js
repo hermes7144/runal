@@ -16,7 +16,8 @@ self.addEventListener("install", function (e) {
 });
 
 self.addEventListener("activate", function (e) {
-  console.log("fcm service worker가 실행되었습니다.");
+  console.log("서비스 워커가 활성화되었습니다.");
+  self.clients.claim(); // 모든 클라이언트(페이지)에서 새 서비스 워커를 제어하도록 함
 });
 
 // 알림수신??
