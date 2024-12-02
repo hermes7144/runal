@@ -29,7 +29,7 @@ self.addEventListener('push', function(event) {
   const title = message.data.title;
   const body = message.data.body;
   const icon = message.data.icon;
-  const clickAction = 'https://https://dev-runnoti.netlify.app/';
+  const clickAction = 'https://dev-runnoti.netlify.app/';
 
   const options = {
     body,
@@ -51,7 +51,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const clickAction = 'https://https://dev-runnoti.netlify.app/';
+  const clickAction = 'https://dev-runnoti.netlify.app/';
   event.notification.close();  // 알림을 닫습니다.
 
   event.waitUntil(
