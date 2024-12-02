@@ -3,10 +3,10 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js
 importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
 const config ={
-  apiKey: "AIzaSyCOG6suLuAhuOD5nCkzyypQcnHrj6l-_VA",
-  projectId: "dev-runnoti",
-  messagingSenderId: "434371989792",
-  appId: "1:434371989792:web:4b974c1e522e5108308745"
+  apiKey: "temp",
+  projectId: "temp",
+  messagingSenderId: "temp",
+  appId: "temp"
 };
 
 firebase.initializeApp(config);

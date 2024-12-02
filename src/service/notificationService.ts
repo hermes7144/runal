@@ -25,7 +25,7 @@ export async function sendNotification(title, region, events) {
 
   const filteredUsersTokens = users
     .filter((user) => {
-      if (!user.notify) return false;
+      if (!user.notification.notify) return false;
 
       const hasRegion = user.notification.regions.length === 0 || user.notification.regions.includes(region);
       const hasEvents = user.notification.events.length === 0 || events.some((event) => user.notification.events.includes(event));
@@ -33,6 +33,7 @@ export async function sendNotification(title, region, events) {
     })
     .map((user) => user.token);
 
+    
   if (filteredUsersTokens.length === 0) return;
 
   const url = import.meta.env.VITE_FIREBASE_NOTIFICATION_API_URL; // 개발 환경
