@@ -7,9 +7,7 @@ export function registerServiceWorker() {
         import.meta.env.VITE_MODE === 'development'
           ? '/firebase-messaging-sw-dev.js'  // 개발용
           : '/firebase-messaging-sw.js';     // 배포용
-
-      console.log(import.meta.env.VITE_MODE);
-      console.log(serviceWorkerFile);
+          
       navigator.serviceWorker
         .register(serviceWorkerFile)
         .then(function (registration) {
