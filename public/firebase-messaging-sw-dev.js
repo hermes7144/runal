@@ -27,6 +27,7 @@ self.addEventListener('push', function(event) {
   const message = event.data.json();  // FCM 메시지
   const title = message.data.title;
   const body = message.data.body;
+  const icon = message.data.icon;
   const clickAction = 'https://https://dev-runnoti.netlify.app/';
 
   const options = {
@@ -36,8 +37,8 @@ self.addEventListener('push', function(event) {
       click_action: clickAction,
     },
     // 배지, 아이콘?
-    // badge: '/icons/favicon-32x32.png', 
-    icon: '/icons/favicon-32x32.png', 
+    icon: icon, 
+    badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
     timestamp: Date.now(),
   };
@@ -65,8 +66,6 @@ self.addEventListener('notificationclick', function(event) {
 //   };
 //   self.registration.showNotification(notificationTitle, notificationOptions);
 // });
-
-
 
 
 // pwa 서비스워커 캐시가 존재한다!!!
