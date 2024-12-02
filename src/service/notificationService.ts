@@ -20,7 +20,7 @@ export function registerServiceWorker() {
   }
 }
 
-export async function sendNotification(title, region, events) {
+export async function sendNotification(title, icon, region, events) {
   const users = await fetchUsers();
 
   const filteredUsersTokens = users
@@ -42,9 +42,10 @@ export async function sendNotification(title, region, events) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      tokens: filteredUsersTokens,
       title,
       body: region + ' ' + events,
+      icon: icon,
+      tokens: filteredUsersTokens,
     }),
   })
     .then((response) => response.json())
