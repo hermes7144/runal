@@ -15,6 +15,7 @@ export const setInitUser = async (uid: string) => {
         id: uid,
         notify: true,
         notification: {
+          notify:true,
           regions: [],
           events: [],
         },

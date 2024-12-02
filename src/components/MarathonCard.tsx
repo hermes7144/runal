@@ -10,8 +10,6 @@ export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
 
   useEffect(() => {
     if (user) {
-      console.log('user', user);
-      
 
       setIsNotified(user.marathons.includes(marathon.id));
     }
