@@ -15,6 +15,7 @@ export function registerServiceWorker() {
         })
         .catch(function (err) {
           console.log('Service Worker 등록 실패:', err);
+          
         });
     });
   }
