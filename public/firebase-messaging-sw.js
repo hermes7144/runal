@@ -17,18 +17,20 @@ self.addEventListener("install", function (e) {
 
 self.addEventListener("activate", function (e) {
   console.log("fcm service worker가 실행되었습니다.");
+  self.clients.claim(); // 모든 클라이언트(페이지)에서 새 서비스 워커를 제어하도록 함
 });
 
 // 알림수신??
 const messaging = firebase.messaging();
+
 
 self.addEventListener('push', function(event) {
 
   const message = event.data.json();  // FCM 메시지
   const title = message.data.title;
   const body = message.data.body;
-  // const clickAction = 'https://runnoti.netlify.app';
-  const clickAction = 'https://naver.com';
+  const icon = message.data.icon;
+  const clickAction = 'https://dev-runnoti.netlify.app/';
 
   const options = {
     body,
@@ -37,12 +39,11 @@ self.addEventListener('push', function(event) {
       click_action: clickAction,
     },
     // 배지, 아이콘?
-    // badge: '/icons/favicon-32x32.png', 
-    icon: '/icons/favicon-32x32.png', 
+    icon: icon, 
+    badge: '/icons/favicon-32x32.png', 
     vibrate: [200, 100, 200],  // 진동 패턴
     timestamp: Date.now(),
   };
-
 
   event.waitUntil(
     self.registration.showNotification(title, options)
