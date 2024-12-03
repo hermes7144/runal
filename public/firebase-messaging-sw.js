@@ -23,7 +23,6 @@ self.addEventListener("activate", function (e) {
 // 알림수신??
 const messaging = firebase.messaging();
 
-
 self.addEventListener('push', function(event) {
 
   const message = event.data.json();  // FCM 메시지
@@ -51,7 +50,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const clickAction = 'https://naver.com';
+  const clickAction = 'https://dev-runnoti.netlify.app/';
   event.notification.close();  // 알림을 닫습니다.
 
   event.waitUntil(
