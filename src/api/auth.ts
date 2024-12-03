@@ -26,13 +26,13 @@ export const listenToAuthChanges = () => {
       if (rawUser) {
         await setInitUser(rawUser.uid);
         const user = await getSubcribeMarathons(rawUser);
-                
+
         setUser(user);
 
         // PWA 모드일 경우 FCM 토큰 요청 및 저장
         // if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         // 모바일 기기인 경우
-          if (window.navigator.userAgent.includes('SamsungBrowser') && window.navigator.userAgent.includes('Mobile')) {
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
           await handleFCMToken(user.uid);
         }
       } else {
@@ -50,7 +50,6 @@ export const listenToAuthChanges = () => {
 
 // FCM 토큰을 가져오고 Firestore에 저장하는 별도 함수
 const handleFCMToken = async (uid: string) => {
-
   try {
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
