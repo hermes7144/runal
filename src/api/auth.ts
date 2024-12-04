@@ -29,8 +29,6 @@ export const listenToAuthChanges = () => {
 
         setUser(user);
 
-        // PWA 모드일 경우 FCM 토큰 요청 및 저장
-        // if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         // 모바일 기기인 경우
         if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
           await handleFCMToken(user.uid);
