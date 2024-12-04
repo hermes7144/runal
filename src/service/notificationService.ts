@@ -29,12 +29,8 @@ export async function sendNotification(title, icon, region, events) {
       return hasRegion && hasEvents;
     })
     .map((user) => user.token);
-
     
-  if (filteredUsersTokens.length === 0) return;
-  
-  console.log('filteredUsersTokens', filteredUsersTokens);
-  
+  if (filteredUsersTokens.length === 0) return;  
 
     // const url = 'http://127.0.0.1:5001/dev-runnoti/us-central1/sendPushNotifications';
   const url = import.meta.env.VITE_FIREBASE_NOTIFICATION_API_URL; // 개발 환경
