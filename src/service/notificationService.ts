@@ -3,13 +3,7 @@ import { fetchUsers } from '../api/database';
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // const serviceWorkerFile =
-      //   import.meta.env.VITE_MODE === 'development'
-      //     ? '/firebase-messaging-sw-dev.js'  // 개발용
-      //     : '/firebase-messaging-sw.js';     // 배포용
-
-
-      const serviceWorkerFile = '/firebase-messaging-sw-dev.js';
+      const serviceWorkerFile = '/firebase-messaging-sw.js';
       navigator.serviceWorker
         .register(serviceWorkerFile)
         .then(function (registration) {
