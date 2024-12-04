@@ -29,7 +29,9 @@ self.addEventListener('push', function(event) {
   const body = message.data.body;
   const icon = message.data.icon;
 
-  const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://dev-runnoti.netlify.app/': 'https://runnoti.netlify.app/';
+  const currentOrigin = self.location.origin;
+  const clickAction = currentOrigin === 'https://runnoti.netlify.app'
+    ? 'https://runnoti.netlify.app/' :'https://dev-runnoti.netlify.app/';
 
   const options = {
     body,
@@ -50,10 +52,10 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  // const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://dev-runnoti.netlify.app/': 'https://runnoti.netlify.app/';
-  const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://runnoti.netlify.app/': 'https://runnoti.netlify.app/';
   event.notification.close();  // 알림을 닫습니다.
 
+  const clickAction = event.notification.data.click_action;
+  
   event.waitUntil(
     clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
   );
