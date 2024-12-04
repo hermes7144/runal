@@ -20,7 +20,6 @@ self.addEventListener("activate", function (e) {
   self.clients.claim(); // 모든 클라이언트(페이지)에서 새 서비스 워커를 제어하도록 함
 });
 
-// 알림수신??
 const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
@@ -51,7 +50,8 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://dev-runnoti.netlify.app/': 'https://runnoti.netlify.app/';
+  // const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://dev-runnoti.netlify.app/': 'https://runnoti.netlify.app/';
+  const clickAction = import.meta.env.VITE_MODE === 'development' ?  'https://runnoti.netlify.app/': 'https://runnoti.netlify.app/';
   event.notification.close();  // 알림을 닫습니다.
 
   event.waitUntil(
