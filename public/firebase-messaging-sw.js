@@ -57,7 +57,7 @@ self.addEventListener('notificationclick', function(event) {
   const clickAction = event.notification.data.click_action;
   
   event.waitUntil(
-    clients.openWindow(clickAction)  // 클릭 시 해당 URL로 이동
+    clients.openWindow(clickAction)
   );
 });
 
@@ -69,8 +69,3 @@ self.addEventListener('notificationclick', function(event) {
 //   };
 //   self.registration.showNotification(notificationTitle, notificationOptions);
 // });
-
-
-
-
-// pwa 서비스워커 캐시가 존재한다!!!
