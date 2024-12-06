@@ -31,7 +31,7 @@ export default function Marathons() {
     
     // 필터가 있을 경우, 해당 조건들에 맞는 대회들만 반환
     return (
-      (event === '' || marathon.event.includes(event)) &&
+      (event === '' || marathon.events.includes(event)) &&
       (year === '' || String(marathonYear) === year) &&
       (month === '' || String(marathonMonth) === month) &&
       (region === '' || marathon.region.includes(region))

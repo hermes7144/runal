@@ -89,8 +89,23 @@ const MarathonRegistration = () => {
     e.preventDefault();
 
     const { eventInput, file, ...raceData } = formData;
+
+    const rearrangeEvents = (events) => {
+      const full = events.filter((event) => event === 'Full');
+      const half = events.filter((event) => event === 'Half');
+      
+      const kmEvents = events
+      .filter(event => event.includes('km'))
+      .sort((a, b) => parseInt(b) - parseInt(a)); // 내림차순 정렬
+      
+      const otherEvents = events.filter((event) => !event.includes('km') && event !== 'Full' && event !== 'Half');
+      
+      return [...full, ...half, ...kmEvents, ...otherEvents];
+    };
+    
     const newRace = {
       ...raceData,
+      events: rearrangeEvents(raceData.events),
       review: 'approved', // 임시 승인 상태
     };
 

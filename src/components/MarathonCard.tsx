@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { subscribeNotification, unsubscribeNotification } from '../api/database';
 import { LuBellPlus, LuBellRing } from "react-icons/lu";
 import { useToastStore } from '../store/toastStore';
+import EventList from './EventList';
 
 export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
   const { user } = useAuthStore.getState();
@@ -50,7 +51,7 @@ export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
       </div>
       <p className="text-gray-600 mb-1">📆 {marathon.date}</p>
       <p className="text-gray-600 mb-4">📍 {marathon.location}</p>
-
+      <EventList events={marathon.events}/>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export interface MarathonProps {
   date: string;            // 대회 일정 (예: "2024-11-30")
   region: string;
   location: string;        // 대회 장소 (예: "서울")
-  event: string[];        // 대회 유형 (예: "10km, 5km 등")
+  events: string[];        // 대회 유형 (예: "10km, 5km 등")
   status: RaceStatus; // 대회 모집 상태
   registrationPeriod: RegistrationPeriod; // 접수 기간
   url:string;

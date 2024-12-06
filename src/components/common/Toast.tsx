@@ -17,7 +17,7 @@ const Toast = () => {
   if (!showToast) return null;
 
   return (
-    <div className={`toast toast-center lg:toast-end transition-opacity duration-500 ease-out ${showToast ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+    <div className={`toast toast-center transition-opacity duration-500 ease-out ${showToast ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
       <div className='bg-white text-gray-800 p-4 rounded-full lg:rounded-lg shadow-2xl max-w-sm w-full text-center relative'>
         <p>{message}</p>
         <button className='hidden lg:block absolute top-0 right-2 text-gray-800 hover:text-gray-500' onClick={hideToast}>
