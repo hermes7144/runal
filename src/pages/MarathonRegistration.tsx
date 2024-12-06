@@ -1,230 +1,270 @@
 import React, { useState } from 'react';
-import useMarathons from '../hooks/useMarathons';
-import { MarathonProps, RaceStatus } from '../types/RaceProps';
 import { useNavigate } from 'react-router-dom';
-import { uploadImage } from '../api/uploader';
-import { sendNotification } from '../service/notificationService';
-import { predefinedEvents, predefinedRegions } from '../constants/constants';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import 'dayjs/locale/ko'; 
+import 'dayjs/locale/ko';
+import useMarathons from '../hooks/useMarathons';
+import { uploadImage } from '../api/uploader';
+import { sendNotification } from '../service/notificationService';
+import { predefinedEvents, predefinedRegions } from '../constants/constants';
+import { useToastStore } from '../store/toastStore';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale('ko');
 
-
 const MarathonRegistration = () => {
   const today = dayjs();
   const nextWeek = today.add(7, 'day');
-  const nextMonth = today.add(1, 'month');
-
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [date, setDate] = useState(nextMonth.format('YYYY-MM-DD'));
-  const [region, setRegion] = useState('');
-  const [location, setLocation] = useState('');
-  const [event, setEvent] = useState('');
-  const [eventList, setEventList] = useState<string[]>([]);
-  const [url, setUrl] = useState('');
-  const [file, setFile] = useState();
-  const [status, setStatus] = useState<RaceStatus>('upcoming');
-  const [registrationPeriod, setRegistrationPeriod] = useState({
-    startDate: today.format('YYYY-MM-DD'),
-    endDate: nextWeek.format('YYYY-MM-DD'),
+  const { saveMarathon } = useMarathons();
+  const { setToast } = useToastStore();
+
+  // Form 상태 관리
+  const [formData, setFormData] = useState({
+    name: '',
+    date: today.format('YYYY-MM-DD'),
+    region: '',
+    location: '',
+    events: [] as string[],
+    eventInput: '',
+    registrationPeriod: {
+      startDate: today.format('YYYY-MM-DD'),
+      endDate: nextWeek.format('YYYY-MM-DD'),
+    },
+    url: '',
+    status: 'upcoming',
+    file: null as File | null,
   });
-  const handleChange = (e) => {
-    const { name, files } = e.target;
-    if (name === 'file') {
-      setFile(files && files[0]);
+
+  // 폼 데이터 업데이트 핸들러
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value, files } = e.target;
+    if (id === 'file') {
+      setFormData((prev) => ({ ...prev, file: files?.[0] || null }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [id]: value,
+      }));
+    }
+  };
+
+  // 이벤트 추가 핸들러
+  const handleAddEvent = () => {
+    const eventInput = formData.eventInput.trim();
+    if (!eventInput) return; // 빈 입력 방지
+    if (formData.events.includes(eventInput)) {
+      setToast('이미 추가된 이벤트입니다.');
       return;
     }
-  };
-
-  const handleRegistrationPeriod = (e) => {
-    const { id, value } = e.target;
-    setRegistrationPeriod((prev) => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value, // id를 키로 사용하여 startDate 또는 endDate를 업데이트
+      events: [...prev.events, eventInput],
+      eventInput: '', // 입력 필드 초기화
     }));
-  }
-
-  const toggleSelection = (
-    item: string,
-    setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>
-  ) => {
-    setSelectedItems((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
   };
 
-  const handleAddEvent = () => {
-    if (!event.trim()) return; // 빈 입력은 무시
-    setEventList((prevList) => [...prevList, event]); // 거리 추가
-    setEvent(''); // 입력 초기화
+  // 이벤트 삭제 핸들러
+  const handleRemoveEvent = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      events: prev.events.filter((_, i) => i !== index),
+    }));
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleAddEvent();
-    }
+  // 미리 정의된 이벤트 선택/해제
+  const togglePredefinedEvent = (event: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      events: prev.events.includes(event)
+        ? prev.events.filter((e) => e !== event)
+        : [...prev.events, event],
+    }));
   };
 
-  const handleRemoveDistance = (index: number) => {
-    setEventList((prevList) => prevList.filter((_, i) => i !== index));
-  };
-
-  const { saveMarathon } = useMarathons();
-
-  const handleSubmit = async (e) => {
+  // 폼 제출 핸들러
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const raceData : MarathonProps = {
-      name,
-      date,
-      region,
-      location,
-      event: eventList,
-      registrationPeriod,
-      url,
-      status,
+
+    const { eventInput, file, ...raceData } = formData;
+    const newRace = {
+      ...raceData,
+      review: 'approved', // 임시 승인 상태
     };
 
-  await uploadImage(file).then((image: string) => {
-    saveMarathon.mutate({...raceData, image});
-      sendNotification(name, image, region, eventList)
-    })
-  navigate(-1);
+    try {
+      const image = file ? await uploadImage(file) : '';
+      saveMarathon.mutate({ ...newRace, image });
+      sendNotification(newRace.name, image, newRace.region, newRace.events);
+      setToast(`${newRace.name} 대회 등록이 완료되었습니다!`);
+      navigate(-1);
+    } catch (error) {
+      setToast('대회 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
     <div className="p-4">
-      <h2 className='text-center text-xl font-bold mb-10'>대회 등록</h2>  
+      <h2 className="text-center text-xl font-bold mb-10">대회 등록</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name">이름</label>
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.name}
+            onChange={handleChange}
             required
             className="border p-2 w-full"
           />
         </div>
-
         <div>
           <label htmlFor="date">일정</label>
           <input
             type="date"
             id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            value={formData.date}
+            onChange={handleChange}
             required
             className="border p-2 w-full"
           />
         </div>
         <div>
-          <label htmlFor="location">지역</label>
-          <div className='flex flex-wrap gap-2'>
-          {predefinedRegions.map((predefinedRegion) => (
-            <button
-              type='button'
-              key={predefinedRegion}
-              className={`btn ${predefinedRegion === region ? 'btn-primary btn-sm' : 'btn-outline btn-sm'}`}
-              onClick={() => setRegion(predefinedRegion)}>
-              {predefinedRegion}
-            </button>
-          ))}
-        </div>
+          <label htmlFor="region">지역</label>
+          <div className="flex flex-wrap gap-2">
+            {predefinedRegions.map((region) => (
+              <button
+                key={region}
+                type="button"
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, region }))
+                }
+                className={`btn ${
+                  formData.region === region ? 'btn-primary btn-sm' : 'btn-outline btn-sm'
+                }`}
+              >
+                {region}
+              </button>
+            ))}
+          </div>
         </div>
         <div>
           <label htmlFor="location">장소</label>
           <input
             type="text"
             id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            className="border p-2 w-full"
-          />
-        </div>
-
-        <div className="flex items-center gap-2">
-        <input
-          type="text"
-          value={event}
-          onChange={(e) => setEvent(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="거리를 입력하세요 (예: 5km)"
-          className="input input-bordered w-full"
-        />
-        <button type='button' onClick={handleAddEvent} className="btn btn-primary">
-          추가
-        </button>
-      </div>
-      <div className='flex flex-wrap gap-2'>
-        {predefinedEvents.map((event) => (
-          <button type='button' key={event} className={`btn ${eventList.includes(event) ? 'btn-primary btn-sm' : 'btn-sm btn-outline'}`} onClick={() => toggleSelection(event, setEventList)}>
-            {event}
-          </button>
-        ))}
-      </div>
-      <ul className="mt-4 list-disc pl-6">
-        {eventList.map((distance, index) => (
-      <div
-        key={index}
-        className="flex items-center bg-gray-100 text-gray-800 rounded-full px-4 py-1 shadow-sm">
-        <span className="mr-2">{distance}</span>
-        <button
-          type="button"
-          onClick={() => handleRemoveDistance(index)}
-          className="text-red-500 hover:text-red-700 focus:outline-none">
-          ✕
-        </button>
-      </div>
-    ))}
-      </ul>
-
-        <div>
-          <label htmlFor="date">모집기간</label>
-          <input
-            type="date"
-            id="startDate"
-            value={registrationPeriod.startDate}
-            onChange={handleRegistrationPeriod}
-            required
-            className="border p-2 w-full"
-          />~
-          <input
-            type="date"
-            id="endDate"
-            value={registrationPeriod.endDate}
-            onChange={handleRegistrationPeriod}
+            value={formData.location}
+            onChange={handleChange}
             required
             className="border p-2 w-full"
           />
         </div>
         <div>
-          <label htmlFor="description">URL</label>
+          <label htmlFor="customEvent">이벤트 추가</label>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              id="customEvent"
+              value={formData.eventInput}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, eventInput: e.target.value }))
+              }
+              onKeyPress={(e) => e.key === 'Enter' && handleAddEvent()}
+              placeholder="추가할 이벤트 입력 (예: 5km)"
+              className="input input-bordered w-full"
+            />
+            <button type="button" onClick={handleAddEvent} className="btn btn-primary">
+              추가
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {predefinedEvents.map((event) => (
+            <button
+              key={event}
+              type="button"
+              className={`btn ${
+                formData.events.includes(event) ? 'btn-primary btn-sm' : 'btn-sm btn-outline'
+              }`}
+              onClick={() => togglePredefinedEvent(event)}
+            >
+              {event}
+            </button>
+          ))}
+        </div>
+        <ul className="mt-4 list-disc pl-6">
+          {formData.events.map((event, index) => (
+            <li key={index} className="flex items-center bg-gray-100 rounded-full px-4 py-1">
+              <span className="mr-2">{event}</span>
+              <button
+                type="button"
+                onClick={() => handleRemoveEvent(index)}
+                className="text-red-500"
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <label htmlFor="registrationPeriod">모집기간</label>
+          <div className="flex gap-2 items-center">
+            <input
+              type="date"
+              id="startDate"
+              value={formData.registrationPeriod.startDate}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  registrationPeriod: {
+                    ...prev.registrationPeriod,
+                    startDate: e.target.value,
+                  },
+                }))
+              }
+              className="border p-2 w-full"
+            />
+            ~
+            <input
+              type="date"
+              id="endDate"
+              value={formData.registrationPeriod.endDate}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  registrationPeriod: {
+                    ...prev.registrationPeriod,
+                    endDate: e.target.value,
+                  },
+                }))
+              }
+              className="border p-2 w-full"
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="url">URL</label>
           <input
             type="text"
-            id="URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            id="url"
+            value={formData.url}
+            onChange={handleChange}
             required
             className="border p-2 w-full"
           />
         </div>
-        이미지
-        <input type='file' accept='image/*' name='file' required onChange={handleChange} />
-
+        <div>
+          <label htmlFor="file">이미지</label>
+          <input type="file" id="file" accept="image/*" onChange={handleChange} />
+        </div>
         <div>
           <label htmlFor="status">대회 상태</label>
           <select
             id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as RaceStatus)}
+            value={formData.status}
+            onChange={handleChange}
             className="border p-2 w-full"
           >
             <option value="upcoming">모집 예정</option>
@@ -232,7 +272,7 @@ const MarathonRegistration = () => {
             <option value="close">모집 완료</option>
           </select>
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
           대회 등록
         </button>
       </form>
@@ -241,4 +281,3 @@ const MarathonRegistration = () => {
 };
 
 export default MarathonRegistration;
-

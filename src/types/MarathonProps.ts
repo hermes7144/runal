@@ -16,4 +16,5 @@ export interface MarathonProps {
   registrationPeriod: RegistrationPeriod; // 접수 기간
   url:string;
   image?: string;       // 대회 이미지 (선택 사항)
+  review: string;
 }

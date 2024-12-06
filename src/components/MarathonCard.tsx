@@ -1,12 +1,14 @@
-import { MarathonProps } from '../types/RaceProps';
+import { MarathonProps } from '../types/MarathonProps';
 import useAuthStore from '../store/authStore';
 import { useEffect, useState } from 'react';
 import { subscribeNotification, unsubscribeNotification } from '../api/database';
 import { LuBellPlus, LuBellRing } from "react-icons/lu";
+import { useToastStore } from '../store/toastStore';
 
 export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
   const { user } = useAuthStore.getState();
   const [isNotified , setIsNotified] = useState(false);  
+  const { setToast } = useToastStore();
 
   useEffect(() => {
     if (user) {
@@ -21,8 +23,11 @@ export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
     
     if (isNotified) {
       await unsubscribeNotification(user.uid, marathon.id);
+      setToast(marathon.name +  ' 알림이 취소되었습니다.')
     } else {
       await subscribeNotification(user.uid, marathon.id);
+      setToast(marathon.name +  ' 알림을 신청했습니다!')
+
     }
     
     setIsNotified(!isNotified);

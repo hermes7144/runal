@@ -5,7 +5,8 @@ import Dropdown from './Dropdown';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
-  const isLoading = useAuthStore((state) => state.isLoading);
+  const isAuthLoading = useAuthStore((state) => state.isAuthLoading);
+
   const navigate = useNavigate();
 
   return (
@@ -15,15 +16,13 @@ export default function Navbar() {
       </div>
       <div onClick={() => navigate('/marathons')}>레이스</div>
       <nav className='flex items-center gap-4'>
-        {isLoading ? (
+        {isAuthLoading  ? (
           <div>로딩중...</div> // 로딩 중일 때는 '로딩중...' 메시지를 출력
         ) : user ? (
           <Dropdown />        
           
         ) : (
-          <div onClick={() => navigate('/login')}>로그인</div>
-
-          
+          <div onClick={login}>로그인</div>
         )}
       </nav>
     </header>

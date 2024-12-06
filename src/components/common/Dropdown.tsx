@@ -14,7 +14,7 @@ export default function Dropdown() {
   };
   const handleLogout = () => {
     logout();
-  };
+  };  
 
   return (
     <div className='dropdown dropdown-end'>

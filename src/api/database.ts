@@ -1,7 +1,7 @@
 // import { RaceProps } from '../types/RaceProps';
 import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebase-config';
-import { MarathonProps } from '../types/RaceProps';
+import { MarathonProps } from '../types/MarathonProps';
 
 export const setInitUser = async (uid: string) => {
   const userDocRef = doc(db, 'users', uid);
@@ -95,13 +95,16 @@ export const fetchUsers = async () => {
 };
 
 // 대회 목록 가져오기 함수
-export async function getMarathons() {
-  const querySnapshot = await getDocs(collection(db, 'marathons'));
+export async function getMarathons(): Promise<MarathonProps[]> {
+  const marathonsQuery = query(collection(db, 'marathons'), where('review', '==', 'approved'));
 
-  const marathons = querySnapshot.docs.map((doc) => ({
+  const querySnapshot = await getDocs(marathonsQuery);
+
+  const marathons: MarathonProps[] = querySnapshot.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data(),
+    ...(doc.data() as Omit<MarathonProps, 'id'>),
   }));
+
   return marathons;
 }
 

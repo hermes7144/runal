@@ -2,9 +2,9 @@ import useAuthStore from '../store/authStore';
 import Races from './Marathons';
 
 export default function Index() {
-  const isLoading = useAuthStore((state) => state.isLoading);
+  const isAuthLoading = useAuthStore((state) => state.isAuthLoading);
 
-  if (isLoading) return 'isLoading';
+  if (isAuthLoading) return 'isLoading';
 
   return <>
   <Races/>

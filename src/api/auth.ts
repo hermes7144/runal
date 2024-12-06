@@ -18,9 +18,9 @@ export function logout() {
 // 인증 상태 변화 리스너
 export const listenToAuthChanges = () => {
   onAuthStateChanged(auth, async (rawUser) => {
-    const { setUser, setLoading } = useAuthStore.getState();
+    const { setUser, setAuthLoading } = useAuthStore.getState();
 
-    setLoading(true);
+    setAuthLoading(true);
 
     try {
       if (rawUser) {
@@ -34,14 +34,12 @@ export const listenToAuthChanges = () => {
           await handleFCMToken(user.uid);
         }
       } else {
-        // 유저가 로그아웃되었거나 인증되지 않음
         setUser(null);
       }
     } catch (error) {
       console.error('인증 상태 처리 중 오류:', error);
     } finally {
-      // 로딩 상태 해제
-      setLoading(false);
+      setAuthLoading(false);
     }
   });
 };

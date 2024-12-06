@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
 import useMarathons from '../hooks/useMarathons';
 import { Link } from 'react-router-dom';
-import { MarathonProps } from '../types/RaceProps';
 import MarathonCard from '../components/MarathonCard';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(isSameOrAfter);
 
 export default function Marathons() {
-  const [category, setCategory] = useState('');
+  const [event, setEvent] = useState('');
   const [region, setRegion] = useState(''); 
-  const [year, setYear] = useState(new Date().getFullYear()); 
+  const [year, setYear] = useState(''); 
   const [month, setMonth] = useState('');
+
 
   const { marathonsQuery } = useMarathons();
   const { data: marathons, isLoading, isError } = marathonsQuery;
-  
-  const filteredmarathons = marathons?.filter((marathon: MarathonProps) => {
+
+
+  const filteredMarathons = marathons?.filter(marathon => {
+    const marathonDate = dayjs(marathon.date, 'YYYYMMDD');  // 'YYYYMMDD' 형식으로 dayjs 객체 생성
+    const marathonYear = marathonDate.year();
+    const marathonMonth = marathonDate.month() + 1; // 월은 0부터 시작하므로 +1 해줍니다.
+    const today = dayjs();
+    
+    // 필터가 없을 경우 오늘 이후의 대회만 필터링
+    
+    if (event === '' && year === '' && month === '' && region === '' ) {
+      return marathonDate.isSameOrAfter(today, 'day');
+    }
+    
+    // 필터가 있을 경우, 해당 조건들에 맞는 대회들만 반환
     return (
-      (category === '' || marathon.category === category) &&  
-      new Date(marathon.date).getFullYear() === year &&
-      (month === '' || new Date(marathon.date).getMonth() + 1 === Number(month)) && 
+      (event === '' || marathon.event.includes(event)) &&
+      (year === '' || String(marathonYear) === year) &&
+      (month === '' || String(marathonMonth) === month) &&
       (region === '' || marathon.region.includes(region))
     );
   });
@@ -34,8 +50,8 @@ export default function Marathons() {
               <label className="text-gray-700 mb-2">거리</label>
               <select
                 className="px-4 py-2 bg-gray-200 rounded-md"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={event}
+                onChange={(e) => setEvent(e.target.value)}
               >
                 <option value=''>전체</option>
                 <option value="Full">Full</option>
@@ -50,8 +66,9 @@ export default function Marathons() {
               <select
                 className="px-4 py-2 bg-gray-200 rounded-md"
                 value={year}
-                onChange={(e) => setYear(Number(e.target.value))}
+                onChange={(e) => setYear(e.target.value)}
               >
+                <option value="">전체</option>
                 <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}년</option>
                 <option value={new Date().getFullYear()}>{new Date().getFullYear()}년</option>
                 <option value={new Date().getFullYear() + 1}>{new Date().getFullYear() + 1}년</option>
@@ -96,7 +113,7 @@ export default function Marathons() {
 
       {/* Race Events */}
       <main className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {filteredmarathons?.map((marathon) => (
+        {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
       </main>
