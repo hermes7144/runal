@@ -44,7 +44,7 @@ export default function MarathonCard({ marathon}: {marathon:MarathonProps}) {
       <div className='flex justify-between'>
         <h2 className="text-xl font-semibold text-gray-800 mb-2">{marathon.name}</h2>
         <div className="flex justify-between items-center">
-        <button type='button' onClick={handleNotificationToggle}>
+        <button type='button' onClick={handleNotificationToggle} className='p-2 hover:bg-gray-300 hover:rounded-full'>
           {user && isNotified ?  <LuBellRing size={20} /> :<LuBellPlus size={20} />}
         </button>
       </div>
