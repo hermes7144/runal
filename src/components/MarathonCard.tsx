@@ -8,12 +8,12 @@ import { MarathonBadge } from './MarathonBadge';
 
 export default function MarathonCard({ marathon }: { marathon: MarathonProps }) {
   return (
-    <div className='bg-white  rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer relative w-72' onClick={() => window.open(marathon.url)}>
+    <div className='flex sm:flex-col bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer relative sm:min-w-72' onClick={() => window.open(marathon.url)}>
       <MarathonBadge marathon={marathon} />
-      <img src={marathon.image || 'default-event.svg'} alt={`${marathon.name} 이미지`} className='w-full h-48 object-cover mb-4' />
-      <div className='p-4'>
-        <div className='flex justify-between'>
-          <h2 className='text-xl font-semibold text-gray-800 mb-2'>{marathon.name}</h2>
+      <img src={marathon.image || 'default-event.svg'} alt={`${marathon.name} 이미지`} className='h-32 sm:h-48 object-cover p-1' />
+      <div className='p-1 sm:p-4 w-full'>
+        <div className='flex justify-between items-center'>
+          <h2 className=' sm:text-xl font-semibold text-gray-800'>{marathon.name}</h2>
           <div className='flex justify-between items-center'>
             <NotificationButton marathonId={marathon.id} marathonName={marathon.name} />
           </div>
@@ -22,7 +22,7 @@ export default function MarathonCard({ marathon }: { marathon: MarathonProps }) 
           <FaRegCalendarAlt className='w-5 h-5 mr-2' />
           {dayjs(marathon.date).format('YYYY년 MM월 DD일')}
         </div>
-        <div className='flex items-center text-gray-600 mb-4'>
+        <div className='flex items-center text-gray-600 mb-1'>
           <FaLocationDot className='w-5 h-5 mr-2' />
           {marathon.location}
         </div>

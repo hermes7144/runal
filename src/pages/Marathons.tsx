@@ -38,7 +38,7 @@ export default function Marathons() {
   });
 
   return (
-    <div className='bg-gray-100 min-h-screen flex flex-col'>
+    <div className='bg-gray-100 min-h-screen flex flex-col min-w-96'>
       {/* Header with Filters */}
       <header className='p-6 bg-white shadow-md'>
         <div className='container mx-auto flex flex-col sm:flex-row justify-between items-center'>
@@ -93,7 +93,7 @@ export default function Marathons() {
       </header>
 
       {/* Race Events */}
-      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:min-w-[1220px]'>
+      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1220px]'>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}

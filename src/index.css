@@ -6,7 +6,7 @@
 html,
 body {
   overflow-x: hidden;
-  @apply flex flex-col items-center;
+  @apply sm:flex sm:flex-col sm:items-center;
 }
 
 body {
