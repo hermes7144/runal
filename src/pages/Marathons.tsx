@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import MarathonCard from '../components/MarathonCard';
+import { FaPlus } from 'react-icons/fa';
 dayjs.extend(isSameOrAfter);
 
 export default function Marathons() {
@@ -92,7 +93,7 @@ export default function Marathons() {
       </header>
 
       {/* Race Events */}
-      <main className='container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:min-w-[1220px]'>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
@@ -101,7 +102,7 @@ export default function Marathons() {
       <div className='fixed bottom-20 right-4'>
         <Link to='/marathons/new'>
         <button className="w-12 h-12 bg-primary text-white rounded-full shadow-xl flex justify-center items-center hover:bg-primary-dark hover:shadow-2xl transition-all">
-        <span className='text-2xl font-bold'>+</span>
+          <FaPlus />  
           </button>
         </Link>
       </div>

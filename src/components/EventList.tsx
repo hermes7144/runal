@@ -7,7 +7,7 @@ function EventList({ events, maxVisibleCount = 4 }) {
       {visibleEvents.map((event, index) => (
         <span 
           key={index} 
-          className="inline-flex items-center p-2 text-xs font-medium text-white bg-primary rounded-full"
+          className="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-primary rounded-full"
         >
           {event}
         </span>
