@@ -9,12 +9,14 @@ import { uploadImage } from '../api/uploader';
 import { sendNotification } from '../service/notificationService';
 import { predefinedEvents, predefinedRegions } from '../constants/constants';
 import { useToastStore } from '../store/toastStore';
+import useAuthStore from '../store/authStore';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale('ko');
 
 const MarathonRegistration = () => {
+  const user = useAuthStore.getState().user;
   const today = dayjs();
   const nextWeek = today.add(7, 'day');
   const navigate = useNavigate();
@@ -114,6 +116,7 @@ const MarathonRegistration = () => {
       ...raceData,
       events: rearrangeEvents(raceData.events),
       review: 'approved', // 임시 승인 상태
+      author_id: user.uid
     };
 
     try {
