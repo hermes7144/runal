@@ -5,7 +5,7 @@ import { useToastStore } from '../store/toastStore';
 import useAuthStore from '../store/authStore';
 
 type NotificationButtonProps = {
-  marathonId: string;
+  marathonId: string | undefined;
   marathonName: string;
 };
 
@@ -39,8 +39,7 @@ const NotificationButton = ({ marathonId, marathonName }: NotificationButtonProp
 <button
   type="button"
   onClick={handleNotificationToggle}
-  className="p-4 mr-2 flex items-center justify-center  md:hover:bg-gray-300 rounded-full"
->
+  className="flex items-center justify-center p-3 md:hover:bg-gray-300 rounded-full absolute top-2 right-2">
   {user && isNotified ? <LuBellRing size={20} /> : <LuBellPlus size={20} />}
 </button>
   );
