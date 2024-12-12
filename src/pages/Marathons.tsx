@@ -38,11 +38,11 @@ export default function Marathons() {
   });
 
   return (
-    <div className='bg-gray-100 min-h-screen flex flex-col min-w-96'>
+    <div className='bg-gray-100 min-h-screen flex flex-col '>
       {/* Header with Filters */}
       <header className='p-6 bg-white shadow-md'>
         <div className='container mx-auto flex flex-col sm:flex-row justify-between items-center'>
-          <h1 className='text-2xl font-bold text-gray-800 mb-4 sm:mb-0'>마라톤 목록</h1>
+          <h1 className='text-2xl font-bold text-gray-800 mb-4 sm:mb-0'>마라톤</h1>
           <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
             {/* 카테고리 선택 */}
             <div className='flex flex-col'>
@@ -93,7 +93,7 @@ export default function Marathons() {
       </header>
 
       {/* Race Events */}
-      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1220px]'>
+      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1220px] mb-16 lg:mb-0'>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
