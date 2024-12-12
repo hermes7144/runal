@@ -15,7 +15,7 @@ export default function Navbar() {
         <div onClick={() => navigate('/')} className='flex items-center gap-1 text-primary'>
           <h1 className='text-4xl font-bold cursor-pointer'>RA</h1>
         </div>
-        <div onClick={() => navigate('/marathons')} className='cursor-pointer'>레이스</div>
+        {/* <div onClick={() => navigate('/marathons')} className='cursor-pointer'>레이스</div> */}
         <nav className='flex items-center gap-4'>
           {isAuthLoading ? (
             <div>로딩중...</div> // 로딩 중일 때는 '로딩중...' 메시지를 출력

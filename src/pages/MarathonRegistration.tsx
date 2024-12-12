@@ -33,6 +33,7 @@ const MarathonRegistration = () => {
       startDate: today.format('YYYY-MM-DD'),
       endDate: nextWeek.format('YYYY-MM-DD'),
     },
+    price: 0,
     url: '',
     status: 'upcoming',
     file: null as File | null,
@@ -47,7 +48,12 @@ const MarathonRegistration = () => {
     const { id, value, files } = e.target;
     if (id === 'file') {
       setFormData((prev) => ({ ...prev, file: files?.[0] || null }));
-    } else {
+
+    } else if (id === 'price') {
+      if (/^\d*$/.test(value)) {
+        setFormData(prev => ({...prev, price: Number(value)}));
+      }
+    }  else {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
@@ -129,11 +135,11 @@ const MarathonRegistration = () => {
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div>
           <label htmlFor='name'>이름</label>
-          <input type='text' id='name' value={formData.name} onChange={handleChange} required className='border p-2 w-full' />
+          <input type='text' id='name' value={formData.name} onChange={handleChange} required className='input input-bordered w-full' />
         </div>
         <div>
           <label htmlFor='date'>일정</label>
-          <input type='date' id='date' value={formData.date} onChange={handleChange} required className='border p-2 w-full' />
+          <input type='date' id='date' value={formData.date} onChange={handleChange} required className='input input-bordered w-full' />
         </div>
         <div>
           <label htmlFor='region'>지역</label>
@@ -151,7 +157,7 @@ const MarathonRegistration = () => {
         </div>
         <div>
           <label htmlFor='location'>장소</label>
-          <input type='text' id='location' value={formData.location} onChange={handleChange} required className='border p-2 w-full' />
+          <input type='text' id='location' value={formData.location} onChange={handleChange} required className='input input-bordered w-full' />
         </div>
         <div>
           <label htmlFor='customEvent'>이벤트 추가</label>
@@ -162,7 +168,7 @@ const MarathonRegistration = () => {
               value={formData.eventInput}
               onChange={(e) => setFormData((prev) => ({ ...prev, eventInput: e.target.value }))}
               onKeyPress={(e) => e.key === 'Enter' && handleAddEvent()}
-              placeholder='추가할 이벤트 입력 (예: 5km)'
+              placeholder='추가할 이벤트 입력 혹은 버튼 클릭 (예: 5km)'
               className='input input-bordered w-full'
             />
             <button type='button' onClick={handleAddEvent} className='btn btn-primary'>
@@ -203,7 +209,7 @@ const MarathonRegistration = () => {
                   },
                 }))
               }
-              className='border p-2 w-full'
+              className='input input-bordered w-full'
             />
             ~
             <input
@@ -219,24 +225,30 @@ const MarathonRegistration = () => {
                   },
                 }))
               }
-              className='border p-2 w-full'
+              className='input input-bordered w-full'
             />
           </div>
         </div>
         <div>
-          <label htmlFor='url'>URL</label>
-          <input type='text' id='url' value={formData.url} onChange={handleChange} required className='border p-2 w-full' />
+          <label htmlFor='price'>금액</label>
+          <div className='flex items-center gap-2'>
+            <input className='input input-bordered w-full' type='price' id='price' value={formData.price} onChange={handleChange} />
+            <span className='font-semibold flex-shrink-0'>원 ~</span>
+          </div>
         </div>
         <div>
-          <label htmlFor='file'>이미지</label>
-          <input type='file' id='file' accept='image/*' onChange={handleChange} />
-        </div>
-
-        <div className='flex justify-between gap-2'>
+        <div className='flex justify-between gap-2 py-6'>
           <label htmlFor='isClosed' className=''>
             모집 마감 여부
           </label>
           <input type='checkbox' id='isClosed' checked={formData.isClosed} onChange={() => setFormData((prev) => ({ ...prev, isClosed: !prev.isClosed }))} className='toggle toggle-primary' />
+        </div>
+          <label htmlFor='url'>URL</label>
+          <input className='input input-bordered w-full' type='text' id='url' value={formData.url} onChange={handleChange} required  />
+        </div>
+        <div>
+          <label htmlFor='file'>이미지</label>
+          <input type='file' id='file' accept='image/*' onChange={handleChange} />
         </div>
         <button type='submit' className='btn btn-primary text-white p-2 rounded w-full' disabled={isSubmitting}>
           {isSubmitting ? <span className="loading loading-spinner text-white"></span> : '대회 등록'}

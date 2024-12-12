@@ -7,9 +7,11 @@ import { MarathonBadge } from './MarathonBadge';
 
 import { FaRegCalendarAlt } from '@react-icons/all-files/fa/FaRegCalendarAlt';
 import { IoLocationSharp } from '@react-icons/all-files/io5/IoLocationSharp';
+import { FaWonSign } from '@react-icons/all-files/fa/FaWonSign';
 
 const MemoizedFaRegCalendarAlt = memo(FaRegCalendarAlt);
 const MemoizedIoLocationSharp = memo(IoLocationSharp);
+const MemoizedFaWonSign = memo(FaWonSign);
 
 function MarathonCard({ marathon }: { marathon: MarathonProps }) {
   return (
@@ -25,13 +27,17 @@ function MarathonCard({ marathon }: { marathon: MarathonProps }) {
           </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedFaRegCalendarAlt className='w-5 h-5 flex-shrink-0  mr-1' />
-            {dayjs(marathon.date).format('YYYY년 MM월 DD일')}
+            {dayjs(marathon.date).format('YYYY년 MM월 DD일 dddd')}
           </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedIoLocationSharp className='w-5 h-5 flex-shrink-0 mr-1' />
             <span className='truncate w-44 sm:w-full'>
             {marathon.region}, {marathon.location}
             </span>
+          </div>
+          <div className='flex items-center text-gray-600'>
+            <MemoizedFaWonSign className='w-5 h-5 flex-shrink-0 mr-1' />
+            {marathon.price.toLocaleString()}원 ~
           </div>
           <EventList events={marathon.events} />
         </div>

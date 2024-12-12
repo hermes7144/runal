@@ -11,6 +11,7 @@ export interface MarathonProps {
   location: string;        // 대회 장소 (예: "서울")
   events: string[];        // 대회 유형 (예: "10km, 5km 등")
   registrationPeriod: RegistrationPeriod; // 접수 기간
+  price:number;
   url:string;
   image?: string;       // 대회 이미지 (선택 사항)
   review: string;
