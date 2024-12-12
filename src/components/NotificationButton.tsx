@@ -36,13 +36,13 @@ const NotificationButton = ({ marathonId, marathonName }: NotificationButtonProp
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleNotificationToggle}
-      className="p-2 hover:bg-gray-300 hover:rounded-full"
-    >
-      {user && isNotified ? <LuBellRing size={22} /> : <LuBellPlus size={22} />}
-    </button>
+<button
+  type="button"
+  onClick={handleNotificationToggle}
+  className="p-4 mr-2 flex items-center justify-center hover:bg-gray-300 hover:rounded-full"
+>
+  {user && isNotified ? <LuBellRing size={20} /> : <LuBellPlus size={20} />}
+</button>
   );
 };
 
