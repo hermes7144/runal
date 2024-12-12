@@ -5,9 +5,12 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import MarathonCard from '../components/MarathonCard';
 import { FaPlus } from 'react-icons/fa';
+import useAuthStore from '../store/authStore';
 dayjs.extend(isSameOrAfter);
 
 export default function Marathons() {
+  const {user} = useAuthStore.getState();
+
   const [event, setEvent] = useState('');
   const [region, setRegion] = useState('');
   const [year, setYear] = useState('');
@@ -92,20 +95,19 @@ export default function Marathons() {
         </div>
       </header>
 
-      {/* Race Events */}
       <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1280px] mb-16 lg:mb-0'>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
       </main>
-      {/* Add Event Link */}
-      <div className='fixed bottom-20 right-4'>
+
+      {user && <div className='fixed bottom-20 right-4'>
         <Link to='/marathons/new'>
         <button className="w-12 h-12 bg-primary text-white rounded-full shadow-xl flex justify-center items-center hover:bg-primary-dark hover:shadow-2xl transition-all">
           <FaPlus />  
           </button>
         </Link>
-      </div>
+      </div>}
     </div>
   );
 }
