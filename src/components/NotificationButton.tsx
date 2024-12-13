@@ -26,10 +26,10 @@ const NotificationButton = ({ marathonId, marathonName }: NotificationButtonProp
 
     if (isNotified) {
       await unsubscribeNotification(user.uid, marathonId);
-      setToast(marathonName + ' 알림이 취소되었습니다.');
+      setToast('알림이 취소되었습니다.');
     } else {
       await subscribeNotification(user.uid, marathonId);
-      setToast(marathonName + ' 알림을 신청했습니다!');
+      setToast('알림을 신청했습니다!');
     }
 
     setIsNotified(!isNotified);

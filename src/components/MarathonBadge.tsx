@@ -23,7 +23,7 @@ export const MarathonBadge = ({ marathon }: { marathon: MarathonProps }) => {
   };
   return (
 
-    <div className="absolute top-2 left-2 z-10">
+    <div className="absolute top-2 left-2 ">
     <span className={`px-4 py-1 rounded-full text-sm font-bold shadow-md ${statusStyles[status] || "bg-red-500 text-white"}`}>
       {status}
     </span>
