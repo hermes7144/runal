@@ -30,8 +30,8 @@ self.addEventListener('push', function(event) {
   const icon = message.data.icon;
 
   const currentOrigin = self.location.origin;
-  const clickAction = currentOrigin === 'https://runnoti.netlify.app'
-    ? 'https://runnoti.netlify.app/' :'https://dev-runnoti.netlify.app/';
+  const clickAction = currentOrigin === 'https://runal.netlify.app'
+    ? 'https://runal.netlify.app/' :'https://dev-runal.netlify.app/';
 
   const options = {
     body,

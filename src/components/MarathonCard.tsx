@@ -27,17 +27,13 @@ function MarathonCard({ marathon }: { marathon: MarathonProps }) {
           </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedFaRegCalendarAlt className='w-5 h-5 flex-shrink-0  mr-1' />
-            <span className="hidden sm:inline">
-    {dayjs(marathon.date).format('YYYY년 MM월 DD일 dddd')}
-  </span>
-  <span className="sm:hidden">
-    {dayjs(marathon.date).format('YYYY년 MM월 DD일 dd')}
-  </span>
-            </div>
+            <span className='hidden sm:inline'>{dayjs(marathon.date).format('YYYY년 MM월 DD일 dddd')}</span>
+            <span className='sm:hidden'>{dayjs(marathon.date).format('YYYY년 MM월 DD일 dd')}</span>
+          </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedIoLocationSharp className='w-5 h-5 flex-shrink-0 mr-1' />
             <span className='truncate w-44 sm:w-full'>
-            {marathon.region}, {marathon.location}
+              {marathon.region}, {marathon.location}
             </span>
           </div>
           <div className='flex items-center text-gray-600'>
