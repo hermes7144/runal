@@ -15,13 +15,10 @@ const MemoizedFaWonSign = memo(FaWonSign);
 
 function MarathonCard({ marathon }: { marathon: MarathonProps }) {
   return (
-    <div className='flex sm:flex-col bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer relative' onClick={() => window.open(marathon.url)}>
+    <div className='bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer relative' onClick={() => window.open(marathon.url)}>
+      <img src={marathon.image || 'default-event.svg'} alt={`${marathon.name} 이미지`} className='hidden sm:block sm:w-full sm:h-48 object-cover rounded-l-lg sm:rounded-l-none sm:rounded-t-lg' />
       <MarathonBadge marathon={marathon} />
-      <img src={marathon.image || 'default-event.svg'} alt={`${marathon.name} 이미지`} className='h-36 w-36 sm:w-full sm:h-48 object-cover rounded-l-lg sm:rounded-l-none sm:rounded-t-lg' />
-      <div className='w-full flex items-center justify-between relative'>
-        <NotificationButton marathonId={marathon.id} marathonName={marathon.name} />
-
-        <div className='flex flex-col p-2 sm:p-4 w-full gap-1 text-sm sm:text-lg'>
+      <div className='w-full flex flex-col p-1 sm:p-4 gap-1 text-sm sm:text-lg relative'>
           <div className='flex justify-between items-center'>
             <h2 className='w-40 sm:w-60 font-semibold text-gray-800 truncate'>{marathon.name}</h2>
           </div>
@@ -41,7 +38,7 @@ function MarathonCard({ marathon }: { marathon: MarathonProps }) {
             {marathon.price.toLocaleString()}원 ~
           </div>
           <EventList events={marathon.events} />
-        </div>
+          <NotificationButton marathonId={marathon.id} marathonName={marathon.name} />
       </div>
     </div>
   );

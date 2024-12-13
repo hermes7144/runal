@@ -123,7 +123,7 @@ const MarathonRegistration = () => {
       const image = file ? await uploadImage(file) : '';
       saveMarathon.mutate({ ...newRace, image });
       sendNotification(newRace.name, image, newRace.region, newRace.events);
-      setToast(`${newRace.name} 대회 등록이 완료되었습니다!`);
+      setToast(`대회 등록이 완료되었습니다!`);
       navigate(-1);
     } catch (error) {
       setToast('대회 등록 중 오류가 발생했습니다.');
