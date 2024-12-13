@@ -1,5 +1,5 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { MarathonProps } from '../types/MarathonProps';
 
@@ -45,7 +45,6 @@ export const setUserToken = async (uid: string, token: string) => {
       if (existingToken !== token) {
         await setDoc(userDocRef, { token }, { merge: true });
       }
-      
       console.log('FCM 토큰이 Firestore에 저장되었습니다.');
     } catch (error) {
       console.error('FCM 토큰 저장 실패:', error);
@@ -96,10 +95,13 @@ export const fetchUsers = async () => {
 
 // 대회 목록 가져오기 함수
 export async function getMarathons(): Promise<MarathonProps[]> {
-  const marathonsQuery = query(collection(db, 'marathons'), where('review', '==', 'approved'));
+  const marathonsQuery = query(
+    collection(db, 'marathons'),
+    orderBy('date', 'asc')
+  );
 
   const querySnapshot = await getDocs(marathonsQuery);
-
+  
   const marathons: MarathonProps[] = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...(doc.data() as Omit<MarathonProps, 'id'>),

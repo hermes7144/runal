@@ -53,10 +53,7 @@ const handleFCMToken = async (uid: string) => {
 
     if (token) {
       await setUserToken(uid, token);
-      console.log('FCM 토큰 저장 완료:', token);
-    } else {
-      console.warn('FCM 토큰을 가져오지 못했습니다.');
-    }
+    } 
   } catch (error) {
     console.error('FCM 토큰 처리 중 오류:', error);
   }
