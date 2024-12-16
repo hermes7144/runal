@@ -50,7 +50,7 @@ export default function Marathons() {
             {/* 카테고리 선택 */}
             <div className='flex flex-col'>
               <label className='text-gray-700 mb-2'>거리</label>
-              <select className='px-4 py-2 bg-gray-200 rounded-md' value={event} onChange={(e) => setEvent(e.target.value)}>
+              <select className='select bg-gray-200 rounded-md' value={event} onChange={(e) => setEvent(e.target.value)}>
                 <option value=''>전체</option>
                 <option value='Full'>Full</option>
                 <option value='Half'>Half</option>
@@ -61,7 +61,7 @@ export default function Marathons() {
             {/* 년/월 선택 */}
             <div className='flex flex-col'>
               <label className='text-gray-700 mb-2'>연도</label>
-              <select className='px-4 py-2 bg-gray-200 rounded-md' value={year} onChange={(e) => setYear(e.target.value)}>
+              <select className='select  bg-gray-200 rounded-md' value={year} onChange={(e) => setYear(e.target.value)}>
                 <option value=''>전체</option>
                 <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}년</option>
                 <option value={new Date().getFullYear()}>{new Date().getFullYear()}년</option>
@@ -71,7 +71,7 @@ export default function Marathons() {
 
             <div className='flex flex-col'>
               <label className='text-gray-700 mb-2'>월</label>
-              <select className='px-4 py-2 bg-gray-200 rounded-md' value={month} onChange={(e) => setMonth(e.target.value)}>
+              <select className='select bg-gray-200 rounded-md' value={month} onChange={(e) => setMonth(e.target.value)}>
                 <option value=''>전체</option>
                 <option value={1}>1월</option>
                 <option value={2}>2월</option>
@@ -89,7 +89,7 @@ export default function Marathons() {
             </div>
             <div className='flex flex-col'>
               <label className='text-gray-700 mb-2'>지역</label>
-              <input type='text' placeholder='지역' className='px-4 py-2 bg-gray-200 rounded-md' value={region} onChange={(e) => setRegion(e.target.value)} />
+              <input type='text' placeholder='지역' className='input bg-gray-200 rounded-md' value={region} onChange={(e) => setRegion(e.target.value)} />
             </div>
           </div>
         </div>
