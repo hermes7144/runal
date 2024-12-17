@@ -78,19 +78,22 @@ yarn dev
 
 ## 스크린샷 (수요일 작성)
 ### 홈 화면
-![alt text](image-5.png)
+![image](https://github.com/user-attachments/assets/8f550cf7-124a-49f8-a24f-7f3e9736db47)
+
 사용자가 접속하면 볼 수 있는 메인 화면으로, 대회 목록과 필터링 옵션이 제공됩니다. 이 화면에서 사용자는 다양한 마라톤 이벤트를 확인할 수 있습니다.
 
 ### 로그인화면
-![alt text](image-4.png)
+![image](https://github.com/user-attachments/assets/65c2c116-b9dd-48c0-a763-ea2128ff719a)
+
 현재는 구글 로그인만 지원합니다.
 
 ### 알림 설정 화면
-![alt text](image-6.png)
+![image](https://github.com/user-attachments/assets/c0245805-216b-427b-8fb4-debdd0a9454a)
+
 로그인 하면 우측 상단의 원을 클릭하면 알림을 설정할 수 있는 메뉴가 나타납니다.
 
-![alt text](image-1.png)
 관심 있는 대회에 대한 알림을 설정할 수 있는 화면입니다. 특정 조건을 설정하여 대회 알림을 받을 수 있습니다.
 
-![alt text](image-8.png)
+![image](https://github.com/user-attachments/assets/d3474133-8917-4363-9e4a-b5534346cdea)
+
 대회 신청일 및 전날에 알림을 받고 싶다면 로그인 후에 대회의 종을 클릭하면 신청됩니다.
