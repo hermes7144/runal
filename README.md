@@ -1,30 +1,96 @@
-# React + TypeScript + Vite
+# 러닝알리미
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 프로젝트 소개
+**러닝알리미는 마라톤과 러닝 이벤트 정보를 한 곳에서 제공하는 플랫폼입니다.**
+러너들이 대회 정보를 지속적으로 확인해야 하는 번거로움과 대회 퀄리티에에 대한 불확실성을 해소하기 위해 이 프로젝트를 시작했습니다. 러닝알리미는 최신 이벤트를 빠르게 찾을 수 있도록 도와주며, 관심 있는 대회에 대한 맞춤 알림을 제공합니다. 이를 통해 러너들이 더 쉽게 대회를 준비하고, 자신에게 맞는 이벤트를 놓치지 않도록 지원합니다.
 
-Currently, two official plugins are available:
+## 주요 특징
+- 전국의 마라톤 이벤트 정보 제공
+- 지역, 날짜, 거리 기준으로 대회 검색
+- 관심 대회에 대한 알림 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 주요 기능
+1. **관심 이벤트 저장 및 알림 기능**  
+- 사전에 등록한 조건에 맞는 이벤트를 알림 수신
+- 특정 이벤트를 저장하고, 날짜가 다가오면 알림 수신  
 
-## Expanding the ESLint configuration
+2. **이벤트 검색 및 필터링**  
+- 지역, 거리(10K, 하프 마라톤 등), 날짜로 대회를 검색 가능  
+- 사용자는 관심 있는 이벤트만 빠르게 찾을 수 있음  
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+3. **이벤트 정보 상세 보기**  
+- 등록비, 위치, 일정 등 세부 정보 제공  
+- 외부 링크로 직접 참가 신청 가능
 
-- Configure the top-level `parserOptions` property like this:
+## 기술 스택
+- React
+- Zustand: 전역 상태 관리
+#### 스타일링
+- Tailwind CSS: 유틸리티 클래스 기반의 CSS 프레임워크로 빠르고 일관된 스타일링 제공.
+- DaisyUI: Tailwind CSS 확장 라이브러리로 간편한 UI 컴포넌트 추가.
+#### 백엔드 및 데이터 관리
+- Firebase:
+  - Firestore: 실시간 데이터베이스.
+  - Authentication: 사용자 인증.
+  - FCM: 푸시 알림 서비스.
+  - Serverless Functions: 클라우드 기반의 서버리스 백엔드 구현.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- TanStack React Query: 서버 상태 관리와 데이터 패칭 최적화.
+#### 빌드 도구
+- Vite
+
+## 설치 및 실행 방법
+
+### 1. 프로젝트 클론
+```bash
+git clone https://github.com/your-username/alrammate.git
+cd alrammate
+```
+### 2. 의존성 설치
+프로젝트 디렉토리로 이동한 후, 필요한 의존성 패키지를 설치합니다. npm 또는 yarn을 사용하여 설치할 수 있습니다.
+```
+npm install
+# 또는
+yarn install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 3. 환경 변수 설정
+.env 파일을 생성하고, 필요한 환경 변수를 설정합니다. 예시:
+
+```
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
+VITE_FIREBASE_APP_ID=your-firebase-app-id
+```
+
+### 4. 개발 서버 실행
+프로젝트를 로컬 서버에서 실행하려면 아래 명령어를 사용합니다.
+```
+npm run dev
+# 또는
+yarn dev
+```
+서버가 실행되면 브라우저에서 `http://localhost:5173` 주소로 접속할 수 있습니다.
+
+
+## 스크린샷 (수요일 작성)
+### 홈 화면
+![alt text](image-5.png)
+사용자가 접속하면 볼 수 있는 메인 화면으로, 대회 목록과 필터링 옵션이 제공됩니다. 이 화면에서 사용자는 다양한 마라톤 이벤트를 확인할 수 있습니다.
+
+### 로그인화면
+![alt text](image-4.png)
+현재는 구글 로그인만 지원합니다.
+
+### 알림 설정 화면
+![alt text](image-6.png)
+로그인 하면 우측 상단의 원을 클릭하면 알림을 설정할 수 있는 메뉴가 나타납니다.
+
+![alt text](image-1.png)
+관심 있는 대회에 대한 알림을 설정할 수 있는 화면입니다. 특정 조건을 설정하여 대회 알림을 받을 수 있습니다.
+
+![alt text](image-8.png)
+대회 신청일 및 전날에 알림을 받고 싶다면 로그인 후에 대회의 종을 클릭하면 신청됩니다.
