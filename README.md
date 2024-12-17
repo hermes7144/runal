@@ -97,3 +97,14 @@ yarn dev
 ![image](https://github.com/user-attachments/assets/d3474133-8917-4363-9e4a-b5534346cdea)  
 
 대회 신청일 및 전날에 알림을 받고 싶다면 로그인 후에 대회의 종을 클릭하면 신청됩니다.
+
+### 알림 받는 법
+![KakaoTalk_20241217_210605964](https://github.com/user-attachments/assets/31978da5-a7ca-40ff-a0a5-2c1d23536509)  
+모바일 에서 로그인 시 기기 등록이 됩니다. 삼성인터넷을 제외한 브라우저에서는 상단의 내려받는 버튼을 클릭해서 앱 발행해야 정상적으로 알림이 등록되는거 같습니다. 제가 삼성말고 다른 기기가 없어서 브라우저 테스트는 아직 완벽하지 않습니다.
+#### 알림 예시
+![image](https://github.com/user-attachments/assets/26a2a127-80b8-45e1-a817-97506f66d5aa)  
+알림에는 대회명, 위치, 거리 및 이미지를 볼 수 있습니다.
+#### 삼성 인터넷 예시
+![KakaoTalk_20241217_210605964_02](https://github.com/user-attachments/assets/015282d5-c080-4071-a729-72092e43a79f)
+
+삼성 인터넷의 경우는 로그인 만으로 알림 확인했습니다.
