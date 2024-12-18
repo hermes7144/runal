@@ -6,9 +6,9 @@ export const MarathonBadge = ({ marathon }: { marathon: MarathonProps }) => {
 
   let status = '';
 
-  if (today.isBefore(marathon.registrationPeriod.startDate)) {
+  if (today.isBefore(marathon.startDate)) {
     status = '모집예정';
-  } else if (today.isAfter(marathon.registrationPeriod.endDate)) {
+  } else if (today.isAfter(marathon.endDate)) {
     status = '모집종료';
   } else if (marathon.isClosed) {
     status = '접수완료';

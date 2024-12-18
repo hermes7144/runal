@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -12,10 +12,12 @@ import { useToastStore } from '../store/toastStore';
 import useAuthStore from '../store/authStore';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import { FaRegCalendarAlt } from '@react-icons/all-files/fa/FaRegCalendarAlt';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale('ko');
+
+const MemoizedFaRegCalendarAlt = memo(FaRegCalendarAlt);
 
 const MarathonRegistration = () => {
   const user = useAuthStore.getState().user;
@@ -31,10 +33,8 @@ const MarathonRegistration = () => {
     location: '',
     events: [] as string[],
     eventInput: '',
-    registrationPeriod: {
-      startDate: '',
-      endDate: '',
-    },
+    startDate: '',
+    endDate: '',
     price: 0,
     url: '',
     status: 'upcoming',
@@ -43,20 +43,18 @@ const MarathonRegistration = () => {
   });
 
   const [isSubmitting, setisSubmitting] = useState(false);
-  
 
   // 폼 데이터 업데이트 핸들러
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {    
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value, files } = e.target;
-    
+
     if (id === 'file') {
       setFormData((prev) => ({ ...prev, file: files?.[0] || null }));
-
     } else if (id === 'price') {
       if (/^\d*$/.test(value)) {
-        setFormData(prev => ({...prev, price: Number(value)}));
+        setFormData((prev) => ({ ...prev, price: Number(value) }));
       }
-    }  else {
+    } else {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
@@ -117,7 +115,7 @@ const MarathonRegistration = () => {
       ...raceData,
       events: rearrangeEvents(raceData.events),
       review: 'approved', // 임시 승인 상태
-      author_id: user.uid
+      author_id: user.uid,
     };
 
     try {
@@ -133,6 +131,17 @@ const MarathonRegistration = () => {
     }
   };
 
+  function CustomInput({ value, onClick }) {
+    return (
+      <div className='relative flex items-center w-full' onClick={onClick}>
+        <input value={value} readOnly className='input input-bordered w-full' />
+        <span className='absolute right-3 cursor-pointer' onClick={onClick}>
+          <MemoizedFaRegCalendarAlt />
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className='p-4'>
       <h2 className='text-center text-xl font-bold mb-10'>대회 등록</h2>
@@ -141,16 +150,9 @@ const MarathonRegistration = () => {
           <label htmlFor='name'>이름</label>
           <input type='text' id='name' value={formData.name} onChange={handleChange} required className='input input-bordered w-full' />
         </div>
-        <div>
+        <div className='flex flex-col'>
           <label htmlFor='date'>일정</label>
-          <DatePicker
-          id='date'
-      selected={formData.date}
-      onChange={handleChange}
-      dateFormat="yyyy-MM-dd"
-      className="input input-bordered w-full"
-    />
-
+          <DatePicker selected={formData.date} onChange={(date) => setFormData({ ...formData, date: date })} dateFormat='yyyy-MM-dd' customInput={<CustomInput />} />
         </div>
         <div>
           <label htmlFor='region'>지역</label>
@@ -207,36 +209,28 @@ const MarathonRegistration = () => {
         <div>
           <label htmlFor='registrationPeriod'>모집기간</label>
           <div className='flex gap-2 items-center'>
-            <input
-              type='date'
-              id='startDate'
-              value={formData.registrationPeriod.startDate}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  registrationPeriod: {
-                    ...prev.registrationPeriod,
-                    startDate: e.target.value,
-                  },
-                }))
-              }
-              className='input input-bordered w-full'
+            <div className=''>
+            <DatePicker
+              className='w-full'
+              selected={formData.startDate}
+              onChange={(startDate) => setFormData((prev) => ({ ...prev, startDate }))}
+              selectsStart
+              startDate={formData.startDate}
+              endDate={formData.endDate}
+              dateFormat='yyyy-MM-dd'
+              customInput={<CustomInput />}
             />
+            </div>
             ~
-            <input
-              type='date'
-              id='endDate'
-              value={formData.registrationPeriod.endDate}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  registrationPeriod: {
-                    ...prev.registrationPeriod,
-                    endDate: e.target.value,
-                  },
-                }))
-              }
-              className='input input-bordered w-full'
+            <DatePicker
+              selected={formData.endDate}
+              onChange={(endDate) => setFormData((prev) => ({ ...prev, endDate }))}
+              selectsEnd
+              startDate={formData.startDate}
+              endDate={formData.endDate}
+              minDate={formData.startDate}
+              dateFormat='yyyy-MM-dd'
+              customInput={<CustomInput />}
             />
           </div>
         </div>
@@ -248,21 +242,21 @@ const MarathonRegistration = () => {
           </div>
         </div>
         <div>
-        <div className='flex justify-between gap-2 py-6'>
-          <label htmlFor='isClosed' className=''>
-            모집 마감 여부
-          </label>
-          <input type='checkbox' id='isClosed' checked={formData.isClosed} onChange={() => setFormData((prev) => ({ ...prev, isClosed: !prev.isClosed }))} className='toggle toggle-primary' />
-        </div>
+          <div className='flex justify-between gap-2 py-6'>
+            <label htmlFor='isClosed' className=''>
+              모집 마감 여부
+            </label>
+            <input type='checkbox' id='isClosed' checked={formData.isClosed} onChange={() => setFormData((prev) => ({ ...prev, isClosed: !prev.isClosed }))} className='toggle toggle-primary' />
+          </div>
           <label htmlFor='url'>URL</label>
-          <input className='input input-bordered w-full' type='text' id='url' value={formData.url} onChange={handleChange} required  />
+          <input className='input input-bordered w-full' type='text' id='url' value={formData.url} onChange={handleChange} required />
         </div>
         <div>
           <label htmlFor='file'>이미지</label>
           <input type='file' id='file' accept='image/*' onChange={handleChange} />
         </div>
         <button type='submit' className='btn btn-primary text-white p-2 rounded w-full' disabled={isSubmitting}>
-          {isSubmitting ? <span className="loading loading-spinner text-white"></span> : '대회 등록'}
+          {isSubmitting ? <span className='loading loading-spinner text-white'></span> : '대회 등록'}
         </button>
       </form>
     </div>

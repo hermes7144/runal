@@ -1,5 +1,5 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { MarathonProps } from '../types/MarathonProps';
 
@@ -183,3 +183,49 @@ export const unsubscribeNotification = async (uid, marthonId) => {
     marathons: arrayRemove(marthonId),
   });
 };
+
+export const migrateData = async (): Promise<void> => {
+  try {
+    // 'events' 컬렉션 참조
+    const snapshot = await getDocs(collection(db, 'marathons'));
+
+    if (snapshot.empty) {
+      console.log("No documents found to migrate.");
+      return;
+    }
+
+    // 문서 순회하며 데이터 변환
+    for (const docSnapshot of snapshot.docs) {
+      const data = docSnapshot.data();
+
+      // registrationPeriod에서 startDate와 endDate 분리
+      const startDate = data.registrationPeriod?.startDate || '';
+      const endDate = data.registrationPeriod?.endDate || '';
+
+      // 변환된 데이터 구조
+      const updatedData = {
+        ...data,
+        startDate,  // 기존 registrationPeriod에서 startDate를 새로운 필드로 추가
+        endDate,    // 기존 registrationPeriod에서 endDate를 새로운 필드로 추가
+      };
+
+      // 기존 registrationPeriod 제거
+      delete updatedData.registrationPeriod;
+
+      // 기존 문서 삭제
+      await deleteDoc(doc(db, 'marathons', docSnapshot.id));
+      console.log(`Deleted document: ${docSnapshot.id}`);
+
+      // 새로운 데이터로 문서 생성
+      const newDocRef = doc(db, 'marathons', docSnapshot.id); // 기존 문서 ID로 새로운 데이터 삽입
+      await setDoc(newDocRef, updatedData);
+      console.log(`Created new document with updated data: ${newDocRef.id}`);
+    }
+
+    console.log("Migration completed successfully!");
+  } catch (error) {
+    console.error('Error during migration:', error);
+  }
+};
+
+migrateData();
