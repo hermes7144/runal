@@ -10,6 +10,8 @@ import { sendNotification } from '../service/notificationService';
 import { predefinedEvents, predefinedRegions } from '../constants/constants';
 import { useToastStore } from '../store/toastStore';
 import useAuthStore from '../store/authStore';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -17,8 +19,6 @@ dayjs.locale('ko');
 
 const MarathonRegistration = () => {
   const user = useAuthStore.getState().user;
-  const today = dayjs();
-  const nextWeek = today.add(7, 'day');
   const navigate = useNavigate();
   const { saveMarathon } = useMarathons();
   const { setToast } = useToastStore();
@@ -26,14 +26,14 @@ const MarathonRegistration = () => {
   // Form 상태 관리
   const [formData, setFormData] = useState({
     name: '',
-    date: today.format('YYYY-MM-DD'),
+    date: '',
     region: '',
     location: '',
     events: [] as string[],
     eventInput: '',
     registrationPeriod: {
-      startDate: today.format('YYYY-MM-DD'),
-      endDate: nextWeek.format('YYYY-MM-DD'),
+      startDate: '',
+      endDate: '',
     },
     price: 0,
     url: '',
@@ -46,8 +46,9 @@ const MarathonRegistration = () => {
   
 
   // 폼 데이터 업데이트 핸들러
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {    
     const { id, value, files } = e.target;
+    
     if (id === 'file') {
       setFormData((prev) => ({ ...prev, file: files?.[0] || null }));
 
@@ -142,7 +143,14 @@ const MarathonRegistration = () => {
         </div>
         <div>
           <label htmlFor='date'>일정</label>
-          <input type='date' id='date' value={formData.date} onChange={handleChange} required className='input input-bordered w-full' />
+          <DatePicker
+          id='date'
+      selected={formData.date}
+      onChange={handleChange}
+      dateFormat="yyyy-MM-dd"
+      className="input input-bordered w-full"
+    />
+
         </div>
         <div>
           <label htmlFor='region'>지역</label>

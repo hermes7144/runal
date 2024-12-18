@@ -24,7 +24,7 @@ function MarathonCard({ marathon }: { marathon: MarathonProps }) {
           </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedFaRegCalendarAlt className='w-5 h-5 flex-shrink-0  mr-1' />
-            <span>{dayjs(marathon.date).format('YYYY년 MM월 DD일 dddd')}</span>
+            <span>{dayjs(marathon.date).format('YYYY년 M월 D일 dddd')}</span>
           </div>
           <div className='flex items-center text-gray-600'>
             <MemoizedIoLocationSharp className='w-5 h-5 flex-shrink-0 mr-1' />
