@@ -19,6 +19,13 @@ dayjs.locale('ko');
 
 const MemoizedFaRegCalendarAlt = memo(FaRegCalendarAlt);
 
+const formatDateToYYYYMMDD = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const MarathonRegistration = () => {
   const user = useAuthStore.getState().user;
   const navigate = useNavigate();
@@ -100,6 +107,10 @@ const MarathonRegistration = () => {
 
     const { eventInput, file, ...raceData } = formData;
 
+    const formattedDate = formData.date ? formatDateToYYYYMMDD(formData.date) : '';
+    const formattedStartDate = formData.startDate ? formatDateToYYYYMMDD(formData.startDate) : '';
+    const formattedEndDate = formData.endDate ? formatDateToYYYYMMDD(formData.endDate) : '';
+
     const rearrangeEvents = (events) => {
       const full = events.filter((event) => event === 'Full');
       const half = events.filter((event) => event === 'Half');
@@ -113,6 +124,9 @@ const MarathonRegistration = () => {
 
     const newRace = {
       ...raceData,
+      date: formattedDate, 
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
       events: rearrangeEvents(raceData.events),
       review: 'approved', // 임시 승인 상태
       author_id: user.uid,
@@ -213,7 +227,7 @@ const MarathonRegistration = () => {
             <DatePicker
               className='w-full'
               selected={formData.startDate}
-              onChange={(startDate) => setFormData((prev) => ({ ...prev, startDate }))}
+              onChange={(startDate) => setFormData((prev) => ({ ...prev, startDate:startDate }))}
               selectsStart
               startDate={formData.startDate}
               endDate={formData.endDate}
@@ -224,7 +238,7 @@ const MarathonRegistration = () => {
             ~
             <DatePicker
               selected={formData.endDate}
-              onChange={(endDate) => setFormData((prev) => ({ ...prev, endDate }))}
+              onChange={(endDate) => setFormData((prev) => ({ ...prev, endDate:endDate }))}
               selectsEnd
               startDate={formData.startDate}
               endDate={formData.endDate}

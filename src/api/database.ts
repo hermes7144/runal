@@ -228,4 +228,4 @@ export const migrateData = async (): Promise<void> => {
   }
 };
 
-migrateData();
+// migrateData();
