@@ -6,10 +6,9 @@ import useAuthStore from '../store/authStore';
 
 type NotificationButtonProps = {
   marathonId: string | undefined;
-  marathonName: string;
 };
 
-const NotificationButton = ({ marathonId, marathonName }: NotificationButtonProps) => {
+const NotificationButton = ({ marathonId }: NotificationButtonProps) => {
   const { user } = useAuthStore.getState();
   const [isNotified, setIsNotified] = useState(false);
   const setToast = useToastStore((state) => state.setToast);
