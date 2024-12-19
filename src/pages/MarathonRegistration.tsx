@@ -43,6 +43,7 @@ const MarathonRegistration = () => {
   });
 
   const [isSubmitting, setisSubmitting] = useState(false);
+  const isMobile = window.innerWidth <= 768;
 
   // 폼 데이터 업데이트 핸들러
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -134,7 +135,7 @@ const MarathonRegistration = () => {
   function CustomInput({ value, onClick }) {
     return (
       <div className='relative flex items-center w-full' onClick={onClick}>
-        <input value={value} readOnly className='input input-bordered w-full' />
+        <input value={value} readOnly className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' />
         <span className='absolute right-3 cursor-pointer' onClick={onClick}>
           <MemoizedFaRegCalendarAlt />
         </span>
@@ -143,19 +144,30 @@ const MarathonRegistration = () => {
   }
 
   return (
-    <div className='p-4'>
+    <div className='max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg'>
       <h2 className='text-center text-xl font-bold mb-10'>대회 등록</h2>
-      <form onSubmit={handleSubmit} className='space-y-4'>
-        <div>
-          <label htmlFor='name'>이름</label>
-          <input type='text' id='name' value={formData.name} onChange={handleChange} required className='input input-bordered w-full' />
+      <form onSubmit={handleSubmit} className='space-y-2'>
+        <div className='form-control'>
+          <label className='label' htmlFor='name'>
+            이름
+          </label>
+          <input type='text' id='name' value={formData.name} onChange={handleChange} required 
+          className="input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
-        <div className='flex flex-col'>
-          <label htmlFor='date'>일정</label>
-          <DatePicker selected={formData.date} onChange={(date) => setFormData({ ...formData, date: date })} dateFormat='yyyy-MM-dd' customInput={<CustomInput />} />
+        <div className='form-control'>
+          <label className='label' htmlFor='date'>
+            일정
+          </label>
+          {isMobile ? (
+            <input type='date' id='date' value={formData.date} onChange={handleChange} required className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' />
+          ) : (
+            <DatePicker selected={formData.date} onChange={(date) => setFormData({ ...formData, date: date })} dateFormat='yyyy-MM-dd' customInput={<CustomInput />} />
+          )}
         </div>
-        <div>
-          <label htmlFor='region'>지역</label>
+        <div className='form-control'>
+          <label className='label' htmlFor='region'>
+            지역
+          </label>
           <div className='flex flex-wrap gap-2'>
             {predefinedRegions.map((region) => (
               <button
@@ -168,12 +180,16 @@ const MarathonRegistration = () => {
             ))}
           </div>
         </div>
-        <div>
-          <label htmlFor='location'>장소</label>
-          <input type='text' id='location' value={formData.location} onChange={handleChange} required className='input input-bordered w-full' />
+        <div className='form-control'>
+          <label className='label' htmlFor='location'>
+            장소
+          </label>
+          <input type='text' id='location' value={formData.location} onChange={handleChange} required className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' />
         </div>
-        <div>
-          <label htmlFor='customEvent'>이벤트 추가</label>
+        <div className='form-control'>
+          <label className='label' htmlFor='customEvent'>
+            이벤트 추가
+          </label>
           <div className='flex items-center gap-2'>
             <input
               type='text'
@@ -181,8 +197,8 @@ const MarathonRegistration = () => {
               value={formData.eventInput}
               onChange={(e) => setFormData((prev) => ({ ...prev, eventInput: e.target.value }))}
               onKeyPress={(e) => e.key === 'Enter' && handleAddEvent()}
-              placeholder='추가할 이벤트 입력 혹은 버튼 클릭 (예: 5km)'
-              className='input input-bordered w-full'
+              placeholder='추가할 이벤트 입력 (예: 5km)'
+              className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
             />
             <button type='button' onClick={handleAddEvent} className='btn btn-primary'>
               추가
@@ -196,64 +212,77 @@ const MarathonRegistration = () => {
             </button>
           ))}
         </div>
-        <ul className='mt-4 list-disc pl-6'>
+        <ul className='flex mt-4 list-disc gap-1'>
           {formData.events.map((event, index) => (
             <li key={index} className='flex items-center bg-gray-100 rounded-full px-4 py-1'>
               <span className='mr-2'>{event}</span>
-              <button type='button' onClick={() => handleRemoveEvent(index)} className='text-red-500'>
+              <button type='button' onClick={() => handleRemoveEvent(index)} className='text-red-500 font-semibold text-sm'>
                 ✕
               </button>
             </li>
           ))}
         </ul>
-        <div>
-          <label htmlFor='registrationPeriod'>모집기간</label>
-          <div className='flex gap-2 items-center'>
-            <div className=''>
-            <DatePicker
-              className='w-full'
-              selected={formData.startDate}
-              onChange={(startDate) => setFormData((prev) => ({ ...prev, startDate }))}
-              selectsStart
-              startDate={formData.startDate}
-              endDate={formData.endDate}
-              dateFormat='yyyy-MM-dd'
-              customInput={<CustomInput />}
-            />
-            </div>
-            ~
-            <DatePicker
-              selected={formData.endDate}
-              onChange={(endDate) => setFormData((prev) => ({ ...prev, endDate }))}
-              selectsEnd
-              startDate={formData.startDate}
-              endDate={formData.endDate}
-              minDate={formData.startDate}
-              dateFormat='yyyy-MM-dd'
-              customInput={<CustomInput />}
-            />
+        <div className='form-control'>
+          <label className='label'>모집기간</label>
+          <div className=' flex items-center  gap-2'>
+            {isMobile ? (
+              <input type='date' id='startDate' value={formData.startDate} onChange={handleChange} required className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' />
+            ) : (
+              <DatePicker
+                className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+                selected={formData.startDate}
+                onChange={(startDate) => setFormData((prev) => ({ ...prev, startDate }))}
+                selectsStart
+                startDate={formData.startDate}
+                endDate={formData.endDate}
+                dateFormat='yyyy-MM-dd'
+                customInput={<CustomInput />}
+              />
+            )}
+            <span className='px-2'>~</span>
+            {isMobile ? (
+              <input type='date' id='endDate' value={formData.endDate} onChange={handleChange} required className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' />
+            ) : (
+              <DatePicker
+                className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+                selected={formData.endDate}
+                onChange={(endDate) => setFormData((prev) => ({ ...prev, endDate }))}
+                selectsEnd
+                startDate={formData.startDate}
+                endDate={formData.endDate}
+                minDate={formData.startDate}
+                dateFormat='yyyy-MM-dd'
+                customInput={<CustomInput />}
+              />
+            )}
           </div>
         </div>
-        <div>
-          <label htmlFor='price'>금액</label>
+        <div className='form-control'>
+          <label className='label' htmlFor='price'>
+            금액
+          </label>
           <div className='flex items-center gap-2'>
-            <input className='input input-bordered w-full' type='price' id='price' value={formData.price} onChange={handleChange} />
+            <input className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' type='price' id='price' value={formData.price} onChange={handleChange} />
             <span className='font-semibold flex-shrink-0'>원 ~</span>
           </div>
         </div>
-        <div>
-          <div className='flex justify-between gap-2 py-6'>
-            <label htmlFor='isClosed' className=''>
-              모집 마감 여부
-            </label>
-            <input type='checkbox' id='isClosed' checked={formData.isClosed} onChange={() => setFormData((prev) => ({ ...prev, isClosed: !prev.isClosed }))} className='toggle toggle-primary' />
-          </div>
-          <label htmlFor='url'>URL</label>
-          <input className='input input-bordered w-full' type='text' id='url' value={formData.url} onChange={handleChange} required />
+        <div className='flex justify-between items-center gap-2 py-6 w-full'>
+          <label className='label' htmlFor='isClosed'>
+            모집 마감 여부
+          </label>
+          <input type='checkbox' id='isClosed' checked={formData.isClosed} onChange={() => setFormData((prev) => ({ ...prev, isClosed: !prev.isClosed }))} className='toggle toggle-primary' />
         </div>
-        <div>
-          <label htmlFor='file'>이미지</label>
-          <input type='file' id='file' accept='image/*' onChange={handleChange} />
+        <div className='form-control'>
+          <label className='label' htmlFor='url'>
+            URL
+          </label>
+          <input className='input input-bordered  w-full py-2 px-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500' type='text' id='url' value={formData.url} onChange={handleChange} required />
+        </div>
+        <div className='form-control'>
+          <label className='label' htmlFor='file'>
+            이미지
+          </label>
+          <input className='file-input w-full max-w-xs' type='file' id='file' accept='image/*' onChange={handleChange} />
         </div>
         <button type='submit' className='btn btn-primary text-white p-2 rounded w-full' disabled={isSubmitting}>
           {isSubmitting ? <span className='loading loading-spinner text-white'></span> : '대회 등록'}
