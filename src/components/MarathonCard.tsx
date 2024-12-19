@@ -16,7 +16,7 @@ const MemoizedFaWonSign = memo(FaWonSign);
 function MarathonCard({ marathon }: { marathon: MarathonProps }) {
   return (
     <div className='bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer relative' onClick={() => window.open(marathon.url)}>
-      <img src={marathon.image || 'images/default-event.png'} alt={`${marathon.name} 이미지`} className="hidden sm:block w-full aspect-[16/9] object-fill rounded-t-lg" />
+      <img src={marathon.image?.replace('http://','https://') || 'images/default-event.png'} alt={`${marathon.name} 이미지`} className="hidden sm:block w-full aspect-[16/9] object-fill rounded-t-lg" />
       <MarathonBadge marathon={marathon} />
       <div className='w-full flex flex-col p-2   sm:p-4 gap-1 text-sm sm:text-lg relative'>
           <div className='flex justify-between items-center'>
