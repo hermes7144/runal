@@ -226,7 +226,7 @@ const MarathonRegistration = () => {
             </button>
           ))}
         </div>
-        <ul className='flex mt-4 list-disc gap-1'>
+        <ul className='flex flex-wrap mt-4 gap-1'>
           {formData.events.map((event, index) => (
             <li key={index} className='flex items-center bg-gray-100 rounded-full px-4 py-1'>
               <span className='mr-2'>{event}</span>
