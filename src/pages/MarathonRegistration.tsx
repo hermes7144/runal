@@ -108,9 +108,9 @@ const MarathonRegistration = () => {
 
     const { eventInput, file, ...raceData } = formData;
 
-    const formattedDate = formData.date ? formatDateToYYYYMMDD(formData.date) : '';
-    const formattedStartDate = formData.startDate ? formatDateToYYYYMMDD(formData.startDate) : '';
-    const formattedEndDate = formData.endDate ? formatDateToYYYYMMDD(formData.endDate) : '';
+    const formattedDate = formData.date ? dayjs(formData.date).format('YYYYMMDD') : '';
+    const formattedStartDate = formData.startDate ? dayjs(formData.startDate).format('YYYYMMDD') : '';
+    const formattedEndDate = formData.endDate ? dayjs(formData.endDate).format('YYYYMMDD') : '';
 
     const rearrangeEvents = (events) => {
       const full = events.filter((event) => event === 'Full');

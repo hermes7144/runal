@@ -184,48 +184,40 @@ export const unsubscribeNotification = async (uid, marthonId) => {
   });
 };
 
-export const migrateData = async (): Promise<void> => {
-  try {
-    // 'events' 컬렉션 참조
-    const snapshot = await getDocs(collection(db, 'marathons'));
+async function updateMarathonDates() {
+  const marathonCollection = collection(db, "marathons"); // 컬렉션 이름에 맞게 수정
+  const snapshot = await getDocs(marathonCollection);
 
-    if (snapshot.empty) {
-      console.log("No documents found to migrate.");
-      return;
+  const updates = snapshot.docs.map(async (docSnap) => {
+    const data = docSnap.data();
+
+    // 기존 date 가져오기
+    const oldDate = data.date; // 예: "2024-12-03"
+    const startDate = data.startDate; // 예: "2024-12-03"
+    const endDate = data.endDate; // 예: "2024-12-03"
+
+    if (oldDate && typeof oldDate === "string") {
+      // 새로운 형식으로 변환
+      const newDate = oldDate.replace(/-/g, ""); // "2024-12-03" → "20241203"
+      const newStartDate = startDate?.replace(/-/g, ""); // "2024-12-03" → "20241203"
+      const newEndDate = endDate?.replace(/-/g, ""); // "2024-12-03" → "20241203"
+
+      // Firestore 업데이트
+      const docRef = doc(db, "marathons", docSnap.id);
+      await updateDoc(docRef, {
+        date: newDate,
+        startDate: newStartDate,
+        endDate: newEndDate,
+      });
+
+      console.log(`Updated ${docSnap.id}: ${oldDate} → ${newDate}`);
     }
+  });
 
-    // 문서 순회하며 데이터 변환
-    for (const docSnapshot of snapshot.docs) {
-      const data = docSnapshot.data();
+  // 모든 업데이트 완료 대기
+  await Promise.all(updates);
 
-      // registrationPeriod에서 startDate와 endDate 분리
-      const startDate = data.registrationPeriod?.startDate || '';
-      const endDate = data.registrationPeriod?.endDate || '';
+  console.log("Date format update complete.");
+}
 
-      // 변환된 데이터 구조
-      const updatedData = {
-        ...data,
-        startDate,  // 기존 registrationPeriod에서 startDate를 새로운 필드로 추가
-        endDate,    // 기존 registrationPeriod에서 endDate를 새로운 필드로 추가
-      };
-
-      // 기존 registrationPeriod 제거
-      delete updatedData.registrationPeriod;
-
-      // 기존 문서 삭제
-      await deleteDoc(doc(db, 'marathons', docSnapshot.id));
-      console.log(`Deleted document: ${docSnapshot.id}`);
-
-      // 새로운 데이터로 문서 생성
-      const newDocRef = doc(db, 'marathons', docSnapshot.id); // 기존 문서 ID로 새로운 데이터 삽입
-      await setDoc(newDocRef, updatedData);
-      console.log(`Created new document with updated data: ${newDocRef.id}`);
-    }
-
-    console.log("Migration completed successfully!");
-  } catch (error) {
-    console.error('Error during migration:', error);
-  }
-};
-
-// migrateData();
+updateMarathonDates().catch((error) => console.error("Error updating dates:", error));
