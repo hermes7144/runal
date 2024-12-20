@@ -19,7 +19,7 @@ export const MarathonBadge = ({ marathon }: { marathon: MarathonProps }) => {
   const statusStyles: Record<string, string> = {
     모집예정: 'bg-yellow-500 text-white',
     모집중: 'bg-green-500 text-white',
-    접수완료: 'bg-gray-400 text-white',
+    모집종료: 'bg-gray-400 text-white',
   };
   return (
     <div className='block m-1 sm:absolute top-2 left-2'>
