@@ -9,7 +9,7 @@ import useAuthStore from '../store/authStore';
 dayjs.extend(isSameOrAfter);
 
 export default function Marathons() {
-  const {user} = useAuthStore.getState();
+  const { user } = useAuthStore.getState();
 
   const [status, setStatus] = useState('open');
   const [region, setRegion] = useState('');
@@ -39,7 +39,7 @@ export default function Marathons() {
     return () => {
       if (loaderRef.current) observer.unobserve(loaderRef.current);
     };
-  }, [hasMore,loaderRef, fetchMore]);
+  }, [hasMore, loaderRef, fetchMore]);
 
 
   const filteredMarathons = marathons?.filter((marathon) => {
@@ -58,9 +58,9 @@ export default function Marathons() {
   const months = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
 
   return (
-    <div className='container bg-gray-100 min-h-[calc(100vh-64px)] flex flex-col'>
+    <div className='container min-h-[calc(100vh-64px)] flex flex-col'>
       {/* Header with Filters */}
-      <header className='p-6 bg-white shadow-md'>
+      <header className='mt-2 px-3 py-3 bg-white shadow-md'>
         <div className='container mx-auto flex flex-col sm:flex-row justify-between items-center'>
           <h1 className='text-2xl font-bold text-gray-800 mb-4 sm:mb-0'>마라톤</h1>
           <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
@@ -115,22 +115,28 @@ export default function Marathons() {
         </div>
       </header>
 
-      <main className='container mx-auto p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1280px] mb-16 lg:mb-0'>
+      <main className='container mx-auto p-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1280px] mb-16 lg:mb-0' ref={loaderRef}>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
-        
-              {/* 로딩 및 추가 데이터 로드 */}
-      <div ref={loaderRef} className="text-center my-4">
-        {isLoading && <p>로딩 중...</p>}
-        {!hasMore && <p>모든 데이터를 불러왔습니다.</p>}
-      </div>
+        {isLoading && (
+          <>
+            {Array.from({ length: 8 }, (_, i) => (
+              <div key={i} className="flex flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+            ))}
+          </>
+        )}
       </main>
 
       {user && <div className='fixed bottom-20 right-4'>
         <Link to='/marathons/new'>
-        <button className="w-12 h-12 bg-primary text-white rounded-full shadow-xl flex justify-center items-center hover:bg-primary-dark hover:shadow-2xl transition-all">
-          <FaPlus />  
+          <button className="w-12 h-12 bg-primary text-white rounded-full shadow-xl flex justify-center items-center hover:bg-primary-dark hover:shadow-2xl transition-all">
+            <FaPlus />
           </button>
         </Link>
       </div>}

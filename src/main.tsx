@@ -9,7 +9,6 @@ import MarathonRegistration from './pages/MarathonRegistration';
 import Notification from './pages/Notification';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './pages/ProtectedRoute';
-import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +20,6 @@ const router = createBrowserRouter([
       { path: '/marathons', element: <Marathons /> },
       { path: '/marathons/new', element: <ProtectedRoute><MarathonRegistration /></ProtectedRoute> },
       { path: '/notification', element: <ProtectedRoute><Notification /></ProtectedRoute> },
-      { path: '/login', element: <Login /> },
     ],
   },
 ]);
