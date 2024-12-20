@@ -1,5 +1,5 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, or, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, or, orderBy, query, serverTimestamp, setDoc, startAfter, updateDoc, where, limit } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { MarathonProps } from '../types/MarathonProps';
 import dayjs from 'dayjs';
@@ -95,15 +95,23 @@ export const fetchUsers = async () => {
 };
 
 // 대회 목록 가져오기 함수
-export async function getMarathons(status:string): Promise<MarathonProps[]> {
-  try {
-    const today = dayjs();
+export async function getMarathons(status: string, limitNum:number, startAfterDoc?: any): Promise<{
+  marathons: MarathonProps[];
+  lastVisible: any;
+}> {
+  const today = dayjs();
   
-    // 기본 쿼리 (전체 마라톤 불러오기)
-    let marathonsQuery = query(
-      collection(db, 'marathons'),
-      orderBy('date', 'asc')
-    );  
+ try {
+  let marathonsQuery = query(
+    collection(db, 'marathons'),
+    orderBy('date', 'asc'),
+    limit(limitNum) // 한 번에 가져올 데이터 개수
+  );
+
+  if (startAfterDoc) {
+    marathonsQuery = query(marathonsQuery, startAfter(startAfterDoc));
+  }
+
   
     if (status === 'open') {
       // 상태가 'open'인 경우
@@ -128,10 +136,14 @@ export async function getMarathons(status:string): Promise<MarathonProps[]> {
       ...(doc.data() as Omit<MarathonProps, 'id'>),
     }));
   
-    return marathons;
+
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { marathons, lastVisible };
+  
   } catch(e) {
     console.error(e);
-    return [];
+    return {marathons:[], lastVisible:''};
   }
 }
 

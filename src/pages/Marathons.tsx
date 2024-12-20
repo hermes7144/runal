@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useMarathons from '../hooks/useMarathons';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -17,8 +17,30 @@ export default function Marathons() {
   const [month, setMonth] = useState('');
   const [event, setEvent] = useState('');
 
-  const { marathonsQuery } = useMarathons(status);
-  const { data: marathons, isLoading, isError } = marathonsQuery;
+  const { marathons, isLoading, fetchMore, hasMore } = useMarathons(status);
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore) {
+        fetchMore();
+      }
+    };
+
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: '20px',
+      threshold: 0.5,
+    });
+
+    if (loaderRef.current) observer.observe(loaderRef.current);
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [hasMore,loaderRef, fetchMore]);
+
 
   const filteredMarathons = marathons?.filter((marathon) => {
     const marathonDate = dayjs(marathon.date);
@@ -97,6 +119,12 @@ export default function Marathons() {
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
+        
+              {/* 로딩 및 추가 데이터 로드 */}
+      <div ref={loaderRef} className="text-center my-4">
+        {isLoading && <p>로딩 중...</p>}
+        {!hasMore && <p>모든 데이터를 불러왔습니다.</p>}
+      </div>
       </main>
 
       {user && <div className='fixed bottom-20 right-4'>
