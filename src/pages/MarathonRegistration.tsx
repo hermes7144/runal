@@ -19,13 +19,6 @@ dayjs.locale('ko');
 
 const MemoizedFaRegCalendarAlt = memo(FaRegCalendarAlt);
 
-const formatDateToYYYYMMDD = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
 const MarathonRegistration = () => {
   const user = useAuthStore.getState().user;
   const navigate = useNavigate();
@@ -44,7 +37,6 @@ const MarathonRegistration = () => {
     endDate: '',
     price: 0,
     url: '',
-    status: 'upcoming',
     file: null as File | null,
     isClosed: false, // 모집 마감 여부
   });

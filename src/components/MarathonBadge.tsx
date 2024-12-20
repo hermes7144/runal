@@ -11,7 +11,7 @@ export const MarathonBadge = ({ marathon }: { marathon: MarathonProps }) => {
   } else if (today.isAfter(marathon.endDate)) {
     status = '모집종료';
   } else if (marathon.isClosed) {
-    status = '접수완료';
+    status = '접수마감';
   } else {
     status = '모집중';
   }

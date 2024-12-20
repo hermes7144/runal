@@ -1,5 +1,5 @@
 // import { RaceProps } from '../types/RaceProps';
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, or, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { MarathonProps } from '../types/MarathonProps';
 import dayjs from 'dayjs';
@@ -116,9 +116,8 @@ export async function getMarathons(status:string): Promise<MarathonProps[]> {
     } else if (status === 'close') {
       marathonsQuery = query(
         marathonsQuery,
-        where('endDate', '<', today.format('YYYYMMDD')),  // '모집종료' 상태는 endDate가 오늘 이후여야 함
-        where('isClosed', '==', true),  // '접수완료' 상태만
-  
+        or(where('endDate', '<', today.format('YYYYMMDD')),
+        where('isClosed', '==', true)), 
       );
     }
     
