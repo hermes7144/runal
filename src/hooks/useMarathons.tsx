@@ -2,12 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMarathons, setMarathon } from '../api/database';
 import { MarathonProps } from '../types/MarathonProps';
 
-export default function useMarathons() {
+export default function useMarathons(status) {
   const queryClient = useQueryClient();
 
   const marathonsQuery = useQuery({
-    queryKey: ['marathons'],
-    queryFn: () => getMarathons()
+    queryKey: ['marathons', status],
+    queryFn: () => getMarathons(status)
   });
 
   const saveMarathon = useMutation({

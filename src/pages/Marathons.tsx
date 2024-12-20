@@ -11,27 +11,20 @@ dayjs.extend(isSameOrAfter);
 export default function Marathons() {
   const {user} = useAuthStore.getState();
 
-  const [event, setEvent] = useState('');
+  const [status, setStatus] = useState('open');
   const [region, setRegion] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
+  const [event, setEvent] = useState('');
 
-  const { marathonsQuery } = useMarathons();
+  const { marathonsQuery } = useMarathons(status);
   const { data: marathons, isLoading, isError } = marathonsQuery;
 
   const filteredMarathons = marathons?.filter((marathon) => {
-    const marathonDate = dayjs(marathon.date, 'YYYYMMDD'); // 'YYYYMMDD' 형식으로 dayjs 객체 생성
+    const marathonDate = dayjs(marathon.date);
     const marathonYear = marathonDate.year();
-    const marathonMonth = marathonDate.month() + 1; // 월은 0부터 시작하므로 +1 해줍니다.
-    const today = dayjs();
+    const marathonMonth = marathonDate.month() + 1;
 
-    // 필터가 없을 경우 오늘 이후의 대회만 필터링
-
-    if (event === '' && year === '' && month === '' && region === '') {
-      return marathonDate.isSameOrAfter(today, 'day');
-    }
-
-    // 필터가 있을 경우, 해당 조건들에 맞는 대회들만 반환
     return (
       (event === '' || marathon.events.includes(event)) &&
       (year === '' || String(marathonYear) === year) &&
@@ -39,6 +32,8 @@ export default function Marathons() {
       (region === '' || marathon.region.includes(region))
     );
   });
+
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
 
   return (
     <div className='container bg-gray-100 min-h-[calc(100vh-64px)] flex flex-col'>
@@ -48,6 +43,18 @@ export default function Marathons() {
           <h1 className='text-2xl font-bold text-gray-800 mb-4 sm:mb-0'>마라톤</h1>
           <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
             {/* 카테고리 선택 */}
+            <div className='flex flex-col'>
+              <label className='text-gray-700 mb-2'>모집 상태</label>
+              <select
+                className='select bg-gray-200 rounded-md'
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value='all'>전체</option>
+                <option value='open'>모집중/예정</option>
+                <option value='close'>모집종료</option>
+              </select>
+            </div>
             <div className='flex flex-col'>
               <label className='text-gray-700 mb-2'>거리</label>
               <select className='select bg-gray-200 rounded-md' value={event} onChange={(e) => setEvent(e.target.value)}>
@@ -73,18 +80,9 @@ export default function Marathons() {
               <label className='text-gray-700 mb-2'>월</label>
               <select className='select bg-gray-200 rounded-md' value={month} onChange={(e) => setMonth(e.target.value)}>
                 <option value=''>전체</option>
-                <option value={1}>1월</option>
-                <option value={2}>2월</option>
-                <option value={3}>3월</option>
-                <option value={4}>4월</option>
-                <option value={5}>5월</option>
-                <option value={6}>6월</option>
-                <option value={7}>7월</option>
-                <option value={8}>8월</option>
-                <option value={9}>9월</option>
-                <option value={10}>10월</option>
-                <option value={11}>11월</option>
-                <option value={12}>12월</option>
+                {months.map((month) => (
+                  <option key={month} value={parseInt(month)}>{month}월</option>
+                ))}
               </select>
             </div>
             <div className='flex flex-col'>

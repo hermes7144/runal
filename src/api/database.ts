@@ -2,6 +2,7 @@
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { MarathonProps } from '../types/MarathonProps';
+import dayjs from 'dayjs';
 
 export const setInitUser = async (uid: string) => {
   const userDocRef = doc(db, 'users', uid);
@@ -94,20 +95,45 @@ export const fetchUsers = async () => {
 };
 
 // 대회 목록 가져오기 함수
-export async function getMarathons(): Promise<MarathonProps[]> {
-  const marathonsQuery = query(
-    collection(db, 'marathons'),
-    orderBy('date', 'asc')
-  );
-
-  const querySnapshot = await getDocs(marathonsQuery);
+export async function getMarathons(status:string): Promise<MarathonProps[]> {
+  try {
+    const today = dayjs();
   
-  const marathons: MarathonProps[] = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...(doc.data() as Omit<MarathonProps, 'id'>),
-  }));
-
-  return marathons;
+    // 기본 쿼리 (전체 마라톤 불러오기)
+    let marathonsQuery = query(
+      collection(db, 'marathons'),
+      orderBy('date', 'asc')
+    );  
+  
+    if (status === 'open') {
+      // 상태가 'open'인 경우
+      marathonsQuery = query(
+        marathonsQuery,
+        where('endDate', '>=', today.format('YYYYMMDD')),  // '모집중' 상태는 endDate가 오늘 포함 이전
+        where('isClosed', '==', false),  // '모집중' 상태만
+  
+      )
+    } else if (status === 'close') {
+      marathonsQuery = query(
+        marathonsQuery,
+        where('endDate', '<', today.format('YYYYMMDD')),  // '모집종료' 상태는 endDate가 오늘 이후여야 함
+        where('isClosed', '==', true),  // '접수완료' 상태만
+  
+      );
+    }
+    
+    const querySnapshot = await getDocs(marathonsQuery);
+    
+    const marathons: MarathonProps[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<MarathonProps, 'id'>),
+    }));
+  
+    return marathons;
+  } catch(e) {
+    console.error(e);
+    return [];
+  }
 }
 
 // 마라톤 정보 키값을 저장하기?
@@ -184,40 +210,3 @@ export const unsubscribeNotification = async (uid, marthonId) => {
   });
 };
 
-async function updateMarathonDates() {
-  const marathonCollection = collection(db, "marathons"); // 컬렉션 이름에 맞게 수정
-  const snapshot = await getDocs(marathonCollection);
-
-  const updates = snapshot.docs.map(async (docSnap) => {
-    const data = docSnap.data();
-
-    // 기존 date 가져오기
-    const oldDate = data.date; // 예: "2024-12-03"
-    const startDate = data.startDate; // 예: "2024-12-03"
-    const endDate = data.endDate; // 예: "2024-12-03"
-
-    if (oldDate && typeof oldDate === "string") {
-      // 새로운 형식으로 변환
-      const newDate = oldDate.replace(/-/g, ""); // "2024-12-03" → "20241203"
-      const newStartDate = startDate?.replace(/-/g, ""); // "2024-12-03" → "20241203"
-      const newEndDate = endDate?.replace(/-/g, ""); // "2024-12-03" → "20241203"
-
-      // Firestore 업데이트
-      const docRef = doc(db, "marathons", docSnap.id);
-      await updateDoc(docRef, {
-        date: newDate,
-        startDate: newStartDate,
-        endDate: newEndDate,
-      });
-
-      console.log(`Updated ${docSnap.id}: ${oldDate} → ${newDate}`);
-    }
-  });
-
-  // 모든 업데이트 완료 대기
-  await Promise.all(updates);
-
-  console.log("Date format update complete.");
-}
-
-updateMarathonDates().catch((error) => console.error("Error updating dates:", error));
