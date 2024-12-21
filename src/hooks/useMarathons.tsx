@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { getMarathons, setMarathon } from '../api/database';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MarathonProps } from '../types/MarathonProps';
@@ -13,7 +13,7 @@ export default function useMarathons(status: string) {
 
   const limit = 4; // 한 번에 가져올 데이터 개수
 
-  const fetchMarathons = useCallback(async (isInitial = false) => {
+  const fetchMarathons = async (isInitial = false) => {
     if (isLoading || (!isInitial && !hasMore)) return;
   
     setIsLoading(true);
@@ -38,7 +38,7 @@ export default function useMarathons(status: string) {
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, hasMore, lastVisible, limit, status]); // 의존성 배열에 필요한 상태들 추가
+  }; // 의존성 배열에 필요한 상태들 추가
 
   useEffect(() => {
     fetchMarathons(true); // 상태 변경 시 초기 로드

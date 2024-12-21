@@ -11,7 +11,7 @@ dayjs.extend(isSameOrAfter);
 export default function Marathons() {
   const { user } = useAuthStore.getState();
 
-  const [status, setStatus] = useState('all');
+  const [status, setStatus] = useState('open');
   const [region, setRegion] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
@@ -120,18 +120,8 @@ export default function Marathons() {
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
         <div ref={loaderRef} className="text-center my-4">
-
           {isLoading && (
-            <>
-              {Array.from({ length: 8 }, (_, i) => (
-                <div key={i} className="flex flex-col gap-4">
-                  <div className="skeleton h-32 w-full"></div>
-                  <div className="skeleton h-4 w-28"></div>
-                  <div className="skeleton h-4 w-full"></div>
-                  <div className="skeleton h-4 w-full"></div>
-                </div>
-              ))}
-            </>
+            <span>로딩중</span>
           )}
         </div>
       </main>
