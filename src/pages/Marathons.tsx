@@ -11,7 +11,7 @@ dayjs.extend(isSameOrAfter);
 export default function Marathons() {
   const { user } = useAuthStore.getState();
 
-  const [status, setStatus] = useState('open');
+  const [status, setStatus] = useState('all');
   const [region, setRegion] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
@@ -30,8 +30,8 @@ export default function Marathons() {
 
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '20px',
-      threshold: 0.5,
+      rootMargin: '200px', // 200px 바깥까지 여유를 줌
+      threshold: 0,        // 뷰포트에 들어오자마자 트리거
     });
 
     if (loaderRef.current) observer.observe(loaderRef.current);
