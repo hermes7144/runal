@@ -30,8 +30,8 @@ export default function Marathons() {
 
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '200px', // 200px 바깥까지 여유를 줌
-      threshold: 0,        // 뷰포트에 들어오자마자 트리거
+      rootMargin: '20px',
+      threshold: 0.5,
     });
 
     if (loaderRef.current) observer.observe(loaderRef.current);
@@ -115,22 +115,25 @@ export default function Marathons() {
         </div>
       </header>
 
-      <main className='container mx-auto p-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1280px] mb-16 lg:mb-0' ref={loaderRef}>
+      <main className='container mx-auto p-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:min-w-[1280px] mb-16 lg:mb-0'>
         {filteredMarathons?.map((marathon) => (
           <MarathonCard key={marathon.id} marathon={marathon} />
         ))}
-        {isLoading && (
-          <>
-            {Array.from({ length: 8 }, (_, i) => (
-              <div key={i} className="flex flex-col gap-4">
-                <div className="skeleton h-32 w-full"></div>
-                <div className="skeleton h-4 w-28"></div>
-                <div className="skeleton h-4 w-full"></div>
-                <div className="skeleton h-4 w-full"></div>
-              </div>
-            ))}
-          </>
-        )}
+        <div ref={loaderRef} className="text-center my-4">
+
+          {isLoading && (
+            <>
+              {Array.from({ length: 8 }, (_, i) => (
+                <div key={i} className="flex flex-col gap-4">
+                  <div className="skeleton h-32 w-full"></div>
+                  <div className="skeleton h-4 w-28"></div>
+                  <div className="skeleton h-4 w-full"></div>
+                  <div className="skeleton h-4 w-full"></div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </main>
 
       {user && <div className='fixed bottom-20 right-4'>

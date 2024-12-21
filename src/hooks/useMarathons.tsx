@@ -11,7 +11,7 @@ export default function useMarathons(status: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 여부
 
-  const limit = 12; // 한 번에 가져올 데이터 개수
+  const limit = 4; // 한 번에 가져올 데이터 개수
 
   const fetchMarathons = useCallback(async (isInitial = false) => {
     if (isLoading || (!isInitial && !hasMore)) return;
