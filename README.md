@@ -1,4 +1,4 @@
-사이트 주소: <a>https://runal.netlify.app/</a>
+사이트 주소: <a href="https://runal.netlify.app/" target="_blank" rel="noopener noreferrer">https://runal.netlify.app/</a>
 
 # 러닝알리미
 
