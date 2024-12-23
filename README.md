@@ -76,7 +76,7 @@ yarn dev
 서버가 실행되면 브라우저에서 `http://localhost:5173` 주소로 접속할 수 있습니다.
 
 
-## 스크린샷 (수요일 작성)
+## 스크린샷
 ### 홈 화면
 ![image](https://github.com/user-attachments/assets/8f550cf7-124a-49f8-a24f-7f3e9736db47)  
 
