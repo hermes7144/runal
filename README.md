@@ -1,3 +1,5 @@
+사이트 주소: <a href="https://runal.netlify.app/" target="_blank" rel="noopener noreferrer">https://runal.netlify.app/</a>
+
 # 러닝알리미
 
 ## 프로젝트 소개
@@ -110,4 +112,4 @@ yarn dev
 #### 삼성 인터넷 예시
 ![KakaoTalk_20241217_210605964_02](https://github.com/user-attachments/assets/015282d5-c080-4071-a729-72092e43a79f)
 
-삼성 인터넷의 경우는 로그인 만으로 알림 확인했습니다.
+삼성 인터넷의 경우는 로그인 만으로 알림 오는 것 확인했습니다.
